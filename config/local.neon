@@ -1,0 +1,7 @@
+parameters:
+
+
+database:
+	dsn: 'mysql:host=mariadb-development;dbname=test_project_db'
+	user: root
+	password: '123456'

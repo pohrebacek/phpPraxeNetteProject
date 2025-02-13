@@ -1,0 +1,6 @@
+services:
+	- App\Module\Model\Post\PostsRepository
+	- App\Module\Model\Comment\CommentsRepository
+	- App\Module\Model\Base\BaseRepository
+	- App\Router\RouterFactory::createRouter
+	- App\Module\Model\PostCommentFacade
