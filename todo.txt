@@ -1,0 +1,12 @@
+- udělat paginaci celou jako komponentu
+- postpresenter 55 a 56 schovat do medot
+- celkově v preyenteru mít jenom metody a ne nějakou větší logiku
+- Admin tab
+- předělat mixed na cokoliv jen ne mixed
+- předělat DTO na readonly
+- postpresenter 80 - 85 schovat celý do like facade
+- phpstan
+
+
+
+DONE
