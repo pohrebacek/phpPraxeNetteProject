@@ -1,0 +1,19 @@
+{block content}
+    <h1>Databáze {$dbName}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Parametr</th>
+                <th>Hodnota</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $settings as $setting}
+                <tr>
+                    <td>{$setting['param']}</td>
+                    <td>{$setting['value']}</td>
+                </tr>
+            {/foreach}
+        </tbody>
+    </table>
+{/block}
