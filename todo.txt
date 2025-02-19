@@ -6,6 +6,8 @@
 - postpresenter 80 - 85 schovat celý do like facade
 - phpstan
 - uspořádat services.neon
+- v nette nastavit práva pro zobrazování stránek
+- v admin tab přidat filtraci na výsledky z databáze
 
 
 
