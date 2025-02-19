@@ -1,0 +1,70 @@
+namespace App\Module\Model\Security;
+
+use Nette\Security;
+use Nette\Security\Permission;
+use Security\Role;
+use Security\Resource;
+
+
+
+class Registered implements Security\Role
+{
+	public $id;
+
+	public function getRoleId(): string
+	{
+		return 'registered';
+	}
+}
+
+
+class Article implements Security\Resource
+{
+	public $authorId;
+
+	public function getResourceId(): string
+	{
+		return 'article';
+	}
+}
+
+class MyAuthorizator implements App\Module\Model\Security\Authorizator{
+    private Permission $acl;
+    public function __construct(
+        
+    ) {
+        $this->initializeAcl();
+    
+    }
+    private function initializeAcl(): void{
+        $this->acl = new Permission;
+
+        //Roles
+        $this->acl->addRole("guest");
+        $this->acl->addRole("user", "guest");
+        $this->acl->addRole("admin", "user");
+
+        //Resources
+        $this->acl->addResource("post");
+        $this->acl->addResource("comment");
+
+        //Operations
+        $this->acl->allow("guest", ["post", "comment"], "view");
+        $this->acl->allow("user", ["post", "comment"], "add");
+        $this->acl->allow("admin");
+
+        $assertion = function (Permission $acl, string $role, string $resource, string $privilege): bool {
+            $role = $acl->getQueriedRole(); // objekt Registered
+            $resource = $acl->getQueriedResource(); // objekt Article
+            return $role->id == $resource->authorId;
+        };
+        $this->acl->allow('user', 'article', 'edit', $assertion);
+    }
+    
+
+
+    public function isAllowed($role, $resource, $privilege): bool   //díky týhle metodě ji nemusíš volat přes to acl
+    {
+        return $this->acl->isAllowed($role, $resource, $privilege);
+    }   
+}
