@@ -1,0 +1,30 @@
+{block content}
+<h1>Homepage</h1>
+<a n:href="Edit:create" n:if="$user->isAllowed('post', 'add')" class="btn btn-primary">Vytvořit příspěvek</a>
+
+
+
+	
+	<div n:foreach="$postsArray as $post" class="post">
+        <h2><a n:href="Post:show $post->id">{$post->title}</a></h2>
+
+		<div n:if="$post->image"><img src="{$post->image}"></div>
+
+		<div class="date">{$post->created_at|date:'F j, Y'}</div>
+
+		<div>{$post->content|truncate:256}</div>
+	</div>
+	{*{for $page = 0; $page < $pages; $page++}
+		<a n:href="Homepage:page page => $page+1">{$page+1}</a>
+	{/for}*}
+
+
+
+
+	<div class="pageSelector">
+        <a>1/{$pages}</a>
+        <a n:href="Homepage:page page => 2" class="btn btn-outline-primary">></a>
+        <a n:href="Homepage:page page => $pages" class="btn btn-outline-primary">>></a>
+    </div>
+
+    {control pageForm}

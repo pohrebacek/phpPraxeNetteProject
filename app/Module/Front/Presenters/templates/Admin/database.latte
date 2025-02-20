@@ -1,0 +1,24 @@
+{block content}
+
+<h2>{$dbName} database</h2>
+<h3>Počet záznamů: {count($data)}</h3>
+<h3><a n:href="RecordEdit:add dbName => $dbName" class="btn btn-primary">Přidat záznam</a></h3>
+
+
+{foreach $data as $line}
+    <div class="border border-primary">
+        {foreach $line as $column => $value}
+            <div class="record">{$column} = {$value}</div>
+            {if $column == "id"}
+                {var $recordId = $value}
+            {/if}
+        {/foreach}
+        <div class="DBactions">
+            <a n:href="RecordEdit:edit recordId => $recordId, dbName => $dbName" class="btn btn-outline-primary">Edit Record</a>
+            <a n:href="Admin:delete recordId => $recordId, dbName => $dbName" class="btn btn-outline-danger" onclick="return confirm('Opravdu chcete smazat tento záznam?')">Delete Record</a>
+            <p></p>
+        </div>
+    </div>
+{/foreach}
+
+
