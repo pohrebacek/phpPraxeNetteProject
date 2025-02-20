@@ -8,6 +8,7 @@
 - v nette nastavit práva pro zobrazování stránek
 - v admin tab přidat filtraci na výsledky z databáze
 - opravit že po reloadu se zas přidá/odebere like
+- v úpravě usera dát změnu hesla jako samostatnou možnost, jinak tu basic úprav dát bez hesla
 
 
 
