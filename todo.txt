@@ -1,13 +1,13 @@
 - udělat paginaci celou jako komponentu
 - postpresenter 55 a 56 schovat do medot
 - celkově v preyenteru mít jenom metody a ne nějakou větší logiku
-- Admin tab
 - předělat mixed na cokoliv jen ne mixed
 - postpresenter 80 - 85 schovat celý do like facade
 - phpstan
 - uspořádat services.neon
 - v nette nastavit práva pro zobrazování stránek
 - v admin tab přidat filtraci na výsledky z databáze
+- opravit že po reloadu se zas přidá/odebere like
 
 
 
@@ -15,3 +15,4 @@
 DONE
 - předělat DTO na readonly
 - změnit variable postsPerPage v homepagepresenter na záznam z db
+- Admin tab
