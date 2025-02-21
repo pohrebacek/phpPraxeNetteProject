@@ -240,10 +240,8 @@
   padding-top: 2%;
 }
 
-.like img {
-  height: 40px;
-  width: 30px;
-  margin-right: 8px;
+.like p {
+  margin-bottom: 50%;
 }
 
 .editComment textarea {
@@ -268,6 +266,28 @@
   padding: 1%;
 }
 
+.filterDBrecords {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+}
+
+.search input {
+  width: 300px;
+  min-width: none;
+}
+
+.search button {
+  margin-left: 0.5%;
+  flex-shrink: 0;
+}
+
 .record {
   padding-top: 1%;
 }
@@ -279,6 +299,7 @@
 .addPost textarea {
   height: 40vh;
   width: 50vw;
+  resize: none;
 }
 
 .addPost tr {
@@ -289,6 +310,7 @@
 .editPost textarea {
   height: 40vh;
   width: 50vw;
+  resize: none;
 }
 
 .editPost tr {
@@ -312,8 +334,4 @@
 
 .edit th {
   padding-top: 5%;
-}
-
-textarea {
-  resize: none;
 }/*# sourceMappingURL=custom.css.map */
