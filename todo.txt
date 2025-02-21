@@ -4,11 +4,14 @@
 - předělat mixed na cokoliv jen ne mixed
 - postpresenter 80 - 85 schovat celý do like facade
 - phpstan
-- uspořádat services.neon
 - v nette nastavit práva pro zobrazování stránek
 - v admin tab přidat filtraci na výsledky z databáze
-- opravit že po reloadu se zas přidá/odebere like
-- v úpravě usera dát změnu hesla jako samostatnou možnost, jinak tu basic úprav dát bez hesla
+- předělat vzhled addError na něco hezčího 
+- doplnit všude flashmessages
+- ten dlouhej switch a ty formy dej do vlastních souborů, uděleje každej template pro jednu db
+- zkus to rozbít a pak to oprav
+- když otevřeš post a pak jdeš zpět tak tě to dá na homepage a ne na danou stránku postů
+
 
 
 
@@ -17,3 +20,9 @@ DONE
 - předělat DTO na readonly
 - změnit variable postsPerPage v homepagepresenter na záznam z db
 - Admin tab
+- opravit že po reloadu se zas přidá/odebere like
+- přidat na výběr rolí dropdown menu
+- v úpravě usera dát změnu hesla jako samostatnou možnost, jinak tu basic úprav dát bez hesla
+- v adminu šipka zpátky na předchozí stránku
+- ve froms přidávání do db změnit přidávání za id na přidávání za name
+- uspořádat services.neon
