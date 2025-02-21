@@ -1,0 +1,18 @@
+{block content}
+
+
+
+<h1>Váš účet</h1>
+
+<div class="userInfo">
+    {foreach$userInfo as $column=>$value}
+        {if $column == "password" || $column == "id"}
+        {else}
+            <p>{$column} = {$value}</p>
+        {/if}
+    {/foreach}
+</div>
+
+<div class="userInfoActions">
+    <a n:href="User:edit" class="btn btn-primary">Upravit účet</a>
+</div>
