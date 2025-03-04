@@ -18,7 +18,7 @@ class BasePresenter extends Presenter
         $user = $this->getUser()->getIdentity(); // Získání objektu uživatele
         bdump($user);
 
-        if ($user->roles[0] != 'guest') {
+        if ($user && $user->roles[0] != 'guest') {
             return $user->roles[0];
         } else {
             return 'guest'; // Nepřihlášený uživatel
