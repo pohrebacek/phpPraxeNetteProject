@@ -3,5 +3,5 @@ parameters:
 
 database:
 	dsn: 'mysql:host=127.0.0.1;port=3306;dbname=test'
-	user: root
+	user: 'root'
 	password: '123456'
