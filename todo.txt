@@ -5,7 +5,7 @@
 - postpresenter 80 - 85 schovat celý do like facade
 - phpstan
 - v nette nastavit práva pro zobrazování stránek
-- v admin tab přidat filtraci na výsledky z databáze
+- v admin tab přidat filtraci na výsledky z databáze (vyhledávání bude fce ve facade jako FindPostBySomeParam(param), to podle předanýho param najde row)
 - předělat vzhled addError na něco hezčího 
 - doplnit všude flashmessages
 - ten dlouhej switch a ty formy dej do vlastních souborů, uděleje každej template pro jednu db

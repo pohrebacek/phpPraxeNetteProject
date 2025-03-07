@@ -61,6 +61,8 @@ final class AdminPresenter extends BasePresenter{
     public function renderDatabase($dbName): void
     {
         $this->template->dbName = $dbName;
+        $q = $this->getParameter("q");
+        bdump($q);
         bdump($dbName);
         $data = [];
         $data = $this->getAllByTableName($dbName);
