@@ -37,7 +37,10 @@ final class PostPresenter extends BasePresenter
 	{
 		//NA DEBUG
 		$user = $this->getUser();
-		$user = $this->userFacade->getUserDTO($user->id);
+		if ($user->isLoggedIn()){
+			$user = $this->userFacade->getUserDTO($user->id);
+
+		}
 		bdump($user);
 
 		$this->templateIsShow = "true";
