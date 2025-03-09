@@ -17,6 +17,11 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
 	) {
 	}
 
+    public function filterPostColumns($data): void
+    {
+        //funkce na filtraci dat z posts db na něco uživatelsky přívětívého
+    }
+
     public function deletePost(int $id): void
     {
         $this->database->transaction(function () use ($id) {
