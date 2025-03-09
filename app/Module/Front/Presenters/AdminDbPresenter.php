@@ -3,12 +3,14 @@ namespace App\Module\Front\Presenters;
 
 use Nette;
 use App\Module\Model\Post\PostFacade;
+use App\Module\Model\Like\LikeFacade;
 
 final class AdminDbPresenter extends BasePresenter {
 
     public function __construct(
         protected Nette\Database\Explorer $database,
-        public PostFacade $postFacade
+        public PostFacade $postFacade,
+        private LikeFacade $likeFacade
     ) {
 
     }
@@ -46,7 +48,7 @@ final class AdminDbPresenter extends BasePresenter {
                 bdump ("Column: $column, Value: $value");
             }
         }
-        $this->template->data = $this->postFacade->filterPostColumns($data, "posts");   
+        $this->template->data = $this->postFacade->filterPostColumns($data);   
     }
 
     public function renderComments(): void
@@ -56,7 +58,9 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderLikes(): void
     {
-
+        $data = [];
+        $data = $this->getAllByTableName("likes");
+        $this->template->data = $this->likeFacade->filterLikesData($data);
     }
 
     public function renderUsers(): void
@@ -66,13 +70,14 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderSettings(): void
     {
-        
+
     }
 
     public function getAllByTableName(string $tableName): array 
     {
         return $this->database->table($tableName)->fetchAll();
     }
+
 
 
     public function filterColumns($data, $dbName)   //postupně přepisuju do fasád, pak smažu, už se nepoužívá

@@ -1,0 +1,61 @@
+{block content}
+
+<div class="goBack">
+    <a n:href="Admin:show">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4" width="30" height="30">
+            <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd" />
+        </svg>
+        Zpět
+    </a>
+<div>
+
+
+<h2>likes database</h2>
+<h3>Počet záznamů: {count($data)}</h3>
+<div class="filterDBrecords">
+    {*<a href="{link Admin:search dbName => $dbName}">Test</a>*}
+
+    <h3><a n:href="RecordEdit:add dbName => 'likes'" class="btn btn-primary">Přidat záznam</a></h3>
+    <form action="{link Admin:database dbName => 'likes'}" method="GET" class="search">
+        <input type="hidden" name="dbName" value='likes'>
+        <input type="search" name="q" placeholder="Hledat záznam..." class="form-control"/>
+        <button type="submit" class="btn btn-outline-dark rounded-circle p-1"> 
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="25" height="20">
+              <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+           </svg>
+        </button>
+    </form>
+    <button class="btn btn-primary">pico1</button>
+</div>
+
+
+{foreach $data as $line}
+    <div class="border border-primary">
+        {foreach $line as $column => $value}    
+            {var $isVisible = ($column|shouldDisplay:'likes')}
+            {if $column == "id"}
+                {var $recordId = $value}
+                {if 'likes' == "posts"}
+                    <div class="record">{$column} = {$value}</div>
+                {/if}
+            {elseif $column == "user_id" || $column == "name"}
+                {var $userId = $value}
+            {elseif $column == "post_id"}
+                {var $postId = $value}
+            {elseif $column == "U postu: "}
+                <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $postId, dbName => 'likes'">{$value}</a></div>
+            {elseif $column == "Od uživatele: "}
+                <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $userId, dbName => 'likes'">{$value}</a></div>            
+            {elseif $isVisible}
+                <div class="record">{$column} = {$value}</div>
+            {/if}
+        {/foreach}
+        <div class="DBactions">
+            <a n:href="RecordEdit:edit recordId => $recordId, dbName => 'likes'" class="btn btn-outline-primary">Edit Record</a>
+            <a n:href="Admin:delete recordId => $recordId, dbName => 'likes'" class="btn btn-outline-danger" onclick="return confirm('Opravdu chcete smazat tento záznam?')">Delete Record</a>
+            <p></p>
+        </div>
+    </div>
+{/foreach}
+
+
