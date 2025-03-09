@@ -17,6 +17,11 @@ final class LikeFacade
 
     }
 
+    public function filterLikesData($data)
+    {
+        
+    }
+
     public function getLikeDTO(int $id): LikeDTO|null
     {
         $likeRow = $this->likesRepository->getRowById($id);

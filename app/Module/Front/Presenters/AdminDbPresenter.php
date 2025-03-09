@@ -49,6 +49,26 @@ final class AdminDbPresenter extends BasePresenter {
         $this->template->data = $this->postFacade->filterPostColumns($data, "posts");   
     }
 
+    public function renderComments(): void
+    {
+
+    }
+
+    public function renderLikes(): void
+    {
+
+    }
+
+    public function renderUsers(): void
+    {
+
+    }
+
+    public function renderSettings(): void
+    {
+        
+    }
+
     public function getAllByTableName(string $tableName): array 
     {
         return $this->database->table($tableName)->fetchAll();
