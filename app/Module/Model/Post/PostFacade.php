@@ -6,6 +6,7 @@ use Nette;
 use App\Module\Model\Post\PostsRepository;
 use App\Module\Model\Comment\CommentsRepository;
 use App\Module\Model\Post\PostDTO;
+use App\Module\Model\User\UsersRepository;
 
 final class PostFacade  //facade je komplexnější práci s nějakym repository, prostě složitější akce, plus může pracovat s víc repos najednou
 {
@@ -13,13 +14,28 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
 		private PostsRepository $postsRepository,
 		private CommentsRepository $commentsRepository,
         protected Nette\Database\Explorer $database,
-        private PostMapper $postMapper
+        private PostMapper $postMapper,
+        private UsersRepository $usersRepository
 	) {
 	}
 
-    public function filterPostColumns($data): void
+    public function filterPostColumns($data)
     {
         //funkce na filtraci dat z posts db na něco uživatelsky přívětívého
+        foreach($data as $index => $line){
+            $lineData = $line->toArray();
+            foreach($lineData as $column => $value) {
+                if ($column == "user_id") {
+                    //$data[$column] = "Napsáno uživatelem: ";
+                    //$data[$value] = ($this->usersRepository->getRowById($value))->username;
+                    $lineData["Od uživatele: "] = ($this->usersRepository->getRowById($value))->username;
+                }
+                //bdump("$column, $value");
+            }
+            $data[$index] = $lineData;
+        }         
+        //bdump($data);
+        return $data;
     }
 
     public function deletePost(int $id): void

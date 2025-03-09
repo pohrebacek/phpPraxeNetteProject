@@ -15,9 +15,9 @@
 <div class="filterDBrecords">
     {*<a href="{link Admin:search dbName => $dbName}">Test</a>*}
 
-    <h3><a n:href="RecordEdit:add dbName => $dbName" class="btn btn-primary">Přidat záznam</a></h3>
-    <form action="{link Admin:database dbName => $dbName}" method="GET" class="search">
-        <input type="hidden" name="dbName" value="{$dbName}">
+    <h3><a n:href="RecordEdit:add dbName => 'posts'" class="btn btn-primary">Přidat záznam</a></h3>
+    <form action="{link Admin:database dbName => 'posts'}" method="GET" class="search">
+        <input type="hidden" name="dbName" value="posts">
         <input type="search" name="q" placeholder="Hledat záznam..." class="form-control"/>
         <button type="submit" class="btn btn-outline-dark rounded-circle p-1"> 
            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="25" height="20">
@@ -32,27 +32,20 @@
 {foreach $data as $line}
     <div class="border border-primary">
         {foreach $line as $column => $value}    
-            {var $isVisible = ($column|shouldDisplay:$dbName)}
             {if $column == "id"}
                 {var $recordId = $value}
-                {if $dbName == "posts"}
-                    <div class="record">{$column} = {$value}</div>
-                {/if}
+                <div class="record">{$column} = {$value}</div>
             {elseif $column == "user_id" || $column == "name"}
                 {var $userId = $value}
-            {elseif $column == "post_id"}
-                {var $postId = $value}
-            {elseif $column == "U postu: "}
-                <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $postId, dbName => 'posts'">{$value}</a></div>
             {elseif $column == "Od uživatele: "}
                 <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $userId, dbName => 'users'">{$value}</a></div>            
-            {elseif $isVisible}
+            {elseif $column != "content"}
                 <div class="record">{$column} = {$value}</div>
             {/if}
         {/foreach}
         <div class="DBactions">
-            <a n:href="RecordEdit:edit recordId => $recordId, dbName => $dbName" class="btn btn-outline-primary">Edit Record</a>
-            <a n:href="Admin:delete recordId => $recordId, dbName => $dbName" class="btn btn-outline-danger" onclick="return confirm('Opravdu chcete smazat tento záznam?')">Delete Record</a>
+            <a n:href="RecordEdit:edit recordId => $recordId, dbName => 'posts'" class="btn btn-outline-primary">Edit Record</a>
+            <a n:href="Admin:delete recordId => $recordId, dbName => 'posts'" class="btn btn-outline-danger" onclick="return confirm('Opravdu chcete smazat tento záznam?')">Delete Record</a>
             <p></p>
         </div>
     </div>
