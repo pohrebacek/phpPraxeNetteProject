@@ -25,5 +25,10 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         return $this->userMapper->map($postRow);
     }
 
+    public function filterUsersData($data)
+    {
+        return $data;
+    }
+
 
 }

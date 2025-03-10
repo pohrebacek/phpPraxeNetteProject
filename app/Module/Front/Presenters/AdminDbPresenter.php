@@ -4,13 +4,15 @@ namespace App\Module\Front\Presenters;
 use Nette;
 use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Like\LikeFacade;
+use App\Module\Model\User\UserFacade;
 
 final class AdminDbPresenter extends BasePresenter {
 
     public function __construct(
         protected Nette\Database\Explorer $database,
         public PostFacade $postFacade,
-        private LikeFacade $likeFacade
+        private LikeFacade $likeFacade,
+        private UserFacade $userFacade
     ) {
 
     }
@@ -65,6 +67,9 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderUsers(): void
     {
+        $data = [];
+        $data = $this->getAllByTableName("users");
+        $this->template->data = $data;
 
     }
 
