@@ -31,13 +31,9 @@
 
 {foreach $data as $line}
     <div class="border border-primary">
-        {foreach $line as $column => $value}    
-            {var $isVisible = ($column|shouldDisplay:'likes')}
+        {foreach $line as $column => $value}   
             {if $column == "id"}
                 {var $recordId = $value}
-                {if 'likes' == "posts"}
-                    <div class="record">{$column} = {$value}</div>
-                {/if}
             {elseif $column == "user_id" || $column == "name"}
                 {var $userId = $value}
             {elseif $column == "post_id"}
@@ -45,9 +41,7 @@
             {elseif $column == "U postu: "}
                 <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $postId, dbName => 'likes'">{$value}</a></div>
             {elseif $column == "Od uživatele: "}
-                <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $userId, dbName => 'likes'">{$value}</a></div>            
-            {elseif $isVisible}
-                <div class="record">{$column} = {$value}</div>
+                <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $userId, dbName => 'likes'">{$value}</a></div>
             {/if}
         {/foreach}
         <div class="DBactions">
