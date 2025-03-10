@@ -16,7 +16,7 @@
     {*<a href="{link Admin:search dbName => $dbName}">Test</a>*}
 
     <h3><a n:href="RecordEdit:add dbName => 'posts'" class="btn btn-primary">Přidat záznam</a></h3>
-    <form action="{link Admin:database dbName => 'posts'}" method="GET" class="search">
+    <form action="{link AdminDb:posts}" method="GET" class="search">
         <input type="hidden" name="dbName" value="posts">
         <input type="search" name="q" placeholder="Hledat záznam..." class="form-control"/>
         <button type="submit" class="btn btn-outline-dark rounded-circle p-1"> 

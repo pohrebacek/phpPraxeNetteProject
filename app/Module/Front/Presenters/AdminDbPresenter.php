@@ -77,7 +77,9 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderSettings(): void
     {
-
+        $data = [];
+        $data = $this->getAllByTableName("settings");
+        $this->template->data = $data;
     }
 
     public function getAllByTableName(string $tableName): array 
