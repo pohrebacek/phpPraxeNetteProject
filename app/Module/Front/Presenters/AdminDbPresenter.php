@@ -4,7 +4,7 @@ namespace App\Module\Front\Presenters;
 use Nette;
 use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Like\LikeFacade;
-use App\Module\Model\User\UserFacade;
+use App\Module\Model\Comment\CommentFacade;
 
 final class AdminDbPresenter extends BasePresenter {
 
@@ -12,7 +12,7 @@ final class AdminDbPresenter extends BasePresenter {
         protected Nette\Database\Explorer $database,
         public PostFacade $postFacade,
         private LikeFacade $likeFacade,
-        private UserFacade $userFacade
+        private CommentFacade $commentFacade
     ) {
 
     }
@@ -55,7 +55,9 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderComments(): void
     {
-
+        $data = [];
+        $data = $this->getAllByTableName("comments");
+        $this->template->data = $this->commentFacade->filterCommentsData($data);
     }
 
     public function renderLikes(): void

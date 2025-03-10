@@ -34,11 +34,7 @@
         {foreach $line as $column => $value}    
             {var $isVisible = ($column|shouldDisplay:'users')}
             {if $column == "id"}
-                {var $recordId = $value}
-            {elseif $column == "U postu: "}
-                <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $postId, dbName => 'posts'">{$value}</a></div>
-            {elseif $column == "Od uživatele: "}
-                <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $userId, dbName => 'users'">{$value}</a></div>            
+                {var $recordId = $value}           
             {elseif $isVisible}
                 <div class="record">{$column} = {$value}</div>
             {/if}
