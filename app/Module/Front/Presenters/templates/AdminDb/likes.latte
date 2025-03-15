@@ -16,14 +16,16 @@
     {*<a href="{link Admin:search dbName => $dbName}">Test</a>*}
 
     <h3><a n:href="RecordEdit:add dbName => 'likes'" class="btn btn-primary">Přidat záznam</a></h3>
-    <form action="{link AdminDb:likes}" method="GET" class="search">
-        <input type="hidden" name="dbName" value='likes'>
-        <input type="search" name="q" placeholder="Hledat záznam..." class="form-control"/>
-        <button type="submit" class="btn btn-outline-dark rounded-circle p-1"> 
-           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="25" height="20">
-              <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
-           </svg>
-        </button>
+    <form method="GET" action="{link AdminDb:likes}" class="search">
+        <div class="input-group">
+            <select name="filter" class="form-select">
+                <option value="post_id">U postu</option>
+                <option value="user_id">Od uživatele</option>
+            </select>
+            <input type="hidden" name="dbName" value="posts">
+            <input type="search" name="q" placeholder="Hledat záznam..." class="form-control"/>
+            <button type="submit" class="btn btn-primary">Hledat</button>
+        </div>
     </form>
     <button class="btn btn-primary">pico1</button>
 </div>

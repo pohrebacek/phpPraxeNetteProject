@@ -37,6 +37,8 @@ final class AdminDbPresenter extends BasePresenter {
     {
         $q = $this->getParameter("q");
         bdump($q);
+        $filter = $_GET['filter'];
+        bdump($filter);
         $data = [];
         $data = $this->getAllByTableName("posts");
         bdump($data);
