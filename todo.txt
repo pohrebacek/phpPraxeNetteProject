@@ -4,7 +4,7 @@
 - předělat mixed na cokoliv jen ne mixed
 - postpresenter 80 - 85 schovat celý do like facade
 - phpstan
-- v nette nastavit práva pro zobrazování stránek
+- v nette nastavit práva pro zobrazování stránek (že se přes odkaz nedostanu kam nemam)
 - v admin tab přidat filtraci na výsledky z databáze (vyhledávání bude fce ve facade jako FindPostBySomeParam(param), to podle předanýho param najde row)
 - předělat vzhled addError na něco hezčího 
 - doplnit všude flashmessages
