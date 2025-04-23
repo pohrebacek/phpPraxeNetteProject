@@ -1,6 +1,6 @@
 - udělat paginaci celou jako komponentu
 - postpresenter 55 a 56 schovat do medot
-- celkově v preyenteru mít jenom metody a ne nějakou větší logiku
+- celkově v prezenteru mít jenom metody a ne nějakou větší logiku
 - předělat mixed na cokoliv jen ne mixed
 - postpresenter 80 - 85 schovat celý do like facade
 - phpstan

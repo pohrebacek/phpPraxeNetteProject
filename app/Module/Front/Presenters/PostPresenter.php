@@ -78,9 +78,11 @@ final class PostPresenter extends BasePresenter
 
 	public function handleLike(): void
 	{
+		//tohle předej do like facade
 		$data = [];
 		$data["post_id"] = is_numeric($this->getParameter("id")) ? intval($this->getParameter("id")) : 0;
 		$data["user_id"] = is_numeric(($this->getUser())->id) ? intval(($this->getUser())->id) : 0;
+		//zbytek je ok
 
 		if (!$this->likesRepository->getRowByPostIdAndUserId($data["post_id"], $data["user_id"]))
 		{

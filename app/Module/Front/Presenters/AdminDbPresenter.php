@@ -5,6 +5,8 @@ use Nette;
 use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Like\LikeFacade;
 use App\Module\Model\Comment\CommentFacade;
+use App\Module\Model\User\UsersRepository;
+use App\Module\Model\Post\PostsRepository;
 
 final class AdminDbPresenter extends BasePresenter {
 
@@ -12,7 +14,9 @@ final class AdminDbPresenter extends BasePresenter {
         protected Nette\Database\Explorer $database,
         public PostFacade $postFacade,
         private LikeFacade $likeFacade,
-        private CommentFacade $commentFacade
+        private CommentFacade $commentFacade,
+        private UsersRepository $usersRepository,
+        private PostsRepository $postsRepository
     ) {
 
     }
@@ -37,10 +41,18 @@ final class AdminDbPresenter extends BasePresenter {
     {
         $q = $this->getParameter("q");
         bdump($q);
-        $filter = $_GET['filter'];
-        bdump($filter);
         $data = [];
-        $data = $this->getAllByTableName("posts");
+        if (isset($_GET["filter"])) {
+            $filter = $_GET['filter'];
+            bdump($filter);
+            $data = $this->getRecordsByFilter("posts", $filter, $q);
+            $this->template->chosenFilter = $filter;
+        } else {
+            $data = $this->getAllByTableName("posts");
+        }
+
+        
+        
         bdump($data);
         //$this->template->data = $data;
 
@@ -52,13 +64,31 @@ final class AdminDbPresenter extends BasePresenter {
                 bdump ("Column: $column, Value: $value");
             }
         }
+
+        if ($q) 
+        {
+            $this->template->filterInput = $q;
+        }
         $this->template->data = $this->postFacade->filterPostColumns($data);   
     }
 
     public function renderComments(): void
     {
         $data = [];
-        $data = $this->getAllByTableName("comments");
+        $q = $this->getParameter("q");
+        if (isset($_GET["filter"])) {
+            $filter = $_GET["filter"];
+            bdump($filter);
+            $data = $this->getRecordsByFilter("comments", $filter, $q);
+            $this->template->chosenFilter = $filter;
+        } else {
+            $data = $this->getAllByTableName("comments");
+        }
+        
+        if ($q) 
+        {
+            $this->template->filterInput = $q;
+        }
         $this->template->data = $this->commentFacade->filterCommentsData($data);
     }
 
@@ -87,6 +117,31 @@ final class AdminDbPresenter extends BasePresenter {
     public function getAllByTableName(string $tableName): array 
     {
         return $this->database->table($tableName)->fetchAll();
+    }
+
+    public function getRecordsByFilter(string $tableName, $column, $parameter) {    //rozdělit funkci do facades, tahle funkce nebude ale každá facade bude mít svoji verzi táhle fce
+        if ($column == "id" && $parameter) {
+            return $this->database->table($tableName)->where($column, $parameter)->fetchAll();
+        }
+
+        if ($column == "user_id" && $parameter)
+        {
+            $user = $this->usersRepository->getRowByUsername($parameter);
+            if ($user) {
+                return $this->database->table("posts")->where($column, $user->id)->fetchAll();
+            }
+            return $this->database->table("posts")->where($column, "")->fetchAll();
+        }
+
+        if($column == "post_id" && $parameter)
+        {
+            $user = $this->usersRepository->getRowByUsername($parameter);
+            if ($user) {
+                return $this->database->table("posts")->where($column, $user->id)->fetchAll();
+            }
+            return $this->database->table("posts")->where($column, "")->fetchAll();
+        }
+        return $this->database->table($tableName)->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
     }
 
 
