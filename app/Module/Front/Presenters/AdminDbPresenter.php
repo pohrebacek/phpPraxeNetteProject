@@ -45,7 +45,7 @@ final class AdminDbPresenter extends BasePresenter {
         if (isset($_GET["filter"])) {
             $filter = $_GET['filter'];
             bdump($filter);
-            $data = $this->getRecordsByFilter("posts", $filter, $q);
+            $data = $this->postFacade->getPostsByFilter($filter, $q);
             $this->template->chosenFilter = $filter;
         } else {
             $data = $this->getAllByTableName("posts");

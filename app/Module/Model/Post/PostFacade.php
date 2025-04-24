@@ -38,6 +38,23 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         return $data;
     }
 
+    public function getPostsByFilter(string $column, string $parameter)
+    {
+        if ($column == "id" && $parameter) {
+            return $this->database->table($this->postsRepository->getTable())->where($column, $parameter)->fetchAll();
+        }
+
+        if ($column == "user_id" && $parameter)
+        {
+            $user = $this->usersRepository->getRowByUsername($parameter);
+            if ($user) {
+                return $this->database->table($this->postsRepository->getTable())->where($column, $user->id)->fetchAll();
+            }
+            return $this->database->table($this->postsRepository->getTable())->where($column, "")->fetchAll();
+        }
+        return $this->database->table($this->postsRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
+    }
+
     public function deletePost(int $id): void
     {
         $this->database->transaction(function () use ($id) {
