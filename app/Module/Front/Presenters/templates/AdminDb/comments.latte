@@ -19,8 +19,8 @@
     <form method="GET" action="{link AdminDb:comments}" class="search">
         <div class="input-group">
             <select name="filter" class="form-select">
-                <option value="post_id" selected={$chosenFilter && $chosenFilter == "post_id"}>U postu</option>
-                <option value="user_id" selected={$chosenFilter && $chosenFilter == "user_id"}>Od uživatele</option>
+                <option value="post_id" n:attr="selected => isset($_GET['filter']) && $_GET['filter'] == 'post_id'">U postu</option>
+                <option value="ownerUser_id" n:attr="selected => isset($_GET['filter']) && $_GET['filter'] == 'ownerUser_id'">Od uživatele</option>
             </select>
             <input type="hidden" name="dbName" value="posts">
             <input type="search" name="q" {if isset($filterInput)} value="{$filterInput}" {/if} placeholder="Hledat záznam..." class="form-control"/>

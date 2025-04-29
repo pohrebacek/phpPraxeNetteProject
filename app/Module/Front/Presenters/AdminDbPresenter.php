@@ -4,6 +4,7 @@ namespace App\Module\Front\Presenters;
 use Nette;
 use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Like\LikeFacade;
+use App\Module\Model\User\UserFacade;
 use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\User\UsersRepository;
 use App\Module\Model\Post\PostsRepository;
@@ -16,7 +17,8 @@ final class AdminDbPresenter extends BasePresenter {
         private LikeFacade $likeFacade,
         private CommentFacade $commentFacade,
         private UsersRepository $usersRepository,
-        private PostsRepository $postsRepository
+        private PostsRepository $postsRepository,
+        private UserFacade $userFacade
     ) {
 
     }
@@ -46,7 +48,6 @@ final class AdminDbPresenter extends BasePresenter {
             $filter = $_GET['filter'];
             bdump($filter);
             $data = $this->postFacade->getPostsByFilter($filter, $q);
-            $this->template->chosenFilter = $filter;
         } else {
             $data = $this->getAllByTableName("posts");
         }
@@ -79,8 +80,7 @@ final class AdminDbPresenter extends BasePresenter {
         if (isset($_GET["filter"])) {
             $filter = $_GET["filter"];
             bdump($filter);
-            $data = $this->getRecordsByFilter("comments", $filter, $q);
-            $this->template->chosenFilter = $filter;
+            $data = $this->commentFacade->getCommentsByFilter($filter, $q);
         } else {
             $data = $this->getAllByTableName("comments");
         }
@@ -95,23 +95,42 @@ final class AdminDbPresenter extends BasePresenter {
     public function renderLikes(): void
     {
         $data = [];
-        $data = $this->getAllByTableName("likes");
+        $q = $this->getParameter("q");
+        if (isset($_GET["filter"]))
+        {
+            $filter = $_GET["filter"];
+            bdump($filter);
+            $data = $this->likeFacade->getLikesByFilter($filter, $q);
+        } else {
+            $data = $this->getAllByTableName("likes");
+        }
+
+        if ($q)
+        {
+            $this->template->filterInput = $q;
+        }
         $this->template->data = $this->likeFacade->filterLikesData($data);
     }
 
     public function renderUsers(): void
     {
         $data = [];
-        $data = $this->getAllByTableName("users");
+        $q = $this->getParameter("q");
+        if (isset($_GET["filter"]))
+        {
+            $filter = $_GET["filter"];
+            bdump($filter);
+            $data = $this->userFacade->getUsersByFilter($filter, $q);
+        } else {
+            $data = $this->getAllByTableName("users");
+        }
+
+        if ($q)
+        {
+            $this->template->filterInput = $q;
+        }
         $this->template->data = $data;
 
-    }
-
-    public function renderSettings(): void
-    {
-        $data = [];
-        $data = $this->getAllByTableName("settings");
-        $this->template->data = $data;
     }
 
     public function getAllByTableName(string $tableName): array 

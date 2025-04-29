@@ -30,5 +30,18 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         return $data;
     }
 
+    public function getUsersByFilter(string $column, string $parameter)
+    {
+        if ($column == "email" && $parameter) //parameter je jméno a ne id, uživateli se totiž bude líp hledat podle jména a ne podle id
+        {
+            $user = $this->database->table($this->usersRepository->getTable())->where($column, $parameter)->fetchAll(); //takže podle emailu najdu usera
+            if ($user) {
+                return $user;
+            }
+            return $this->database->table($this->usersRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
+        }
+        return $this->database->table($this->usersRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
+    }
+
 
 }

@@ -51,13 +51,6 @@ final class AdminPresenter extends BasePresenter{
 
     }
 
-    public function renderSearch($dbName): void    //zatim neni nikde využitá
-    {
-        $q = $this->getParameter("q");
-        bdump($dbName);
-        bdump("jou");
-    }
-
     public function renderDatabase($dbName): void
     {
         $this->template->dbName = $dbName;

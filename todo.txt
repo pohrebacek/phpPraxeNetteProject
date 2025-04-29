@@ -1,16 +1,26 @@
+NOW
+- ve filtraci u nějakých věcí dodělat aby to hledalo jako LIKE ne konkrétně co napíšu
+
+PO DOKONČENÍ
 - udělat paginaci celou jako komponentu
-- postpresenter 55 a 56 schovat do medot
+- postpresenter 55 a 56 schovat do medot (
+    	if ($postDTO->image){
+			$this->template->imagePath = $postDTO->image;
+		} else {
+			$this->template->imagePath = null;
+		}
+) asi
 - celkově v prezenteru mít jenom metody a ne nějakou větší logiku
 - předělat mixed na cokoliv jen ne mixed
 - postpresenter 80 - 85 schovat celý do like facade
 - phpstan
 - v nette nastavit práva pro zobrazování stránek (že se přes odkaz nedostanu kam nemam)
-- v admin tab přidat filtraci na výsledky z databáze (vyhledávání bude fce ve facade jako FindPostBySomeParam(param), to podle předanýho param najde row)
 - předělat vzhled addError na něco hezčího 
 - doplnit všude flashmessages
 - ten dlouhej switch a ty formy dej do vlastních souborů, uděleje každej template pro jednu db
 - zkus to rozbít a pak to oprav
 - když otevřeš post a pak jdeš zpět tak tě to dá na homepage a ne na danou stránku postů
+
 
 
 
@@ -26,3 +36,4 @@ DONE
 - v adminu šipka zpátky na předchozí stránku
 - ve froms přidávání do db změnit přidávání za id na přidávání za name
 - uspořádat services.neon
+- v admin tab přidat filtraci na výsledky z databáze (vyhledávání bude fce ve facade jako FindPostBySomeParam(param), to podle předanýho param najde row)

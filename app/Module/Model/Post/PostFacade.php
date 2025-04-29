@@ -44,15 +44,15 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
             return $this->database->table($this->postsRepository->getTable())->where($column, $parameter)->fetchAll();
         }
 
-        if ($column == "user_id" && $parameter)
+        if ($column == "user_id" && $parameter) //parameter je jméno a ne id, uživateli se totiž bude líp hledat podle jména a ne podle id
         {
-            $user = $this->usersRepository->getRowByUsername($parameter);
+            $user = $this->usersRepository->getRowByUsername($parameter); //takže podle jména najdu usera
             if ($user) {
-                return $this->database->table($this->postsRepository->getTable())->where($column, $user->id)->fetchAll();
+                return $this->database->table($this->postsRepository->getTable())->where($column, $user->id)->fetchAll();   //a podle jeho id vyhledam record v db
             }
-            return $this->database->table($this->postsRepository->getTable())->where($column, "")->fetchAll();
+            return $this->database->table($this->postsRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
         }
-        return $this->database->table($this->postsRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
+        return $this->database->table($this->postsRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();   //i když dostane prázdnej string tak to vrátí všechno, protože LIKE vrací záznamy co obsahujou někde to cos zadal, proto u samotnáho WHERE to s "" vyhodí nic, protože se ptáš "vyhoď řádek co má v danym sloupci jenom hodnotu nic"
     }
 
     public function deletePost(int $id): void
