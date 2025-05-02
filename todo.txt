@@ -1,5 +1,8 @@
+https://rtsoftsro-my.sharepoint.com/:w:/g/personal/hora_rtsoft_cz/EZZqvnQ53kZEpLXyT6hhTFEBeH6eyKLRB9Axde1YUaYXIA?rtime=3q8ttaBV3Ug
+
 NOW
 - ve filtraci u nějakých věcí dodělat aby to hledalo jako LIKE ne konkrétně co napíšu
+
 
 PO DOKONČENÍ
 - udělat paginaci celou jako komponentu
