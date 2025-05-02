@@ -42,6 +42,7 @@
             {/if}
         {/foreach}
         <div class="DBactions">
+            <a n:href="AdminDb:userProfile recordId => $recordId" class="btn btn-primary">View details</a>
             <a n:href="RecordEdit:edit recordId => $recordId, dbName => 'users'" class="btn btn-outline-primary">Edit Record</a>
             <a n:href="Admin:delete recordId => $recordId, dbName => 'users'" class="btn btn-outline-danger" onclick="return confirm('Opravdu chcete smazat tento záznam?')">Delete Record</a>
             <p></p>

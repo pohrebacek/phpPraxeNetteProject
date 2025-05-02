@@ -27,7 +27,7 @@ final class AdminDbPresenter extends BasePresenter {
 	{
 		parent::beforeRender();
         $this->template->addFilter('shouldDisplay', function ($column, $dbName) {
-            $hiddenColumns = ['ownerUser_id', 'password'];
+            $hiddenColumns = ['ownerUser_id', 'password', 'last_logged_in'];
             if (in_array($column, $hiddenColumns)) {
                 return false;
             }
@@ -38,6 +38,15 @@ final class AdminDbPresenter extends BasePresenter {
         });
 		
 	}
+
+    public function renderUserProfile(): void
+    {
+        $recordId = $this->getParameter("recordId");
+        bdump($recordId);
+        $user = $this->userFacade->getUserDTO($recordId);
+        bdump($user);
+        $this->template->userData = $user;
+    }
 
     public function renderPosts(): void 
     {
