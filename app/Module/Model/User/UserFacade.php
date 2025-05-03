@@ -5,13 +5,17 @@ use App\Module\Model\User\UserMapper;
 use Nette;
 use App\Module\Model\User\UsersRepository;
 use App\Module\Model\User\UserDTO;
+use App\Module\Model\Post\PostsRepository;
+use App\Module\Model\Post\PostFacade;
 
 final class UserFacade  //facade je komplexnější práci s nějakym repository, prostě složitější akce, plus může pracovat s víc repos najednou
 {
 	public function __construct(
 		private UsersRepository $usersRepository,
         protected Nette\Database\Explorer $database,
-        private UserMapper $userMapper
+        private UserMapper $userMapper,
+        private PostsRepository $postsRepository,
+        private PostFacade $postFacade
 	) {
 	}
 
@@ -23,6 +27,21 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
             $postRow = $this->usersRepository->getRowByUsername($id);
         }     
         return $this->userMapper->map($postRow);
+    }
+
+    public function getPostsLikes(int $userId)
+    {
+        $posts = $this->getPostsByUserId($userId);
+        $likes = 0;
+        foreach ($posts as $post) {
+            $likes += $this->postFacade->getNumberOfLikes($post->id);
+        }
+        return $likes;
+    }
+
+    public function getPostsByUserId(int $userId)
+    {
+        return $this->database->table($this->postsRepository->getTable())->where("user_id", $userId)->fetchAll();
     }
 
     public function filterUsersData($data)

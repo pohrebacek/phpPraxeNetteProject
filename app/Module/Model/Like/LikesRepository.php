@@ -33,6 +33,12 @@ final class LikesRepository extends BaseRepository
         return null;
     }
 
+    public function getRowsByPostId(int $post_id)
+    {
+        $row = $this->database->table($this->table)->where("post_id",$post_id)->fetchAll();
+        return $row;
+    }
+
     public function getRowByPostIdAndUserId(int $post_id, int $user_id): ActiveRow|null
     {
         $row = $this->database->table($this->table)->where([

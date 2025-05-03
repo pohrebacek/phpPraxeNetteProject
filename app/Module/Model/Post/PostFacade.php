@@ -7,6 +7,7 @@ use App\Module\Model\Post\PostsRepository;
 use App\Module\Model\Comment\CommentsRepository;
 use App\Module\Model\Post\PostDTO;
 use App\Module\Model\User\UsersRepository;
+use App\Module\Model\Like\LikesRepository;
 
 final class PostFacade  //facade je komplexnější práci s nějakym repository, prostě složitější akce, plus může pracovat s víc repos najednou
 {
@@ -15,7 +16,8 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
 		private CommentsRepository $commentsRepository,
         protected Nette\Database\Explorer $database,
         private PostMapper $postMapper,
-        private UsersRepository $usersRepository
+        private UsersRepository $usersRepository,
+        private LikesRepository $likesRepository
 	) {
 	}
 
@@ -53,6 +55,11 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
             return $this->database->table($this->postsRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
         }
         return $this->database->table($this->postsRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();   //i když dostane prázdnej string tak to vrátí všechno, protože LIKE vrací záznamy co obsahujou někde to cos zadal, proto u samotnáho WHERE to s "" vyhodí nic, protože se ptáš "vyhoď řádek co má v danym sloupci jenom hodnotu nic"
+    }
+
+    public function getNumberOfLikes(int $id)
+    {
+        return sizeof($this->likesRepository->getRowsByPostId($id));
     }
 
     public function deletePost(int $id): void

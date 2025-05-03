@@ -46,6 +46,8 @@ final class AdminDbPresenter extends BasePresenter {
         $user = $this->userFacade->getUserDTO($recordId);
         bdump($user);
         $this->template->userData = $user;
+
+        $this->template->likesOfPosts = $this->userFacade->getPostsLikes($user->id);
     }
 
     public function renderPosts(): void 
