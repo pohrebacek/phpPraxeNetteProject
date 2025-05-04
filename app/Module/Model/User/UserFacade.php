@@ -7,6 +7,8 @@ use App\Module\Model\User\UsersRepository;
 use App\Module\Model\User\UserDTO;
 use App\Module\Model\Post\PostsRepository;
 use App\Module\Model\Post\PostFacade;
+use App\Module\Model\Comment\CommentFacade;
+use Latte\Compiler\Nodes\Html\CommentNode;
 
 final class UserFacade  //facade je komplexnější práci s nějakym repository, prostě složitější akce, plus může pracovat s víc repos najednou
 {
@@ -15,7 +17,8 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         protected Nette\Database\Explorer $database,
         private UserMapper $userMapper,
         private PostsRepository $postsRepository,
-        private PostFacade $postFacade
+        private PostFacade $postFacade,
+        private CommentFacade $commentFacade
 	) {
 	}
 
@@ -48,6 +51,36 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
     {
         return $data;
     }
+
+    public function getActivityData(int $userId, string $range): array
+{
+    // příklad: posledních 6 měsíců
+    $now = new \DateTimeImmutable();
+    $labels = [];
+    $posts = [];
+    $comments = [];
+    if ($range == "years") {
+        //tbd
+        return [$labels, $posts, []];
+    } else {
+        $range = intval($range);
+        for ($i = $range-1; $i >= 0; $i--) {
+            $date = $now->modify("-{$i} months")->format('Y-m');   //posune momentální datum a $i měsíců zpět
+            $labels[] = $date;
+    
+            $countPosts = $this->postFacade->countByUserAndMonth($userId, $date);  //zjistí kolik příspěvků ma uživatel v daném měsíci
+            $posts[] = $countPosts;
+
+            $countComms = $this->commentFacade->countByUserAndMonth($userId, $date);
+            $comments[] = $countComms;
+        }
+    
+        return [$labels, $posts, $comments]; // třetí bude třeba pro komentáře
+    }
+
+
+}
+
 
     public function getUsersByFilter(string $column, string $parameter)
     {

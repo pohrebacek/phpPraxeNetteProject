@@ -43,6 +43,18 @@ final class CommentFacade
         return $data;
     }
 
+    public function countByUserAndMonth($userId, $date)
+    {
+        $start = new \DateTimeImmutable("{$date}-01 00:00:00");
+        $end = $start->modify("first day of next month")->modify("-1 second");
+        $countedPosts = sizeof($this->database->table($this->commentsRepository->getTable())
+            ->where("ownerUser_id = ?", $userId)
+            ->where("created_at >= ?", $start)
+            ->where("created_at <= ?", $end)
+            ->fetchAll());
+        return $countedPosts;
+    }
+
     public function getCommentsByFilter(string $column, string $parameter)
     {
         if ($column == "ownerUser_id" && $parameter) //parameter je jméno a ne id, uživateli se totiž bude líp hledat podle jména a ne podle id

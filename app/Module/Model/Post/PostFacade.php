@@ -76,5 +76,17 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         return $this->postMapper->map($postRow);
     }
 
+    public function countByUserAndMonth($userId, $date)
+    {
+        $start = new \DateTimeImmutable("{$date}-01 00:00:00");
+        $end = $start->modify("first day of next month")->modify("-1 second");
+        $countedPosts = sizeof($this->database->table($this->postsRepository->getTable())
+            ->where("user_id = ?", $userId)
+            ->where("created_at >= ?", $start)
+            ->where("created_at <= ?", $end)
+            ->fetchAll());
+        return $countedPosts;
+    }
+
 
 }

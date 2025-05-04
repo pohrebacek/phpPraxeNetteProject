@@ -42,10 +42,20 @@ final class AdminDbPresenter extends BasePresenter {
     public function renderUserProfile(): void
     {
         $recordId = $this->getParameter("recordId");
+        $range = $this->getHttpRequest()->getQuery('range') ?? '6'; //pokud to vrátí null tak to přiřadí 6
+
         bdump($recordId);
         $user = $this->userFacade->getUserDTO($recordId);
         bdump($user);
         $this->template->userData = $user;
+
+        [$labels, $posts, $comments] = $this->userFacade->getActivityData($recordId, $range);
+
+        $this->template->labels = $labels;
+        $this->template->posts = $posts;
+        $this->template->comments = $comments;
+        bdump($posts);
+        bdump($labels);
 
         $this->template->likesOfPosts = $this->userFacade->getPostsLikes($user->id);
     }
