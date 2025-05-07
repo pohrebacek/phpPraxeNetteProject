@@ -55,6 +55,14 @@ final class CommentFacade
         return $countedPosts;
     }
 
+    public function countByUserAndYear($userId, $year)
+    {
+        return sizeof($this->database->table($this->commentsRepository->getTable())
+            ->where("YEAR(created_at)", strval($year))
+            ->where("ownerUser_id", $userId)
+            ->fetchAll());
+    }
+
     public function getCommentsByFilter(string $column, string $parameter)
     {
         if ($column == "ownerUser_id" && $parameter) //parameter je jméno a ne id, uživateli se totiž bude líp hledat podle jména a ne podle id

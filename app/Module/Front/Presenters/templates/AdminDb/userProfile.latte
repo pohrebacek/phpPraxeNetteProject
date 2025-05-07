@@ -30,7 +30,7 @@
   <select id="range-select" name="range" onchange="this.form.submit()">
       <option value="6" n:attr="selected => isset($_GET['range']) && $_GET['range'] == '6'">Posledních 6 měsíců</option>
       <option value="12" n:attr="selected => isset($_GET['range']) && $_GET['range'] == '12'">Poslední rok</option>
-      <option value="years" n:attr="selected => isset($_GET['range']) && $_GET['range'] == 'years'">Po rocích</option>
+      <option value="years" n:attr="selected => isset($_GET['range']) && $_GET['range'] == 'years'">Po rocích od roku registrace</option>
   </select>
   <input type="hidden" name="recordId" value="{$userData->id}">
 </form>

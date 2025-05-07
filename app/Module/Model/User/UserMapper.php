@@ -10,6 +10,6 @@ class UserMapper {
     ) {}
 
     public function map(ActiveRow $row): UserDTO {
-        return new UserDTO($row->id, $row->username, $row->email, $row->password, $row->role, $row->last_logged_in);
+        return new UserDTO($row->id, $row->username, $row->email, $row->password, $row->role, $row->last_logged_in, $row->registered_at);
     }
 }

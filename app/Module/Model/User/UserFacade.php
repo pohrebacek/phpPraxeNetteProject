@@ -60,19 +60,27 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
     $posts = [];
     $comments = [];
     if ($range == "years") {
-        //tbd
-        return [$labels, $posts, []];
+        $registeredYear = intval($this->getUserDTO($userId)->registeredAt->format("Y"));
+        bdump($registeredYear);
+        $currentYear = intval($now->format("Y"));
+        for ($i = $currentYear - $registeredYear; $i >= 0; $i--) {
+            $date = $now->modify("-{$i} years")->format("Y");
+            $labels[] = $date;
+
+            $posts[] = $this->postFacade->countByUserAndYear($userId, $date); 
+
+            $comments[] = $this->commentFacade->countByUserAndYear($userId, $date);
+        }
+        return [$labels, $posts, $comments];
     } else {
         $range = intval($range);
         for ($i = $range-1; $i >= 0; $i--) {
-            $date = $now->modify("-{$i} months")->format('Y-m');   //posune momentální datum a $i měsíců zpět
+            $date = $now->modify("-{$i} months")->format('Y-m');   //posune momentální datum o $i měsíců zpět
             $labels[] = $date;
     
-            $countPosts = $this->postFacade->countByUserAndMonth($userId, $date);  //zjistí kolik příspěvků ma uživatel v daném měsíci
-            $posts[] = $countPosts;
+            $posts[] = $this->postFacade->countByUserAndMonth($userId, $date);  //zjistí kolik příspěvků ma uživatel v daném měsíci
 
-            $countComms = $this->commentFacade->countByUserAndMonth($userId, $date);
-            $comments[] = $countComms;
+            $comments[] = $this->commentFacade->countByUserAndMonth($userId, $date);
         }
     
         return [$labels, $posts, $comments]; // třetí bude třeba pro komentáře

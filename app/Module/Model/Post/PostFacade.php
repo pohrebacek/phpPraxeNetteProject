@@ -78,7 +78,7 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
 
     public function countByUserAndMonth($userId, $date)
     {
-        $start = new \DateTimeImmutable("{$date}-01 00:00:00");
+        $start = new \DateTimeImmutable("{$date}-01 00:00:00"); //$date je ve formátu "YYYY-MM" ta tohle tomu přidá první den měsíce o půlnoci
         $end = $start->modify("first day of next month")->modify("-1 second");
         $countedPosts = sizeof($this->database->table($this->postsRepository->getTable())
             ->where("user_id = ?", $userId)
@@ -86,6 +86,22 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
             ->where("created_at <= ?", $end)
             ->fetchAll());
         return $countedPosts;
+    }
+
+    public function countByUserAndYear($userId, $year)
+    {
+        return sizeof($this->database->table($this->postsRepository->getTable())
+            ->where("user_id", $userId)
+            ->where("YEAR(created_at)", strval($year))
+            ->fetchAll());
+    }
+
+    public function getOdlestPost($userId)
+    {
+        return $this->database->table($this->postsRepository->getTable())
+            ->where("user_id", $userId)
+            ->order("created_at DESC")
+            ->fetch();
     }
 
 
