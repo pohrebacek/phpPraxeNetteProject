@@ -10,6 +10,6 @@ class PostMapper {
     ) {}
 
     public function map(ActiveRow $row): PostDTO {
-        return new PostDTO($row->id, $row->title, $row->content, $row->image, $row->user_id, $row->created_at);
+        return new PostDTO($row->id, $row->title, $row->content, $row->image, $row->user_id, $row->created_at, $row->premium);
     }
 }

@@ -2,7 +2,7 @@ https://rtsoftsro-my.sharepoint.com/:w:/g/personal/hora_rtsoft_cz/EZZqvnQ53kZEpL
 
 NOW
 - ve filtraci u nějakých věcí dodělat aby to hledalo jako LIKE ne konkrétně co napíšu
-- dát edit record button v AdminDB:users to toho view details template
+- dát edit record button v AdminDB:users to toho view details template (asi je na mysli to že když v userDb kliknu na edit a pak jdu zpátky tak tam neni view details)
 - šipčka zpátky v nový úpravě usera vrací do user profile
 
 

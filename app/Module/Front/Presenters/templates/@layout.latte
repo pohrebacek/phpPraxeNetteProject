@@ -23,6 +23,7 @@
 			<a n:href="Admin:show" class="btn btn-primary">Admin Tab</a>
 		{/if}
 		 <a n:href="User:show" class="btn btn-primary">{$user->getIdentity()->username}</a>
+		 <a class="btn btn-primary">Premium</a>
 		<a n:href="Sign:out" class="btn btn-primary">Odhlásit</a>
 	{else}
 		<a n:href="Sign:in" class="btn btn-primary">Přihlásit</a>
