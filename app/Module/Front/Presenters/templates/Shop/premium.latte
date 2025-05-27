@@ -1,0 +1,17 @@
+{block content}
+<h2>Předplatné vašeho účtu vám umožní vidět celé příspěvky pro předplatitele a také příspěvky pro předplatitele vytvářet!</h2>
+<div>
+    <p>Vyberte do kdy chcete předplatné: </p>
+    <div>
+    <form id="range-form" method="get">
+        <label for="duration-select">Délka předplatného</label>
+        <select id="duration-select" name="duration" onchange="this.form.submit()">
+            <option value="1m" n:attr="selected => isset($_GET['duration']) && $_GET['duration'] == '1m'">1 měsíc - 49 Kč</option>
+            <option value="3m" n:attr="selected => isset($_GET['duration']) && $_GET['duration'] == '3m'">3 měsíce - 129 Kč</option>
+            <option value="6m" n:attr="selected => isset($_GET['duration']) && $_GET['duration'] == '6m'">6 měsíců - 219 Kč</option>
+            <option value="12m" n:attr="selected => isset($_GET['duration']) && $_GET['duration'] == '12m'">1 Rok - 399 Kč</option>
+        </select>
+    </form>
+    </div>
+    <a n:href="submitPremium!, duration => $duration" class="btn btn-primary">Přidat do košíku</a>
+</div>
