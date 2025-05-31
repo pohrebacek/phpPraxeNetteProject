@@ -2,19 +2,37 @@
 namespace App\Module\Front\Presenters;
 
 use Nette;
+use App\Module\Model\User\UsersRepository;
+use App\Module\Model\User\UserFacade;
 
 final class ShopPresenter extends BasePresenter {
+    public function __construct(
+        private UsersRepository $usersRepository,
+        private UserFacade $userFacade
+    ) {
+
+    }
     public function renderCart(): void {
+        $session = $this->getSession("cart");
+        $this->template->duration = $session->duration;
+        $this->template->premiumUntil = $session->premiumUntil->format('d-m-Y');
+        $this->template->price = $session->price;
 
     }
 
     public function handleSubmitCart(): void {
+        bdump("niga");
+        $session = $this->getSession("cart");
+        $user = $this->userFacade->getUserDTO(($this->getUser())->id);
+        bdump((array)$user);
+        $this->usersRepository->saveRow((array)$session->premiumUntil, $user->id);
+
 
     }
 
     public function renderPremium(): void
     {
-        $duration = $this->getParameter('duration') ?? null;
+        $duration = $this->getParameter('duration') ?? "1m";
         bdump($duration);
         $this->template->duration = $duration;
 
@@ -42,7 +60,7 @@ final class ShopPresenter extends BasePresenter {
         */
         [$modify, $price] = $premiumMap[$duration];
 
-        $session->duration = $duration;
+        $session->duration = substr($modify, 1);
         $session->price = $price;
         $session->premiumUntil = (new \DateTimeImmutable())->modify($modify);
 

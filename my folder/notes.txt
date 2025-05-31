@@ -7,3 +7,7 @@ db pro transakce/nákupy premium?? dobrý nápad??
 košík nákupní bude přes sessions -> zjistim co to je a jak to funguje
 
 v user db bude timestamp "Premium end" -> podle délky premium nastavim kdy končí, když to datum bude starý tak premium user nemá, pokud user nemá premium, má null
+
+
+
+ALTER TABLE test.users ADD premium_until timestamp DEFAULT null  NULL;
