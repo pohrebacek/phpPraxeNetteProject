@@ -4,7 +4,7 @@ NOW
 - ve filtraci u nějakých věcí dodělat aby to hledalo jako LIKE ne konkrétně co napíšu
 - dát edit record button v AdminDB:users to toho view details template (asi je na mysli to že když v userDb kliknu na edit a pak jdu zpátky tak tam neni view details)
 - šipčka zpátky v nový úpravě usera vrací do user profile
-- jak to ukazuj v košíku do kdy je to premium, tak to upravit tak, aby to přičítalo k datumu co má user v db, jestli nemá premium tak to bude přičítat k current premium, protože aby šlo normálně premium prodlužovat
+
 
 
 PO DOKONČENÍ
@@ -43,3 +43,4 @@ DONE
 - ve froms přidávání do db změnit přidávání za id na přidávání za name
 - uspořádat services.neon
 - v admin tab přidat filtraci na výsledky z databáze (vyhledávání bude fce ve facade jako FindPostBySomeParam(param), to podle předanýho param najde row)
+- jak to ukazuj v košíku do kdy je to premium, tak to upravit tak, aby to přičítalo k datumu co má user v db, jestli nemá premium tak to bude přičítat k current premium, protože aby šlo normálně premium prodlužovat

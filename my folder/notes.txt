@@ -10,4 +10,22 @@ v user db bude timestamp "Premium end" -> podle dÃ©lky premium nastavim kdy konÄ
 
 
 
+
+
+//SQL
+
 ALTER TABLE test.users ADD premium_until timestamp DEFAULT null  NULL;
+
+
+
+
+CREATE TABLE premium_purchases (
+    id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id int(11) NOT NULL,
+    length varchar(255) NOT NULL,
+    price int(11) NOT NULL,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB CHARSET=utf8;
+
+
+

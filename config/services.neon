@@ -26,3 +26,7 @@ services:
 	- App\Module\Model\Settings\SettingsRepository
 	- App\Module\Model\Settings\SettingsFacade
 	- App\Module\Model\Settings\SettingsMapper
+
+	- App\Module\Model\PremiumPurchase\PremiumPurchaseRepository
+	- App\Module\Model\PremiumPurchase\PremiumPurchaseFacade
+	- App\Module\Model\PremiumPurchase\PremiumPurchaseMapper

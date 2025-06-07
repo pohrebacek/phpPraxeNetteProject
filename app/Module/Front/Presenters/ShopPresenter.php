@@ -21,11 +21,14 @@ final class ShopPresenter extends BasePresenter {
     }
 
     public function handleSubmitCart(): void {
-        bdump("niga");
         $session = $this->getSession("cart");
-        $user = $this->userFacade->getUserDTO(($this->getUser())->id);
-        bdump((array)$user);
-        $this->usersRepository->saveRow((array)$session->premiumUntil, $user->id);
+        //$user = $this->userFacade->getUserDTO(($this->getUser())->id);
+        //bdump((array)$user);
+        $data = (array)$session->premiumUntil;
+        $data['premium_until'] = $data['date'];
+        unset($data['date'], $data['timezone_type'], $data['timezone']);
+
+        $this->usersRepository->saveRow($data, ($this->getUser())->id);
 
 
     }
@@ -41,6 +44,9 @@ final class ShopPresenter extends BasePresenter {
     public function handleSubmitPremium($duration) {
         $session = $this->getSession("cart");
         bdump($duration);
+        $user = $this->userFacade->getUserDTO(($this->getUser())->id);
+        bdump((array)$user);
+
 
         $premiumMap = [
             '1m' => ['+1 month', 49],
@@ -62,7 +68,11 @@ final class ShopPresenter extends BasePresenter {
 
         $session->duration = substr($modify, 1);
         $session->price = $price;
-        $session->premiumUntil = (new \DateTimeImmutable())->modify($modify);
+        if ($user->premiumUntil) {
+            $session->premiumUntil = ($user->premiumUntil)->modify($modify);
+        } else {
+            $session->premiumUntil = (new \DateTimeImmutable())->modify($modify);
+        }
 
         bdump($session->premiumUntil);
         
