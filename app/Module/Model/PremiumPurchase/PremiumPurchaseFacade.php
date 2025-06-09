@@ -8,7 +8,7 @@ use App\Module\Model\PremiumPurchase\PremiumPurchaseMapper;
 
 final class PremiumPurchaseFacade
 {
-    private function __construct(
+    public function __construct(
         protected Nette\Database\Explorer $database,
         private PremiumPurchaseRepository $premiumPurchasesRepository,
         private PremiumPurchaseMapper $premiumPurchaseMapper

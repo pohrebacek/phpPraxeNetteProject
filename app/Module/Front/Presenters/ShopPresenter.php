@@ -1,14 +1,17 @@
 <?php
 namespace App\Module\Front\Presenters;
 
+use App\Module\Model\PremiumPurchase\PremiumPurchaseDTO;
 use Nette;
 use App\Module\Model\User\UsersRepository;
 use App\Module\Model\User\UserFacade;
+use App\Module\Model\PremiumPurchase\PremiumPurchaseRepository;
 
 final class ShopPresenter extends BasePresenter {
     public function __construct(
         private UsersRepository $usersRepository,
-        private UserFacade $userFacade
+        private UserFacade $userFacade,
+        private PremiumPurchaseRepository $premiumPurchaseRepository
     ) {
 
     }
@@ -29,8 +32,20 @@ final class ShopPresenter extends BasePresenter {
         unset($data['date'], $data['timezone_type'], $data['timezone']);
 
         $this->usersRepository->saveRow($data, ($this->getUser())->id);
+        $this->premiumPurchaseRepository->saveRow($this->formatPremiumPurchseData($session, $this->getUser()->id), null);
 
+        $this->flashMessage('Nákup proběhl úspěšně.');
+        $this->redirect('Homepage:');
+    }
 
+    private function formatPremiumPurchseData($session, $userId)
+    {
+        $data = [];
+        $data["user_id"] = $userId;
+        $data["length"] = $session->duration;
+        $data["price"] = $session->price;
+
+        return $data;
     }
 
     public function renderPremium(): void

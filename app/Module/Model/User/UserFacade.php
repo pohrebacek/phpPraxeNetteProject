@@ -32,6 +32,15 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         return $this->userMapper->map($postRow);
     }
 
+    public function hasPremium($premiumUntil): bool
+    {
+        $now = new \DateTimeImmutable();
+        if ($premiumUntil <$now) {
+            return false;
+        }
+        return true;
+    }
+
     public function getPostsLikes(int $userId)
     {
         $posts = $this->getPostsByUserId($userId);
@@ -102,6 +111,8 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         }
         return $this->database->table($this->usersRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
     }
+
+
 
 
 }
