@@ -79,9 +79,16 @@ final class EditPresenter extends BasePresenter
                 return in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif']);
             }, 'Soubor musí být platný obrázek (JPG, PNG nebo GIF).');
     
+        bdump($this->getUser()->getIdentity());
+            if (($this->getUser()->getIdentity())->roles[0] == "premium") {
+            bdump($this->getUser());
+            $form->addCheckbox("radio", "Premium")
+                ->setHtmlAttribute("class", "form-check-input");
+        }
+
+        
         $form->addSubmit('send', 'Uložit a publikovat')
              ->setHtmlAttribute("class", "btn btn-outline-primary");
-        $form->addCheckbox("radio", "Premium");
     
         $form->onSuccess[] = [$this, 'postFormSucceeded'];
         return $form;
