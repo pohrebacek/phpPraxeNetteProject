@@ -15,15 +15,18 @@ class MyAuthorizator
         //Roles
         $acl->addRole("guest");
         $acl->addRole("user", "guest");
-        $acl->addRole("admin", "user");
+        $acl->addRole("premium", "guest");
+        $acl->addRole("admin", ["user", "premium"]);
 
         //Resources
         $acl->addResource("post");
         $acl->addResource("comment");
+        $acl->addResource("premiumPost");
 
         //Operations
         $acl->allow("guest", ["post", "comment"], "view");
         $acl->allow("user", ["post", "comment"], "add");
+        $acl->allow("premium", ["premiumPost"], ["add", "view"]);
         $acl->allow("admin");
 
         return $acl;

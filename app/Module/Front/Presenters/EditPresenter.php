@@ -81,6 +81,7 @@ final class EditPresenter extends BasePresenter
     
         $form->addSubmit('send', 'Uložit a publikovat')
              ->setHtmlAttribute("class", "btn btn-outline-primary");
+        $form->addCheckbox("radio", "Premium");
     
         $form->onSuccess[] = [$this, 'postFormSucceeded'];
         return $form;
