@@ -27,12 +27,13 @@ class MyAuthenticator implements Nette\Security\Authenticator
 			throw new Nette\Security\AuthenticationException('Invalid password.');
 		}
 
-        return new SimpleIdentity(
+        return new SimpleIdentity(  #vrací data pro $this->getUser()->getIdentity();, vrací data získané při přihlášení
             $row->id,
             "$row->role",
             ["username" => $row->username,
                    "password"=> $row->password,
-                   "email" => $row->email
+                   "email" => $row->email,
+                   "premium_until" => $row->premium_until
             ],
         );
     }

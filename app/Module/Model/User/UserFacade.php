@@ -32,10 +32,11 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         return $this->userMapper->map($postRow);
     }
 
-    public function hasPremium($premiumUntil): bool
+    public function hasPremium($id): bool
     {
+        $user = getUserDTO($id);
         $now = new \DateTimeImmutable();
-        if ($premiumUntil <$now) {
+        if ($user->premiumUntil < $now) {
             return false;
         }
         return true;

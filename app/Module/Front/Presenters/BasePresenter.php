@@ -7,6 +7,7 @@ use App\Module\Model\User\UserFacade;
 
 class BasePresenter extends Presenter
 {
+
     
     public function startup(): void
     {
@@ -19,6 +20,7 @@ class BasePresenter extends Presenter
     protected function getUserRole(): string
     {
         #$user = $this->userFacade->getUserDTO(($this->getUser())->id); // Získání objektu uživatele
+        //bdump($this->userFacade->getUserDTO(($this->getUser())->id));
         $user = $this->getUser()->getIdentity();
         bdump($user);
         bdump($this->getUser());
