@@ -11,6 +11,8 @@ use App\Module\Model\Post\PostsRepository;
 use App\Module\Model\Security\MyAuthorizator;
 use Nette\Application\UI\Form;
 use App\Module\Model\Settings\SettingsRepository;
+use App\Module\Model\User\UserFacade;
+use App\Service\CurrentUserService;
 
 
 final class HomepagePresenter extends BasePresenter
@@ -18,6 +20,8 @@ final class HomepagePresenter extends BasePresenter
     public function __construct(
 		private PostsRepository $postsRepository,
 		private SettingsRepository $settingsRepository,
+		private UserFacade $userFacade,
+		private CurrentUserService $currentUser,
 		private int $postsPerPage = 5
 	) {
 	}
@@ -35,8 +39,9 @@ final class HomepagePresenter extends BasePresenter
 		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, 0);	//vezme z konce tabulky (jeden tedy od nejnovější po nejstarší) "howMany" postů a přeskočí "from" postů
 		$this->template->pages = $this->getNumberOfPages();
 
+		bdump($this->currentUser->hasPremium());
+
 		//DEBUG
-		bdump($this->getUserRole());
 		bdump($numberOfPosts);
 		bdump((int) $numberOfPosts/$this->postsPerPage + $this->restPage($numberOfPosts));
 		bdump((int) $numberOfPosts/$this->postsPerPage);

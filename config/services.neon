@@ -30,3 +30,5 @@ services:
 	- App\Module\Model\PremiumPurchase\PremiumPurchaseRepository
 	- App\Module\Model\PremiumPurchase\PremiumPurchaseFacade
 	- App\Module\Model\PremiumPurchase\PremiumPurchaseMapper
+
+	- App\Service\CurrentUserService

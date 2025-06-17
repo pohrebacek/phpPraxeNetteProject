@@ -34,8 +34,6 @@ final class EditPresenter extends BasePresenter
 
     public function renderEdit(int $id): void   //stránka na upravení postu, id převezme ze šablony
     {
-        $role = $this->getUserRole();
-		bdump($role);
         $post = $this->postFacade->getPostDTO($id);
     
         if (!$post) {
@@ -80,11 +78,11 @@ final class EditPresenter extends BasePresenter
             }, 'Soubor musí být platný obrázek (JPG, PNG nebo GIF).');
     
             bdump($this->getUser()->getIdentity());
-            if ($this->getUserRole() == "premium") {
-                bdump($this->getUser());
-                $form->addCheckbox("radio", "Premium")
-                    ->setHtmlAttribute("class", "form-check-input");
-            }
+            //if ($this->getUserRole() == "premium") {
+            //    bdump($this->getUser());
+            //    $form->addCheckbox("radio", "Premium")
+            //        ->setHtmlAttribute("class", "form-check-input");
+            //}
 
         
         $form->addSubmit('send', 'Uložit a publikovat')

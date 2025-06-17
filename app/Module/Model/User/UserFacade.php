@@ -32,14 +32,10 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         return $this->userMapper->map($postRow);
     }
 
-    public function hasPremium($id): bool
+
+    public function hasPremium(UserDTO $user): bool
     {
-        $user = getUserDTO($id);
-        $now = new \DateTimeImmutable();
-        if ($user->premiumUntil < $now) {
-            return false;
-        }
-        return true;
+        return $user->premiumUntil > new \DateTimeImmutable();
     }
 
     public function getPostsLikes(int $userId)
