@@ -31,6 +31,7 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         }     
         return $this->userMapper->map($postRow);
     }
+    
 
 
     public function hasPremium(UserDTO $user): bool

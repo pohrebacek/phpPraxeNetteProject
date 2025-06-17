@@ -11,6 +11,7 @@ use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\Security\MyAuthorizator;
 use App\Module\Model\User\UserFacade;
 use App\Module\Model\Like\LikesRepository;
+use App\Service\CurrentUserService;
 
 /**
  * @method void commentFormSucceeded(\stdClass $data)
@@ -27,7 +28,8 @@ final class PostPresenter extends BasePresenter
 		private PostFacade $postFacade,
 		private CommentFacade $commentFacade,
 		private UserFacade $userFacade,
-		private LikesRepository $likesRepository
+		private LikesRepository $likesRepository,
+		private CurrentUserService $currentUser
 	) {
 	}
 
@@ -35,6 +37,7 @@ final class PostPresenter extends BasePresenter
 
 	public function renderShow(int $id): void
 	{
+		bdump($this->currentUser->hasPremiumAccess());
 		//NA DEBUG
 		$user = $this->getUser();
 		if ($user->isLoggedIn()){
@@ -51,7 +54,14 @@ final class PostPresenter extends BasePresenter
 		}
 		$postDTO = $this->postFacade->getPostDTO($post->id);
 		bdump($postDTO);	//bdump sám vypíše atributy a co je co
-		$this->template->post = $post;
+		$this->template->premium = false;
+
+		if ($postDTO->premium && !$this->currentUser->hasPremiumAccess()) {
+			$this->template->premium = true;
+			$this->template->postContent = $this->postFacade->getPreview($postDTO);
+		}
+
+		$this->template->post = $postDTO;
 		if ($postDTO->image){
 			$this->template->imagePath = $postDTO->image;
 		} else {

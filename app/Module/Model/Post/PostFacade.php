@@ -17,7 +17,8 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         protected Nette\Database\Explorer $database,
         private PostMapper $postMapper,
         private UsersRepository $usersRepository,
-        private LikesRepository $likesRepository
+        private LikesRepository $likesRepository,
+        private int $previewCharacters = 300
 	) {
 	}
 
@@ -38,6 +39,10 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         }         
         //bdump($data);
         return $data;
+    }
+
+    public function getPreview(PostDTO $post): string {
+        return substr($post->content, 0, $this->previewCharacters);
     }
 
     public function getPostsByFilter(string $column, string $parameter)

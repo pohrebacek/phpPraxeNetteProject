@@ -7,6 +7,7 @@ use Nette;
 use Nette\Application\UI\Form;
 use App\Module\Model\Post\PostsRepository;
 use App\Module\Model\Comment\CommentFacade;
+use App\Service\CurrentUserService;
 
 /**
  * @method void postFormSucceeded(Form $form)
@@ -17,7 +18,8 @@ final class EditPresenter extends BasePresenter
 		private PostsRepository $postsRepository,
         private PostFacade $postFacade,
         private UserFacade $userFacade,
-        private CommentFacade $commentFacade
+        private CommentFacade $commentFacade,
+        private CurrentUserService $currentUser
 	) {
 	}
 
@@ -78,11 +80,11 @@ final class EditPresenter extends BasePresenter
             }, 'Soubor musí být platný obrázek (JPG, PNG nebo GIF).');
     
             bdump($this->getUser()->getIdentity());
-            //if ($this->getUserRole() == "premium") {
-            //    bdump($this->getUser());
-            //    $form->addCheckbox("radio", "Premium")
-            //        ->setHtmlAttribute("class", "form-check-input");
-            //}
+            if ($this->currentUser->hasPremiumAccess()) {
+                bdump($this->getUser());
+                $form->addCheckbox("premium", "Premium")
+                    ->setHtmlAttribute("class", "form-check-input");
+            }
 
         
         $form->addSubmit('send', 'Uložit a publikovat')
@@ -129,6 +131,7 @@ final class EditPresenter extends BasePresenter
         $user = $this->getUser();
         $user = $this->userFacade->getUserDTO($user->id);
         $data["user_id"] = $user->id;
+        bdump($data);
     
         if ($id) {
             $post = $this->postFacade->getPostDTO($id);

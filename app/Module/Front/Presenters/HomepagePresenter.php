@@ -39,7 +39,7 @@ final class HomepagePresenter extends BasePresenter
 		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, 0);	//vezme z konce tabulky (jeden tedy od nejnovější po nejstarší) "howMany" postů a přeskočí "from" postů
 		$this->template->pages = $this->getNumberOfPages();
 
-		bdump($this->currentUser->hasPremium());
+		bdump($this->currentUser->hasPremiumAccess());
 
 		//DEBUG
 		bdump($numberOfPosts);

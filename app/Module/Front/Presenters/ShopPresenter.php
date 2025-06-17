@@ -6,12 +6,14 @@ use Nette;
 use App\Module\Model\User\UsersRepository;
 use App\Module\Model\User\UserFacade;
 use App\Module\Model\PremiumPurchase\PremiumPurchaseRepository;
+use App\Service\CurrentUserService;
 
 final class ShopPresenter extends BasePresenter {
     public function __construct(
         private UsersRepository $usersRepository,
         private UserFacade $userFacade,
-        private PremiumPurchaseRepository $premiumPurchaseRepository
+        private PremiumPurchaseRepository $premiumPurchaseRepository,
+        private CurrentUserService $currentUser
     ) {
 
     }
@@ -51,6 +53,9 @@ final class ShopPresenter extends BasePresenter {
 
     public function renderPremium(): void
     {
+        if (!$this->currentUser->isLoggedIn()) {
+            $this->redirect("Sign:in");
+        }
         $duration = $this->getParameter('duration') ?? "1m";
         bdump($duration);
         $this->template->duration = $duration;

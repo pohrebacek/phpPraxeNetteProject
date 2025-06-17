@@ -37,13 +37,24 @@ final class CurrentUserService
 	}
 
 	//kvůli této metodě vlastně vznikla tato třída, v basePresenteru ta metoda být nemohla protože presenter neviděl na userFacade, v userFacade to zas nemělo přístup k přihlášenýmu uživateli, a tak vznikla tato třída
-	public function hasPremium(): bool
+	public function hasPremiumAccess(): bool
+	{
+		$dto = $this->getDTO();
+		if (!$dto) {
+
+			return false;
+		}
+
+		return $this->userFacade->hasPremium($dto) || $this->isAdmin();
+	}
+
+	public function isAdmin(): bool
 	{
 		$dto = $this->getDTO();
 		if (!$dto) {
 			return false;
 		}
 
-		return $this->userFacade->hasPremium($dto);
+		return $dto->role == "admin";
 	}
 }
