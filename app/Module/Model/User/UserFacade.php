@@ -8,6 +8,7 @@ use App\Module\Model\User\UserDTO;
 use App\Module\Model\Post\PostsRepository;
 use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Comment\CommentFacade;
+use App\Module\Model\Post\PostDTO;
 use Latte\Compiler\Nodes\Html\CommentNode;
 
 final class UserFacade  //facade je komplexnější práci s nějakym repository, prostě složitější akce, plus může pracovat s víc repos najednou
@@ -108,6 +109,11 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
             return $this->database->table($this->usersRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
         }
         return $this->database->table($this->usersRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
+    }
+
+    public function isOwnerOfPost(PostDTO $post, int $userId): bool
+    {
+        return $userId == $post->user_id;
     }
 
 

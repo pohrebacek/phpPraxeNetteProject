@@ -22,6 +22,8 @@ final class PostPresenter extends BasePresenter
 
 	/** @var string */
 	private string $templateIsShow = "false";	//mam to jako vlastnost protože jinak to jako k samotný variable nemá v ostatních funkcích přístup
+	private string $showReplyCommentForm = "false";
+	private int $replyCommentId = 0;
 	public function __construct(
 		private CommentsRepository $commentsRepository,
 		private PostsRepository $postsRepository,
@@ -47,6 +49,9 @@ final class PostPresenter extends BasePresenter
 		bdump($user);
 
 		$this->templateIsShow = "true";
+		$this->template->showReplyCommentForm = $this->showReplyCommentForm;
+		$this->template->replyCommentId = $this->replyCommentId;
+
 		$post = $this->postsRepository
 			->getRowById($id);
 		if (!$post) {
@@ -56,9 +61,9 @@ final class PostPresenter extends BasePresenter
 		bdump($postDTO);	//bdump sám vypíše atributy a co je co
 		$this->template->premium = false;
 
-		if ($postDTO->premium && !$this->currentUser->hasPremiumAccess()) {
-			$this->template->premium = true;
-			$this->template->postContent = $this->postFacade->getPreview($postDTO);
+		if (($postDTO->premium && !$this->currentUser->hasPremiumAccess()) || !$this->userFacade->isOwnerOfPost($postDTO, $user->id) && !$this->currentUser->isAdmin()) {	//post je buď premium a user nemá premium, nebo uživatel neni owner postu a zároveň neni amdin
+			$this->template->premium = true;	//pak se nastaví že post je premium pro template
+			$this->template->postContent = $this->postFacade->getPreview($postDTO);	//a nastaví se pouze preview verze postu
 		}
 
 		$this->template->post = $postDTO;
@@ -104,6 +109,16 @@ final class PostPresenter extends BasePresenter
 		
 	}
 
+	public function handleReply(int $commentId): void
+	{
+		bdump($commentId);
+		$this->showReplyCommentForm = "true";
+		$this->replyCommentId = $commentId;
+
+		if ($this->isAjax()) {
+			$this->redrawControl("commentFormSnippet");
+		}
+	}
 
 	
 	public function renderEditComment(int $id): void

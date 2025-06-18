@@ -45,6 +45,7 @@ final class CurrentUserService
 			return false;
 		}
 
+		
 		return $this->userFacade->hasPremium($dto) || $this->isAdmin();
 	}
 
@@ -55,6 +56,7 @@ final class CurrentUserService
 			return false;
 		}
 
+		bdump($dto->role == "admin");
 		return $dto->role == "admin";
 	}
 }

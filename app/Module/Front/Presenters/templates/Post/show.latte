@@ -57,6 +57,7 @@
 <h2>Komentáře</h2>
 
 <div class="comments">
+	{snippetArea commentsArea}
 	{foreach $comments as $comment}
 		<div class="comment">
 			<p><b><a href="mailto:{$comment->email}" n:tag-if="$comment->email">
@@ -64,10 +65,18 @@
 			</a></b> napsal:</p>
 
 			<div>{$comment->content}</div>
+			<a n:href="reply!, commentId => $comment->id" n:if="$user->isLoggedIn()">Odpovědět na komentář</a>
 			<a n:href="Post:editComment $comment->id" n:if="$user->id == $comment->ownerUser_id || $user->roles[0] == 'admin'" class="btn btn-outline-primary">Upravit komentář</a>
 			<a n:href="Post:deleteComment $comment->id" n:if="$user->id == $comment->ownerUser_id || $user->roles[0] == 'admin'" class="btn btn-outline-danger">Smazat komentář</a>
 		</div>
+		
+		{snippet "commentFormSnippet-$comment->id"}
+		{if $showReplyCommentForm == "true" && $comment->id == $replyCommentId}
+			{control commentForm}
+		{/if}
+		{/snippet}
 	{/foreach}
+	{/snippetArea}
 </div>
 
 
