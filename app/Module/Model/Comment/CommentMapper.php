@@ -10,6 +10,6 @@ class CommentMapper {   //třída převádějíc Activerow comment (comment z me
     ) {}
 
     public static function map(ActiveRow $row): CommentDTO {
-        return new CommentDTO($row->id, $row->post_id, $row->name, $row->email, $row->content, $row->ownerUser_id);
+        return new CommentDTO($row->id, $row->post_id, $row->name, $row->email, $row->content, $row->ownerUser_id, $row->replyTo);
     }
 }

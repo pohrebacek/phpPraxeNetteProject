@@ -27,6 +27,26 @@ final class CommentFacade
         return $this->commentMapper->map($commentRow);
     }
 
+    public function deleteComment(int $id)
+    {
+        $this->database->transaction(function () use ($id) {
+            $this->deleteRepliesRecursive($id);
+            $this->commentsRepository->deleteRow($id);
+        });
+    }
+
+    private function deleteRepliesRecursive(int $id): void
+    {
+        $replies = $this->database->table($this->commentsRepository->getTable())
+            ->where('replyTo', $id)
+            ->fetchAll();
+
+        foreach ($replies as $reply) {
+            $this->deleteRepliesRecursive($reply->id); // smaže odpovědi na odpověď
+            $this->commentsRepository->deleteRow($reply->id);
+        }
+    }
+
     public function filterCommentsData($data)
     {
         foreach($data as $index => $line){

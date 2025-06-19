@@ -6,6 +6,8 @@ NOW
 - šipčka zpátky v nový úpravě usera vrací do user profile
 - udělat settings na počet znaků pro ne premium
 - upravit rotažení button pro nepremium usery u premium postu
+- zobrazení reply form refreshne stránku - je to annoying
+
 
 
 
@@ -47,3 +49,5 @@ DONE
 - v admin tab přidat filtraci na výsledky z databáze (vyhledávání bude fce ve facade jako FindPostBySomeParam(param), to podle předanýho param najde row)
 - jak to ukazuj v košíku do kdy je to premium, tak to upravit tak, aby to přičítalo k datumu co má user v db, jestli nemá premium tak to bude přičítat k current premium, protože aby šlo normálně premium prodlužovat
 - udělat že to premium končí a kontrola zda to premium user furt má
+- smazání main commentu musí smazat i jeho replies
+- moc replies = nejdou další

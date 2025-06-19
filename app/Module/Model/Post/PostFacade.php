@@ -8,6 +8,7 @@ use App\Module\Model\Comment\CommentsRepository;
 use App\Module\Model\Post\PostDTO;
 use App\Module\Model\User\UsersRepository;
 use App\Module\Model\Like\LikesRepository;
+use App\Module\Model\Comment\CommentFacade;
 
 final class PostFacade  //facade je komplexnější práci s nějakym repository, prostě složitější akce, plus může pracovat s víc repos najednou
 {
@@ -18,6 +19,7 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         private PostMapper $postMapper,
         private UsersRepository $usersRepository,
         private LikesRepository $likesRepository,
+        private CommentFacade $commentFacade,
         private int $previewCharacters = 300
 	) {
 	}
@@ -70,7 +72,7 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
     public function deletePost(int $id): void
     {
         $this->database->transaction(function () use ($id) {
-            $this->commentsRepository->deleteCommentByPostId($id);
+            $this->commentFacade->deleteComment($id);
             $this->postsRepository->deleteRow($id);
         });
     }

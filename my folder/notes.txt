@@ -29,3 +29,4 @@ CREATE TABLE premium_purchases (
 
 
 
+ALTER TABLE test.comments ADD replyTo INT NULL;

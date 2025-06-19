@@ -1,3 +1,38 @@
+{define commentTree}
+	<div class="comment">
+		{if $isReply == "false"}
+			<p><b><a href="mailto:{$comment->email}" n:tag-if="$comment->email">
+			{$comment->name}
+			</a></b> napsal:</p>
+		{else}
+			<p><b><a href="mailto:{$reply->email}" n:tag-if="$reply->email">
+			{$reply->name}
+			</a></b> odpověděl uživateli <b><a href="mailto:{$reply->email}" n:tag-if="$reply->email">{$comment->name}</a></b>:</p>
+		{/if}
+	
+		<div>{$comment->content}</div>
+		<a n:href="reply!, commentId => $comment->id" n:if="$user->isLoggedIn()" class="btn btn-primary">Odpovědět na komentář</a>
+		<a n:href="Post:editComment $comment->id" n:if="$user->id == $comment->ownerUser_id || $user->roles[0] == 'admin'" class="btn btn-outline-primary">Upravit komentář</a>
+		<a n:href="Post:deleteComment $comment->id" n:if="$user->id == $comment->ownerUser_id || $user->roles[0] == 'admin'" class="btn btn-outline-danger">Smazat komentář</a>
+	</div>
+
+	{snippet "commentFormSnippet-$comment->id"}
+		{if $showReplyCommentForm == "true" && $comment->id == $replyCommentId}
+			Odpovědět uživateli {$comment->name}:
+			{control commentForm}
+		{/if}
+	{/snippet}
+
+	{if isset($replies[$comment->id])}
+		<div class="replies">
+			{foreach $replies[$comment->id] as $reply}
+				{include commentTree comment => $reply, replies => $replies, isReply => "true"}
+			{/foreach}
+		</div>
+	{/if}
+{/define}
+
+
 {block content}
 
 <p><a n:href="Homepage:default">
@@ -56,27 +91,11 @@
 
 <h2>Komentáře</h2>
 
+
 <div class="comments">
 	{snippetArea commentsArea}
-	{foreach $comments as $comment}
-		<div class="comment">
-			<p><b><a href="mailto:{$comment->email}" n:tag-if="$comment->email">
-			{$comment->name}
-			</a></b> napsal:</p>
-
-			<div>{$comment->content}</div>
-			<a n:href="reply!, commentId => $comment->id" n:if="$user->isLoggedIn()">Odpovědět na komentář</a>
-			<a n:href="Post:editComment $comment->id" n:if="$user->id == $comment->ownerUser_id || $user->roles[0] == 'admin'" class="btn btn-outline-primary">Upravit komentář</a>
-			<a n:href="Post:deleteComment $comment->id" n:if="$user->id == $comment->ownerUser_id || $user->roles[0] == 'admin'" class="btn btn-outline-danger">Smazat komentář</a>
-		</div>
-		
-		{snippet "commentFormSnippet-$comment->id"}
-		{if $showReplyCommentForm == "true" && $comment->id == $replyCommentId}
-			{control commentForm}
-		{/if}
-		{/snippet}
-	{/foreach}
+		{foreach $comments as $comment}
+			{include commentTree comment => $comment, replies => $replies, isReply => "false"}
+		{/foreach}
 	{/snippetArea}
 </div>
-
-

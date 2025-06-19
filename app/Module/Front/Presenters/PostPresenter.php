@@ -23,7 +23,7 @@ final class PostPresenter extends BasePresenter
 	/** @var string */
 	private string $templateIsShow = "false";	//mam to jako vlastnost protože jinak to jako k samotný variable nemá v ostatních funkcích přístup
 	private string $showReplyCommentForm = "false";
-	private int $replyCommentId = 0;
+	private ?int $replyCommentId = null;	//ten ? říká že to je nullable int (int co může být int nebo null a začíná jako null)
 	public function __construct(
 		private CommentsRepository $commentsRepository,
 		private PostsRepository $postsRepository,
@@ -40,6 +40,7 @@ final class PostPresenter extends BasePresenter
 	public function renderShow(int $id): void
 	{
 		bdump($this->currentUser->hasPremiumAccess());
+		bdump($this->replyCommentId);
 		//NA DEBUG
 		$user = $this->getUser();
 		if ($user->isLoggedIn()){
@@ -72,7 +73,15 @@ final class PostPresenter extends BasePresenter
 		} else {
 			$this->template->imagePath = null;
 		}
-		$this->template->comments = $post->related('comments')->order('created_at');	//related prostě zjistí jaký záznamy z uvedený tabulky jsou vázaný na záznam co funcki volá 
+
+
+		$this->template->comments = $post->related('comments')->where('replyTo IS NULL')->order('created_at');	//related prostě zjistí jaký záznamy z uvedený tabulky jsou vázaný na záznam co funcki volá 
+		
+		$repliesGrouped = [];
+		foreach ($post->related('comments')->where('replyTo IS NOT NULL')->order('created_at') as $reply) {	//projde odpovědi a do pole přiřadí každýmu id komentu co má odpověď tu danou odpověď
+			$repliesGrouped[$reply->replyTo][] = $reply;	//přidej na pozici "id komentu" jeho odpověď, ta druhá [] říká "přidej to na konec pole"
+		}
+		$this->template->replies = $repliesGrouped;
 		$this->template->likesCount = $post->related('likes')->count();
 		
 		//NA DEBUG
@@ -87,7 +96,7 @@ final class PostPresenter extends BasePresenter
         if (!$comment) {
             $this->error('Comment not found');
         }
-        $this->commentsRepository->deleteRow($id);
+        $this->commentFacade->deleteComment($id);
         $this->redirect('Post:show', $comment->post_id);
     }
 
@@ -116,7 +125,7 @@ final class PostPresenter extends BasePresenter
 		$this->replyCommentId = $commentId;
 
 		if ($this->isAjax()) {
-			$this->redrawControl("commentFormSnippet");
+			$this->redrawControl("commentFormSnippet-$commentId");
 		}
 	}
 
@@ -136,7 +145,8 @@ final class PostPresenter extends BasePresenter
 		$form = new Form;
 
 		$form->addHidden('templateIsShow', $this->templateIsShow);	//přidá do formu skrytou vlastnost, to protože to jinak nešlo předat to info
-	
+		$form->addHidden("replyCommentId", $this->replyCommentId);
+		
 		$form->addTextArea('content')
 			->setRequired()
 			->setHtmlAttribute("class", "form-control");
@@ -160,6 +170,10 @@ final class PostPresenter extends BasePresenter
         $id = $this->getParameter("id");	//id commentu, vyřešený problém: když má post a comment stejný id a na tom postu dat add comment, tak se přidá na post co má id jako post_id commentu co má stejný id
         $edit = false;
 		bdump($data->templateIsShow);
+		bdump($data);
+		if ($data->replyCommentId == '') {
+			$data->replyCommentId = null;
+		}
 
 		$user = $this->getUser();
 		$user = $this->userFacade->getUserDTO($user->id);
@@ -180,7 +194,8 @@ final class PostPresenter extends BasePresenter
 					"name" => $user->username,
 					"email" =>$user->email,
 					"content" => $data->content,
-					"ownerUser_id" => $user->id
+					"ownerUser_id" => $user->id,
+					"replyTo" => $data->replyCommentId
 				], null);
 			bdump($comment);
         	}
