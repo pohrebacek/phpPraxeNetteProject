@@ -11,6 +11,14 @@ v user db bude timestamp "Premium end" -> podle délky premium nastavim kdy kon�
 
 
 
+likes u kometů - návrh
+
+funkcionalita like bude stejná, vlastně to zkopčim od postu
+do db likes přidam column comment_id
+pak se jenom bude kontrolovat jestli je comment_id null, jestli jo tak se like přidá postu, jestli ne, tak commentu
+
+
+
 
 //SQL
 
