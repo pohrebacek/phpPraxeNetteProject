@@ -10,6 +10,7 @@ NOW
 - projet funkci GetLieksByFiter v likeCommentFacade (i pro ten post), co dělá a pozměnit pro comment
 - v admindDB přidat likes_comments
 - přejmenovat všude likes na likes_posts
+- opravit likesCount pro like comment v Post:show
 
 
 

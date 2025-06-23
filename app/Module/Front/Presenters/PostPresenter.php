@@ -12,6 +12,7 @@ use App\Module\Model\Security\MyAuthorizator;
 use App\Module\Model\User\UserFacade;
 use App\Module\Model\Like\LikesRepository;
 use App\Service\CurrentUserService;
+use App\Module\Model\LikeComment\LikesCommentsRepository;
 
 /**
  * @method void commentFormSucceeded(\stdClass $data)
@@ -31,7 +32,8 @@ final class PostPresenter extends BasePresenter
 		private CommentFacade $commentFacade,
 		private UserFacade $userFacade,
 		private LikesRepository $likesRepository,
-		private CurrentUserService $currentUser
+		private CurrentUserService $currentUser,
+		private LikesCommentsRepository $likesCommentsRepository
 	) {
 	}
 
@@ -125,6 +127,16 @@ final class PostPresenter extends BasePresenter
 		$data["comment_id"] = $commentId;
 		$data["user_id"] = is_numeric(($this->getUser())->id) ? intval(($this->getUser())->id) : 0;
 		//zybtek je ok
+
+		if (!$this->likesCommentsRepository->getRowByCommentIdAndUserId($data["comment_id"], $data["user_id"]))
+		{
+			$this->likesCommentsRepository->saveRow($data, null);
+		} else {
+			$this->likesCommentsRepository->deleteLikeByCommentIdAndUserId($data["comment_id"], $data["user_id"]);
+		}
+		$this->redirect("Post:show", $this->getParameter("id"));
+
+
 	}
 
 	public function handleReply(int $commentId): void
