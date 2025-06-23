@@ -7,6 +7,10 @@ NOW
 - udělat settings na počet znaků pro ne premium
 - upravit rotažení button pro nepremium usery u premium postu
 - zobrazení reply form refreshne stránku - je to annoying
+- projet funkci GetLieksByFiter v likeCommentFacade (i pro ten post), co dělá a pozměnit pro comment
+- v admindDB přidat likes_comments
+- přejmenovat všude likes na likes_posts
+
 
 
 

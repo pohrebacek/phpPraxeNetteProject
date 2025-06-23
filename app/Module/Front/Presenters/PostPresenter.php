@@ -118,6 +118,15 @@ final class PostPresenter extends BasePresenter
 		
 	}
 
+	public function handleLikeComment(int $commentId): void
+	{
+		//tohle předej do like facade
+		$data = [];
+		$data["comment_id"] = $commentId;
+		$data["user_id"] = is_numeric(($this->getUser())->id) ? intval(($this->getUser())->id) : 0;
+		//zybtek je ok
+	}
+
 	public function handleReply(int $commentId): void
 	{
 		bdump($commentId);

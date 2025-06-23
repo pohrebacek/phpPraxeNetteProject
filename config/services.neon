@@ -32,3 +32,7 @@ services:
 	- App\Module\Model\PremiumPurchase\PremiumPurchaseMapper
 
 	- App\Service\CurrentUserService
+
+	- App\Module\Model\LikeComment\LikesCommentsRepository
+	- App\Module\Model\LikeComment\LikeCommentFacade
+	- App\Module\Model\LikeComment\LikeCommentMapper
