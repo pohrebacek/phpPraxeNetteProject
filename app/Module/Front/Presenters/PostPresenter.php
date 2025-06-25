@@ -64,7 +64,10 @@ final class PostPresenter extends BasePresenter
 		bdump($postDTO);	//bdump sám vypíše atributy a co je co
 		$this->template->premium = false;
 
-		if (($postDTO->premium && !$this->currentUser->hasPremiumAccess()) || !$this->userFacade->isOwnerOfPost($postDTO, $user->id) && !$this->currentUser->isAdmin()) {	//post je buď premium a user nemá premium, nebo uživatel neni owner postu a zároveň neni amdin
+		bdump($postDTO->premium && !$this->currentUser->hasPremiumAccess());
+		//if (($postDTO->premium && !$this->currentUser->hasPremiumAccess()) || !$this->userFacade->isOwnerOfPost($postDTO, $user->id) && !$this->currentUser->isAdmin()) {	//post je buď premium a user nemá premium, nebo uživatel neni owner postu a zároveň neni amdin
+		if ($postDTO->premium && (!$this->currentUser->hasPremiumAccess() || !$this->userFacade->isOwnerOfPost($postDTO, $user->id) && !$this->currentUser->isAdmin())) {	//post je premium a zároveň user nemá premium, nebo uživatel neni owner postu a zároveň neni amdin
+			bdump("preview");
 			$this->template->premium = true;	//pak se nastaví že post je premium pro template
 			$this->template->postContent = $this->postFacade->getPreview($postDTO);	//a nastaví se pouze preview verze postu
 		}

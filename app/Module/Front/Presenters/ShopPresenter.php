@@ -31,7 +31,7 @@ final class ShopPresenter extends BasePresenter {
         //bdump((array)$user);
         $data = (array)$session->premiumUntil;
         $data['premium_until'] = $data['date'];
-        $data["role"] = "premium";
+        //$data["role"] = "premium";
         unset($data['date'], $data['timezone_type'], $data['timezone']);
 
         $this->usersRepository->saveRow($data, ($this->getUser())->id);
