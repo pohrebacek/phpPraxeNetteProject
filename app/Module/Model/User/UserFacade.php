@@ -10,6 +10,7 @@ use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\Post\PostDTO;
 use Latte\Compiler\Nodes\Html\CommentNode;
+use App\Module\Model\Comment\CommentsRepository;
 
 final class UserFacade  //facade je komplexnější práci s nějakym repository, prostě složitější akce, plus může pracovat s víc repos najednou
 {
@@ -19,7 +20,8 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         private UserMapper $userMapper,
         private PostsRepository $postsRepository,
         private PostFacade $postFacade,
-        private CommentFacade $commentFacade
+        private CommentFacade $commentFacade,
+        private CommentsRepository $commentsRepository
 	) {
 	}
 
@@ -50,9 +52,24 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         return $likes;
     }
 
+    public function getCommentsLikes(int $userId)
+    {
+        $comments = $this->getCommentsByUserId($userId);
+        $likes = 0;
+        foreach ($comments as $comment) {
+            $likes += $this->commentFacade->getNumberOfLikes($comment->id);
+        }
+        return $likes;
+    }
+
     public function getPostsByUserId(int $userId)
     {
         return $this->database->table($this->postsRepository->getTable())->where("user_id", $userId)->fetchAll();
+    }
+
+    public function getCommentsByUserId(int $userId)
+    {
+        return $this->database->table($this->commentsRepository->getTable())->where("ownerUser_id", $userId)->fetchAll();
     }
 
     public function filterUsersData($data)

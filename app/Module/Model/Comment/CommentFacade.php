@@ -7,6 +7,8 @@ use App\Module\Model\User\UsersRepository;
 use App\Module\Model\Comment\CommentsRepository;
 use App\Module\Model\Comment\CommentDTO;
 use App\Module\Model\Comment\CommentMapper;
+use App\Module\Model\Like\LikesRepository;
+use App\Module\Model\LikeComment\LikesCommentsRepository;
 
 final class CommentFacade
 {
@@ -15,7 +17,9 @@ final class CommentFacade
         protected Nette\Database\Explorer $database,
         private CommentMapper $commentMapper,
         private PostsRepository $postsRepository,
-        private UsersRepository $usersRepository
+        private UsersRepository $usersRepository,
+        private LikesRepository $likesRepository,
+        private LikesCommentsRepository $likesCommentsRepository
 
     )   {
     }
@@ -81,6 +85,11 @@ final class CommentFacade
             ->where("YEAR(created_at)", strval($year))
             ->where("ownerUser_id", $userId)
             ->fetchAll());
+    }
+
+    public function getNumberOfLikes(int $id)
+    {
+        return sizeof($this->likesCommentsRepository->getRowsByCommentId($id));
     }
 
     public function getCommentsByFilter(string $column, string $parameter)

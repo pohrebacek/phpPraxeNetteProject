@@ -58,6 +58,7 @@ final class AdminDbPresenter extends BasePresenter {
         bdump($labels);
 
         $this->template->likesOfPosts = $this->userFacade->getPostsLikes($user->id);
+        $this->template->likesOfComments = $this->userFacade->getCommentsLikes($user->id);
     }
 
     public function renderPosts(): void 

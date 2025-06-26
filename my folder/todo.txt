@@ -10,7 +10,7 @@ NOW
 - projet funkci GetLieksByFiter v likeCommentFacade (i pro ten post), co dělá a pozměnit pro comment
 - v admindDB přidat likes_comments
 - přejmenovat všude likes na likes_posts
-- opravit likesCount pro like comment v Post:show
+- ve view details v adminDb u user přidat premium info
 
 
 
@@ -56,3 +56,5 @@ DONE
 - udělat že to premium končí a kontrola zda to premium user furt má
 - smazání main commentu musí smazat i jeho replies
 - moc replies = nejdou další
+- opravit likesCount pro like comment v Post:show
+- ve view details v adminDb u user přidat počet likes u komentů

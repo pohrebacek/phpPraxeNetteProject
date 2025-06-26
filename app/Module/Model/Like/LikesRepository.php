@@ -33,11 +33,13 @@ final class LikesRepository extends BaseRepository
         return null;
     }
 
-    public function getRowsByPostId(int $post_id)
+    public function getRowsByPostId(int $post_id)   //vrátí rows z likes table s předanym post id
     {
         $row = $this->database->table($this->table)->where("post_id",$post_id)->fetchAll();
         return $row;
     }
+
+
 
     public function getRowByPostIdAndUserId(int $post_id, int $user_id): ActiveRow|null
     {
