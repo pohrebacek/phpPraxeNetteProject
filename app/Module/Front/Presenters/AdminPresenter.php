@@ -51,6 +51,14 @@ final class AdminPresenter extends BasePresenter{
 
     }
 
+    public function handleGeneratePost(): void
+    {
+        $xml = simplexml_load_file("https://ancient-literature.com/category/blog/feed/");
+        foreach ($xml->channel->item as $item) {
+            bdump($item->title);
+        }
+    }
+
     public function renderDatabase($dbName): void
     {
         $this->template->dbName = $dbName;
