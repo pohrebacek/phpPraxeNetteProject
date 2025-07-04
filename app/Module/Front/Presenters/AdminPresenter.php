@@ -53,7 +53,15 @@ final class AdminPresenter extends BasePresenter{
 
     public function handleGeneratePost(): void
     {
-        $xml = simplexml_load_file("https://ancient-literature.com/category/blog/feed/");
+        $contextOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            ]
+        ];
+        $context = stream_context_create($contextOptions);
+        $content = file_get_contents("https://ancient-literature.com/category/blog/feed/", false, $context);
+        $xml = simplexml_load_string($content);
         foreach ($xml->channel->item as $item) {
             bdump($item->title);
         }
