@@ -62,9 +62,26 @@ final class AdminPresenter extends BasePresenter{
         $context = stream_context_create($contextOptions);
         $content = file_get_contents("https://ancient-literature.com/category/blog/feed/", false, $context);
         $xml = simplexml_load_string($content);
+        //tady bude cache ig
+        $items = [];
+
         foreach ($xml->channel->item as $item) {
-            bdump($item->title);
+            bdump($item->guid);
+            $items[] = $item;
         }
+
+        usort($items, function ($a, $b) {
+	    	$timeA = strtotime((string)$a->pubDate);    //převede údaj na timestamp pro lepší práci s časem
+	    	$timeB = strtotime((string)$b->pubDate);
+	    	return $timeB <=> $timeA; // SESTUPNĚ
+	    });
+
+        $data = [];
+        //nejdří udělam tabulku pro ty externí posty (jenom id, guid, post_id (jeho id z post table))
+        //po nastřádání dat pro post ho vytvořim jak do post table tak do external_post table
+        //při generování budu kontrolovat jestli je guid v external_post table, jestli jo, jdu na další
+        //a pak pořešim ještě cache
+
     }
 
     public function renderDatabase($dbName): void

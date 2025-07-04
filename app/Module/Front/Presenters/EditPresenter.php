@@ -32,6 +32,11 @@ final class EditPresenter extends BasePresenter
         }
     }
 
+    public function renderCreate()
+    {
+        
+    }
+
  
 
     public function renderEdit(int $id): void   //stránka na upravení postu, id převezme ze šablony
