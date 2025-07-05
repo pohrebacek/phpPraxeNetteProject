@@ -54,8 +54,14 @@ final class AdminPresenter extends BasePresenter{
 
     }
 
+    public function 
+
     public function handleGeneratePost(): void
     {
+        $storage = new Nette\Caching\Storages\FileStorage('/path/to/temp');
+        $cache = new Cache($storage, "BlogFeedCache");
+        $url = "https://ancient-literature.com/category/blog/feed/";
+
         $contextOptions = [
             'ssl' => [
                 'verify_peer' => false,
@@ -66,6 +72,12 @@ final class AdminPresenter extends BasePresenter{
         $content = file_get_contents("https://ancient-literature.com/category/blog/feed/", false, $context);
         $xml = simplexml_load_string($content);
         //tady bude cache ig
+
+        //přidam podmínku co kontroluje jestli už to v cache je nebo ne
+        
+
+
+
         $items = [];
 
         foreach ($xml->channel->item as $item) {
