@@ -4,11 +4,13 @@ namespace App\Module\Model\Post;
 use App\Module\Model\Post\PostMapper;
 use Nette;
 use App\Module\Model\Post\PostsRepository;
+use App\Module\Model\ExternalPost\ExternalPostsRepository;
 use App\Module\Model\Comment\CommentsRepository;
 use App\Module\Model\Post\PostDTO;
 use App\Module\Model\User\UsersRepository;
 use App\Module\Model\Like\LikesRepository;
 use App\Module\Model\Comment\CommentFacade;
+use App\Module\Model\ExternalPost\ExternalPostDTO;
 
 final class PostFacade  //facade je komplexnější práci s nějakym repository, prostě složitější akce, plus může pracovat s víc repos najednou
 {
@@ -20,6 +22,7 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         private UsersRepository $usersRepository,
         private LikesRepository $likesRepository,
         private CommentFacade $commentFacade,
+        private ExternalPostsRepository $externalPostsRepository,
         private int $previewCharacters = 300
 	) {
 	}
@@ -73,6 +76,7 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
     {
         $this->database->transaction(function () use ($id) {
             $this->commentFacade->deleteComment($id);
+            $this->externalPostsRepository->deleteExternalPostByPostId($id);
             $this->postsRepository->deleteRow($id);
         });
     }

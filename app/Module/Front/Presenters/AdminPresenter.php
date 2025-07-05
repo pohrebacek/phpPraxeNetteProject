@@ -2,13 +2,15 @@
 namespace App\Module\Front\Presenters;
 
 use App\Module\Model\Post\PostsRepository;
+use App\Module\Model\ExternalPost\ExternalPostsRepository;
 use App\Module\Model\User\UsersRepository;
 use Nette\Application\UI\Form;
 use Nette;
+use Nette\Caching\Cache;
 use App\Module\Model\Settings\SettingsFacade;
 use App\Module\Model\Settings\SettingsRepository;
 use App\Module\Model\Base\BaseRepository;
-
+use App\Module\Model\ExternalPost\ExternalPostDTO;
 
 final class AdminPresenter extends BasePresenter{
     public function __construct(
@@ -17,6 +19,7 @@ final class AdminPresenter extends BasePresenter{
         private SettingsRepository $settingsRepository,
         protected Nette\Database\Explorer $database,
         private UsersRepository $usersRepository,
+        private ExternalPostsRepository $externalPostsRepository,
         private array $settingsParam = []
     ) {
 
@@ -73,13 +76,29 @@ final class AdminPresenter extends BasePresenter{
         usort($items, function ($a, $b) {
 	    	$timeA = strtotime((string)$a->pubDate);    //převede údaj na timestamp pro lepší práci s časem
 	    	$timeB = strtotime((string)$b->pubDate);
-	    	return $timeB <=> $timeA; // SESTUPNĚ
+	    	return $timeB <=> $timeA; //SESTUPNĚ
 	    });
 
-        $data = [];
-        //nejdří udělam tabulku pro ty externí posty (jenom id, guid, post_id (jeho id z post table))
-        //po nastřádání dat pro post ho vytvořim jak do post table tak do external_post table
-        //při generování budu kontrolovat jestli je guid v external_post table, jestli jo, jdu na další
+        $newPost = $items[0];
+        foreach($items as $item) {
+            if (!$this->externalPostsRepository->getExternalPostByGuid($item->guid)) {
+                $newPost = $item;
+                break;
+            }
+        }
+
+        $postData = [];
+        $postData["title"] = $newPost->title;
+        $postData["content"] = $newPost->description;
+        if ($newPost->image) {
+            $postData["image"] = $newPost->image;
+        }
+
+        $newPostRow = $this->postsRepository->saveRow($postData, null);
+        $this->externalPostsRepository->saveRow([
+            "guid" => (string)$newPost->guid,
+            "post_id" => $newPostRow->id
+        ], null);
         //a pak pořešim ještě cache
 
     }

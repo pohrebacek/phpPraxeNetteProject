@@ -36,3 +36,7 @@ services:
 	- App\Module\Model\LikeComment\LikesCommentsRepository
 	- App\Module\Model\LikeComment\LikeCommentFacade
 	- App\Module\Model\LikeComment\LikeCommentMapper
+
+	- App\Module\Model\ExternalPost\ExternalPostFacade
+	- App\Module\Model\ExternalPost\ExternalPostMapper
+	- App\Module\Model\ExternalPost\ExternalPostsRepository

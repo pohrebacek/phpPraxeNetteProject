@@ -49,3 +49,12 @@ CREATE TABLE likes_comments (
     FOREIGN KEY (comment_id) REFERENCES comments (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 ) ENGINE=InnoDB CHARSET=utf8;
+
+
+
+CREATE TABLE external_posts (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    guid varchar(255) NOT NULL,
+    post_id int(11) NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES posts (id)
+) ENGINE=InnoDB CHARSET=utf8;

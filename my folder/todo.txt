@@ -11,6 +11,7 @@ NOW
 - v admindDB přidat likes_comments
 - přejmenovat všude likes na likes_posts
 - ve view details v adminDb u user přidat premium info
+- pořešit aby generování postu u řešilo jako dát text do normálního textu a ne aby tam byly vidět ty tagy
 
 
 
