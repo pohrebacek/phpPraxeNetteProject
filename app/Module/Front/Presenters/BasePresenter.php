@@ -13,6 +13,13 @@ class BasePresenter extends Presenter
         parent::startup();
         $acl = MyAuthorizator::create();
 		$this->getUser()->setAuthorizator($acl);
+
+        $session = $this->getSession('navigation');
+        $current = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
+        $previous = $session->last ?? null;
+        
+        $session->previous = $current;
+        $this->template->lastUrl = $previous;
     }
 
 }

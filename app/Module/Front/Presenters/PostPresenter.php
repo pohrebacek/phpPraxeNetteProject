@@ -11,6 +11,7 @@ use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\Security\MyAuthorizator;
 use App\Module\Model\User\UserFacade;
 use App\Module\Model\Like\LikesRepository;
+use App\Module\Model\Settings\SettingsRepository;
 use App\Service\CurrentUserService;
 use App\Module\Model\LikeComment\LikesCommentsRepository;
 
@@ -33,10 +34,18 @@ final class PostPresenter extends BasePresenter
 		private UserFacade $userFacade,
 		private LikesRepository $likesRepository,
 		private CurrentUserService $currentUser,
-		private LikesCommentsRepository $likesCommentsRepository
+		private LikesCommentsRepository $likesCommentsRepository,
+		private SettingsRepository $settingsRepository,
+        private int $charsForNonPremium = 300
 	) {
 	}
 
+	public function startup(): void
+	{
+		parent::startup();
+		$this->charsForNonPremium = (int) ($this->settingsRepository->getRowByKey("charsForNonPremium"))->value;
+		bdump($this->charsForNonPremium);
+	}
 	
 
 	public function renderShow(int $id): void
@@ -69,7 +78,7 @@ final class PostPresenter extends BasePresenter
 		if ($postDTO->premium && (!$this->currentUser->hasPremiumAccess() || !$this->userFacade->isOwnerOfPost($postDTO, $user->id) && !$this->currentUser->isAdmin())) {	//post je premium a zároveň user nemá premium, nebo uživatel neni owner postu a zároveň neni amdin
 			bdump("preview");
 			$this->template->premium = true;	//pak se nastaví že post je premium pro template
-			$this->template->postContent = $this->postFacade->getPreview($postDTO);	//a nastaví se pouze preview verze postu
+			$this->template->postContent = $this->postFacade->getPreview($postDTO, $this->charsForNonPremium);	//a nastaví se pouze preview verze postu
 		}
 
 		$this->template->post = $postDTO;

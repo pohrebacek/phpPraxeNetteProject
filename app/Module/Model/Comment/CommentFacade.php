@@ -96,30 +96,26 @@ final class CommentFacade
     {
         if ($column == "ownerUser_id" && $parameter) //parameter je jméno a ne id, uživateli se totiž bude líp hledat podle jména a ne podle id
         {
-            $user = $this->usersRepository->getRowByUsername($parameter); //takže podle jména najdu usera
-            if ($user) {
-                return $this->database->table($this->commentsRepository->getTable())->where($column, $user->id)->fetchAll(); //a podle jeho id vyhledam record postu v db
+            $users = $this->database->table($this->usersRepository->getTable())->where("username LIKE ?", "%$parameter%")->fetchPairs("id", "username"); //vrátí pole ve tvaru id => username
+            bdump($users);
+
+            if (!$users) {
+                return [];
             }
-            return $this->database->table($this->commentsRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
+            
+            return $this->database->table($this->commentsRepository->getTable())->where($column . " IN ?", array_keys($users))->fetchAll();    //není potřeba žádnej foreach protože to obstarává samotnej dotaz
         }
 
         if ($column == "post_id" && $parameter)
         {
-            $posts = $this->database->table($this->postsRepository->getTable())->where("title LIKE ?", "%$parameter%")->fetchAll();
+            $posts = $this->database->table($this->postsRepository->getTable())->where("title LIKE ?", "%$parameter%")->fetchPairs("id", "title");
             bdump($posts);
-            if ($posts) {
-                $commentsToRender = [];
-                foreach ($posts as $post) {
-                    $foundCommentRecordsByPostId = $this->database->table($this->commentsRepository->getTable())->where($column, $post->id)->fetchAll();
-                    if ($foundCommentRecordsByPostId) {
-                        $commentsToRender = $foundCommentRecordsByPostId;   //pokud v db table comments najdu comment co má post_id jako id jednoho z postů co jsem našel podle jména, tak ho vyrenderuju, jinak to znamená že ten post nemá commenty, takže ho nerederuju
-                    }
-                }
-                bdump($commentsToRender);
-                return $commentsToRender;
-            }
-            return $this->database->table($this->commentsRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
 
+            if (!$posts) {
+                return [];
+            } 
+
+            return $this->database->table($this->commentsRepository->getTable())->where($column . " IN ?", array_keys($posts))->fetchAll();
         }
         return $this->database->table($this->commentsRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
     }

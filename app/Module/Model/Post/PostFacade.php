@@ -22,8 +22,7 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         private UsersRepository $usersRepository,
         private LikesRepository $likesRepository,
         private CommentFacade $commentFacade,
-        private ExternalPostsRepository $externalPostsRepository,
-        private int $previewCharacters = 300
+        private ExternalPostsRepository $externalPostsRepository
 	) {
 	}
 
@@ -46,8 +45,8 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         return $data;
     }
 
-    public function getPreview(PostDTO $post): string {
-        return substr($post->content, 0, $this->previewCharacters);
+    public function getPreview(PostDTO $post, int $previewCharacters): string {
+        return substr($post->content, 0, $previewCharacters);
     }
 
     public function getPostsByFilter(string $column, string $parameter)

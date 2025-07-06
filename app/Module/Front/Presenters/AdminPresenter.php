@@ -223,6 +223,11 @@ final class AdminPresenter extends BasePresenter{
             ->setHtmlAttribute('type', 'number')
             ->setHtmlAttribute("class", "form-control")
             ->setDefaultValue($this->settingsParam["postsPerPage"]);
+        $form->addText('charsForNonPremium', 'Počet zobrazovaných znaků u premium příspěvků pro nepředplatitele')
+            ->setRequired('Toto pole je povinné.')
+            ->setHtmlAttribute('type', 'number')
+            ->setHtmlAttribute("class", "form-control")
+            ->setDefaultValue($this->settingsParam["charsForNonPremium"]);
 
         $form->addSubmit('submit','Uložit nastavení stránky')
              ->setHtmlAttribute("class", "btn btn-outline-primary");
@@ -238,7 +243,10 @@ final class AdminPresenter extends BasePresenter{
         bdump($data);
         if ($data->postsPerPage < 1 || $data->postsPerPage > count($this->postsRepository->getAll())) {
             $form->addError("Zadejte platný počet příspěvků");
-        } else {
+        } elseif ($data->charsForNonPremium < 1) {
+            $form->addError("Zadejte platný počet znaků");
+        }
+        else {
             $this->settingsRepository->saveSettings($data);
         }
     }

@@ -66,11 +66,17 @@
 
 
 	{if $premium}
-		{$postContent}
-		<h3>Tento obsah je jen pro přeplatitele</h3>
-		<a n:href="Shop:premium" class="btn btn-primary">Pořídit předplatné!</a>
+		<div class="postContent">
+			{$postContent}
+		</div>
+		<div class="BuyPremium">
+			<h3>Tento obsah je jen pro přeplatitele</h3>
+			<a n:href="Shop:premium" class="btn btn-primary">Pořídit předplatné!</a>
+		</div>		
 	{else}
-		{$post->content}
+		<div class="postContent">
+			{$post->content}
+		</div>
 	{/if}
 	
 
