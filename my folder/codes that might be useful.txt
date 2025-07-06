@@ -18,8 +18,28 @@
 
 
 
+//likeFacade.php
+        if ($column == "user_id" && $parameter) //parameter je jméno a ne id, uživateli se totiž bude líp hledat podle jména a ne podle id
+        {
+            $user = $this->usersRepository->getRowByUsername($parameter); //takže podle jména najdu usera
+            if ($user) {
+                return $this->database->table($this->likesRepository->getTable())->where($column, $user->id)->fetchAll(); //a podle jeho id vyhledam record postu v db
+            }
+            return $this->database->table($this->likesRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
+        }
 
-
+        if ($posts) {
+            $likesToRender = [];
+            foreach ($posts as $post) {
+                $foundLikeRecordsByPostId = $this->database->table($this->likesRepository->getTable())->where($column, $post->id)->fetchAll();
+                if ($foundLikeRecordsByPostId) {
+                    $likesToRender[] = $foundLikeRecordsByPostId;   //pokud v db table likes najdu like co má post_id jako id jednoho z postů co jsem našel podle jména, tak ho vyrenderuju, jinak to znamená že ten post nemá likes, takže ho nerederuju
+                }
+            }
+            bdump($likesToRender);
+            return $likesToRender;
+        }
+        return $this->database->table($this->likesRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
 
 
 

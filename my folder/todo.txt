@@ -12,6 +12,9 @@ NOW
 - přejmenovat všude likes na likes_posts
 - ve view details v adminDb u user přidat premium info
 - pořešit aby generování postu u řešilo jako dát text do normálního textu a ne aby tam byly vidět ty tagy
+- kontrola jestli má vygenerovanej post image nefunguje
+- přidat k postu do presenteru jméno autora 
+- upravit v adminDb pro comment že to u replyTo ukazuje id commentu
 
 
 

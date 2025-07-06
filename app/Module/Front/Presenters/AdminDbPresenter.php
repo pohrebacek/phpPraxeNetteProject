@@ -161,6 +161,9 @@ final class AdminDbPresenter extends BasePresenter {
     }
 
     public function getRecordsByFilter(string $tableName, $column, $parameter) {    //rozdělit funkci do facades, tahle funkce nebude ale každá facade bude mít svoji verzi táhle fce
+        bdump($tableName);
+        bdump($column);
+        bdump($parameter);
         if ($column == "id" && $parameter) {
             return $this->database->table($tableName)->where($column, $parameter)->fetchAll();
         }

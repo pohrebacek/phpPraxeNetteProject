@@ -11,6 +11,7 @@ use App\Module\Model\Settings\SettingsFacade;
 use App\Module\Model\Settings\SettingsRepository;
 use App\Module\Model\Base\BaseRepository;
 use App\Module\Model\ExternalPost\ExternalPostDTO;
+use App\Service\CurrentUserService;
 
 final class AdminPresenter extends BasePresenter{
     public function __construct(
@@ -21,6 +22,7 @@ final class AdminPresenter extends BasePresenter{
         private UsersRepository $usersRepository,
         private ExternalPostsRepository $externalPostsRepository,
         private Nette\Caching\Cache $blogFeedCache,
+        private CurrentUserService $currentUser,
         private array $settingsParam = []
     ) {
 
@@ -105,12 +107,15 @@ final class AdminPresenter extends BasePresenter{
         if ($newPost->image) {
             $postData["image"] = $newPost->image;
         }
+        $postData["user_id"] = $this->currentUser->getId();
 
         $newPostRow = $this->postsRepository->saveRow($postData, null);
         $this->externalPostsRepository->saveRow([
             "guid" => (string)$newPost->guid,
             "post_id" => $newPostRow->id
         ], null);
+
+        $this->flashMessage("Příspěvek byl úspěšně vygenerován", "success");
 
     }
 
