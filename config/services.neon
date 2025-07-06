@@ -40,3 +40,6 @@ services:
 	- App\Module\Model\ExternalPost\ExternalPostFacade
 	- App\Module\Model\ExternalPost\ExternalPostMapper
 	- App\Module\Model\ExternalPost\ExternalPostsRepository
+
+	blogFeedCacheStorage:
+		factory: Nette\Caching\Cache(@cache.storage, BlogFeedCache)

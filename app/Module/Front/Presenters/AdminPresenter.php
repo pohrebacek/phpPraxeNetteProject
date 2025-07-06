@@ -20,6 +20,7 @@ final class AdminPresenter extends BasePresenter{
         protected Nette\Database\Explorer $database,
         private UsersRepository $usersRepository,
         private ExternalPostsRepository $externalPostsRepository,
+        private Nette\Caching\Cache $blogFeedCache,
         private array $settingsParam = []
     ) {
 
@@ -54,14 +55,8 @@ final class AdminPresenter extends BasePresenter{
 
     }
 
-    public function 
-
-    public function handleGeneratePost(): void
+    public function downloadFeedData(string $url)
     {
-        $storage = new Nette\Caching\Storages\FileStorage('/path/to/temp');
-        $cache = new Cache($storage, "BlogFeedCache");
-        $url = "https://ancient-literature.com/category/blog/feed/";
-
         $contextOptions = [
             'ssl' => [
                 'verify_peer' => false,
@@ -69,14 +64,19 @@ final class AdminPresenter extends BasePresenter{
             ]
         ];
         $context = stream_context_create($contextOptions);
-        $content = file_get_contents("https://ancient-literature.com/category/blog/feed/", false, $context);
-        $xml = simplexml_load_string($content);
-        //tady bude cache ig
+        return file_get_contents($url, false, $context);
+    }
 
-        //přidam podmínku co kontroluje jestli už to v cache je nebo ne
-        
+    public function handleGeneratePost(): void
+    {
+        $url = "https://ancient-literature.com/category/blog/feed/";
 
+        $xml = $this->blogFeedCache->load($url, function() use ($url){    //koukne jestli v cache je něco se zadanym klíčem, jestli ne, pustí se funkce co vrácenou hodnotu dop cahce uloží
+            bdump("soubor stažen protože nebyl v cache");
+            return $this->downloadFeedData($url);
+        }, [Cache::Expire => "60 minutes"]);
 
+        $xml = simplexml_load_string($xml);
 
         $items = [];
 
@@ -111,7 +111,6 @@ final class AdminPresenter extends BasePresenter{
             "guid" => (string)$newPost->guid,
             "post_id" => $newPostRow->id
         ], null);
-        //a pak pořešim ještě cache
 
     }
 
