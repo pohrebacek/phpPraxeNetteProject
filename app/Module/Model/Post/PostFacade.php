@@ -8,6 +8,7 @@ use App\Module\Model\ExternalPost\ExternalPostsRepository;
 use App\Module\Model\Comment\CommentsRepository;
 use App\Module\Model\Post\PostDTO;
 use App\Module\Model\User\UsersRepository;
+use App\Module\Model\User\UserFacade;
 use App\Module\Model\Like\LikesRepository;
 use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\ExternalPost\ExternalPostDTO;
@@ -47,6 +48,11 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
 
     public function getPreview(PostDTO $post, int $previewCharacters): string {
         return substr($post->content, 0, $previewCharacters);
+    }
+
+    public function getOwnerUserName(PostDTO $post)
+    {
+        return $this->usersRepository->getUsernameById($post->user_id);
     }
 
     public function getPostsByFilter(string $column, string $parameter)

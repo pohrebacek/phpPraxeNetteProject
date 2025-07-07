@@ -48,6 +48,8 @@ final class AdminDbPresenter extends BasePresenter {
         $user = $this->userFacade->getUserDTO($recordId);
         bdump($user);
         $this->template->userData = $user;
+        bdump($this->userFacade->hasPremium($user));
+        $this->template->hasPremium = $this->userFacade->hasPremium($user);
 
         [$labels, $posts, $comments] = $this->userFacade->getActivityData($recordId, $range);
 

@@ -125,6 +125,8 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         return $userId == $post->user_id;
     }
 
+    
+
 
 
 

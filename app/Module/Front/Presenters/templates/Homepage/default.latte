@@ -12,7 +12,7 @@
 
 		<div class="date">{$post->created_at|date:'F j, Y'}</div>
 
-		<div>{$post->content|truncate:256}</div>
+		<div class="postContent">{$post->content|truncate:256}</div>
 	</div>
 	{*{for $page = 0; $page < $pages; $page++}
 		<a n:href="Homepage:page page => $page+1">{$page+1}</a>

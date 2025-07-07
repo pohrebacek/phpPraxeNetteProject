@@ -5,12 +5,10 @@ NOW
 - projet funkci GetLieksByFiter v likeCommentFacade (i pro ten post), co dělá a pozměnit pro comment
 - v admindDB přidat likes_comments
 - přejmenovat všude likes na likes_posts
-- ve view details v adminDb u user přidat premium info
 - pořešit aby generování postu u řešilo jako dát text do normálního textu a ne aby tam byly vidět ty tagy
 - kontrola jestli má vygenerovanej post image nefunguje
-- přidat k postu do presenteru jméno autora 
 - upravit v adminDb pro comment že to u replyTo ukazuje id commentu
-- upravit aby by navbar a butttony v něm líp reposnzivní
+- v edit ercord pro post to ukazuje id místo jména
 
 
 
@@ -35,6 +33,7 @@ PO DOKONČENÍ
 - ten dlouhej switch a ty formy dej do vlastních souborů, uděleje každej template pro jednu db
 - zkus to rozbít a pak to oprav
 - když otevřeš post a pak jdeš zpět tak tě to dá na homepage a ne na danou stránku postů
+PŘED ODEVZDÁNIM PAVLOVI PŘIPRAVIT SPEŠL DB DUMP KDE BUDE VLASTNĚ VŠE ODE MĚ
 
 
 
@@ -63,3 +62,6 @@ DONE
 - udělat settings na počet znaků pro ne premium
 - upravit rotažení button pro nepremium usery u premium postu
 - upravit aby vlastně text postu byl zarovnanej podle daný šířky postu
+- ve view details v adminDb u user přidat premium info
+- přidat k postu do presenteru jméno autora
+- upravit aby by navbar a butttony v něm líp reposnzivní

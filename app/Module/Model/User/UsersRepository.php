@@ -26,6 +26,11 @@ final class UsersRepository extends BaseRepository
         return $this->database->table($this->table)->where("email", $email)->fetch();
     }
 
+    public function getUsernameById(int $id)
+    {
+        return ($this->database->table($this->table)->where("id", $id)->fetch())->username;
+    }
+
 	
 
 	

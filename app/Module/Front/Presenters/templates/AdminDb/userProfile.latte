@@ -14,6 +14,11 @@
     <p>Uživatelské jméno: {$userData->username}</p>
     <p>Email: {$userData->email}</p>
     <p>Role: {$userData->role}</p>
+    {if $hasPremium}
+        <p>Premium: do {$userData->premiumUntil}</p>
+    {else}
+        <p>Premium: NEZAKOUPENO</p>
+    {/if}
 </div>
 <h1>Aktivita</h1>
 <div>

@@ -6,6 +6,7 @@ use Nette;
 use Nette\Application\UI\Form;
 use App\Module\Model\Post\PostsRepository;
 use App\Module\Model\Comment\CommentsRepository;
+use App\Module\Model\User\UsersRepository;
 use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\Security\MyAuthorizator;
@@ -36,6 +37,7 @@ final class PostPresenter extends BasePresenter
 		private CurrentUserService $currentUser,
 		private LikesCommentsRepository $likesCommentsRepository,
 		private SettingsRepository $settingsRepository,
+		private UsersRepository $usersRepository,
         private int $charsForNonPremium = 300
 	) {
 	}
@@ -82,6 +84,7 @@ final class PostPresenter extends BasePresenter
 		}
 
 		$this->template->post = $postDTO;
+		$this->template->postAuthor = $this->postFacade->getOwnerUserName($postDTO);
 		if ($postDTO->image){
 			$this->template->imagePath = $postDTO->image;
 		} else {
