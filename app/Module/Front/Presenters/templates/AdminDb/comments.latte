@@ -33,7 +33,7 @@
 
 {foreach $data as $line}
     <div class="border border-primary">
-        {foreach $line as $column => $value}    
+        {foreach $line as $column => $value}
             {var $isVisible = ($column|shouldDisplay:'comments')}
             {if $column == "id"}
                 {var $recordId = $value}

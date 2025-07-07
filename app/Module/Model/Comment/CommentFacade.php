@@ -4,11 +4,13 @@ namespace App\Module\Model\Comment;
 use Nette;
 use App\Module\Model\Post\PostsRepository;
 use App\Module\Model\User\UsersRepository;
+use App\Module\Model\User\UserFacade;
 use App\Module\Model\Comment\CommentsRepository;
 use App\Module\Model\Comment\CommentDTO;
 use App\Module\Model\Comment\CommentMapper;
 use App\Module\Model\Like\LikesRepository;
 use App\Module\Model\LikeComment\LikesCommentsRepository;
+use Nette\Utils\Strings;
 
 final class CommentFacade
 {
@@ -123,5 +125,13 @@ final class CommentFacade
     public function getOwnerUsername(CommentDTO $comment)
     {
         return $this->usersRepository->getUsernameById($comment->ownerUser_id);
+    }
+
+    public function getReplyToPreview(int $id)
+    {
+        $replyToComment = $this->getCommentDTO($id);
+        $replyToUser = $this->usersRepository->getUsernameById($replyToComment->ownerUser_id);
+        return $replyToUser . ": " . Strings::truncate($replyToComment->content, 30);
+        
     }
 }

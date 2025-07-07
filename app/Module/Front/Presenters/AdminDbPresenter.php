@@ -113,6 +113,15 @@ final class AdminDbPresenter extends BasePresenter {
         {
             $this->template->filterInput = $q;
         }
+        bdump($data);
+        foreach ($data as $comment) {   //i když to je arry tak se to nepřepíše plus v tom ted nemužeš přepisovat takže problém
+            bdump($comment["replyTo"]);
+            if ($comment["replyTo"]) {
+                bdump($this->commentFacade->getReplyToPreview($comment["replyTo"]));
+                $comment["replyTo"] = $this->commentFacade->getReplyToPreview($comment["replyTo"]);
+            }
+        }
+        bdump($data);
         $this->template->data = $this->commentFacade->filterCommentsData($data);
     }
 
