@@ -119,4 +119,9 @@ final class CommentFacade
         }
         return $this->database->table($this->commentsRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
     }
+
+    public function getOwnerUsername(CommentDTO $comment)
+    {
+        return $this->usersRepository->getUsernameById($comment->ownerUser_id);
+    }
 }

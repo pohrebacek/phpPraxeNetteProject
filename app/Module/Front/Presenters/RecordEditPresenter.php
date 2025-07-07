@@ -101,11 +101,14 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         switch ($dbName) {
             case "posts":
                 $post = $this->postFacade->getPostDTO($recordId);
+                $postArray = get_object_vars($post);
+                $postArray["username"] = $this->postFacade->getOwnerUserName($post);
+                bdump($postArray);
                 if (!$post) {
                    $this->error('Post not found');
                 }
                 $this->getComponent('postForm')
-                    ->setDefaults($post);
+                    ->setDefaults($postArray);
                 break;
 
             case "comments":
@@ -155,7 +158,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
 
         $form->addHidden('templateIsAdd', $this->templateIsAdd);
 
-        $form->addText("user_id", "Jméno uživatele za kterého přidat post: ")
+        $form->addText("username", "Jméno uživatele za kterého přidat post: ")
              ->setRequired("Toto pole je povinné")
              ->setHtmlAttribute("class", "form-control");
         $form->addText('title', 'Titulek: ')
@@ -224,14 +227,18 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         {
             $data = (array) $form->getValues();
             $data["image"] = $this->getImageFromForm();
+            bdump($data);
         
-            if ($data["templateIsAdd"] == "false") {
+            if ($data["templateIsAdd"] == "false") {    //záznam se mění
                 $recordId = $_GET['recordId'];
                 unset($data["templateIsAdd"]);
+                $data["user_id"] = ($this->usersRepository->getRowByUsername($data["username"]))->id;
+                unset($data["username"]);
                 $this->postsRepository->saveRow($data, $recordId);
         
             } else {
-                $data["user_id"] = ($this->usersRepository->getRowByUsername($data["user_id"]))->id;
+                $data["user_id"] = ($this->usersRepository->getRowByUsername($data["username"]))->id;
+                unset($data["username"]);
                 unset($data["templateIsAdd"]);
                 $post = $this->postsRepository
                     ->saveRow($data, null);
@@ -241,6 +248,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         } catch (AbortException $e) {   //bez tohohle to bralo exception i když vše bylo ok
             $this->redirect("Admin:database", $this->postsRepository->getTable());
         } catch (Exception $e) {
+            bdump($e);
             $form->addError("Zadejte platné údaje");
         }
 
@@ -261,7 +269,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
              ->setRequired("Toto pole je povinné")
              ->setHtmlAttribute("type", "number")
              ->setHtmlAttribute("class", "form-control");
-        $form->addText("ownerUser_id", "Jméno uživatele za kterého napsat comment")
+        $form->addText("name", "Jméno uživatele za kterého napsat comment")
              ->setRequired("Toto pole je povinné")
              ->setHtmlAttribute("class", "form-control");
         $form->addTextArea('content', 'Komentář:')
@@ -296,7 +304,8 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         {
             bdump($data->templateIsAdd);
 
-		    $user = $this->usersRepository->getRowByUsername($data->ownerUser_id);
+		    $user = $this->usersRepository->getRowByUsername($data->name);
+            $user = $this->userFacade->getUserDTO($user->id);
             if ($user == null){
                 throw new Exception;
             }
@@ -308,7 +317,9 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
 		    if($data->templateIsAdd == "false") {
                 $recordId = $_GET['recordId'];
 		    	unset($data->templateIsAdd);	//tady se smaže to hidden vlastnost aby později nedělala bordel
-		    	$this->commentsRepository->saveRow((array)$data, $recordId);
+		    	$data->ownerUser_id = $user->id;
+                $data->email = $user->email;
+                $this->commentsRepository->saveRow((array)$data, $recordId);
 		    	$comment = $this->commentFacade->getCommentDTO($recordId);
 		    }
             else {
@@ -331,6 +342,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         } catch (AbortException $e) {   //bez tohohle to bralo exception i když vše bylo ok
             $this->redirect("Admin:database", $this->commentsRepository->getTable());
         } catch (Exception $e) {
+            bdump($e);
             $form->addError("Zadejte platné údaje");
         }
         

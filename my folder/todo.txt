@@ -8,7 +8,7 @@ NOW
 - pořešit aby generování postu u řešilo jako dát text do normálního textu a ne aby tam byly vidět ty tagy
 - kontrola jestli má vygenerovanej post image nefunguje
 - upravit v adminDb pro comment že to u replyTo ukazuje id commentu
-- v edit ercord pro post to ukazuje id místo jména
+- ve filtraci v admin db přidat možnost řadit podle data (všude podle přidání, u usera podle register nebo login)
 
 
 
@@ -65,3 +65,4 @@ DONE
 - ve view details v adminDb u user přidat premium info
 - přidat k postu do presenteru jméno autora
 - upravit aby by navbar a butttony v něm líp reposnzivní
+- v edit ercord pro post to ukazuje id místo jména
