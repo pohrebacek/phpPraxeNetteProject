@@ -5,10 +5,8 @@ NOW
 - projet funkci GetLieksByFiter v likeCommentFacade (i pro ten post), co dělá a pozměnit pro comment
 - v admindDB přidat likes_comments
 - přejmenovat všude likes na likes_posts
-- pořešit aby generování postu u řešilo jako dát text do normálního textu a ne aby tam byly vidět ty tagy
 - kontrola jestli má vygenerovanej post image nefunguje
 - ve filtraci v admin db přidat možnost řadit podle data (všude podle přidání, u usera podle register nebo login)
-- upravit šipečky back aby odkazovaly fakt na poslední url
 
 
 
@@ -67,3 +65,4 @@ DONE
 - upravit aby by navbar a butttony v něm líp reposnzivní
 - v edit ercord pro post to ukazuje id místo jména
 - upravit v adminDb pro comment že to u replyTo ukazuje id commentu
+- pořešit aby generování postu u řešilo jako dát text do normálního textu a ne aby tam byly vidět ty tagy

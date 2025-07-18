@@ -10,7 +10,7 @@
 
 		<div class="date">{$post->created_at|date:'F j, Y'}</div>
 
-		<div>{$post->content|truncate:256}</div>
+		<div>{$post->content|truncate:256|noescape}</div>
 	</div>
     
 	{*{for $i = 0; $i < $pages; $i++}

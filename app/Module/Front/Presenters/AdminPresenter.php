@@ -103,7 +103,13 @@ final class AdminPresenter extends BasePresenter{
 
         $postData = [];
         $postData["title"] = $newPost->title;
-        $postData["content"] = $newPost->description;
+
+        $namespaces = $newPost->getNamespaces(true);
+        $contentEncoded = $newPost->children($namespaces['content'])->encoded;
+        $postData["content"] = (string) $contentEncoded;
+
+
+
         if ($newPost->image) {
             $postData["image"] = $newPost->image;
         }

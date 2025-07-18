@@ -96,6 +96,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
             'settings' => 'settingsForm'
         ];
         $this->template->dbName = $dbName;
+        $this->template->isCommentReply = null;
         
 
         switch ($dbName) {
