@@ -11,8 +11,7 @@
 		{/if}
 	
 		<div>{$comment->content}</div>
-		<a n:href="reply!, commentId => $comment->id" n:if="$user->isLoggedIn()" class="btn btn-primary">Odpovědět na komentář OLD</a>
-		<a href="#" 
+		<a href="#" 	{* n:href refreshuje stránku, plus potřebujeme pro script třídu show-reply-form a atribut data-comment-id *}
 		   class="btn btn-primary show-reply-form" 
 		   data-comment-id="{$comment->id}">
 		   Odpovědět na komentář
@@ -33,7 +32,7 @@
 	</div>
 
 	{snippet "commentFormSnippet-$comment->id"}
-	    <div id="reply-form-{$comment->id}" style="display: none;">
+	    <div id="reply-form-{$comment->id}" style="display: none;">	{* místo podmínky zde je div, co se zobrazí po vyhodnocení js scriptem *}
 	        Odpovědět uživateli {$comment->name}:
 	        {control commentForm}
 	    </div>

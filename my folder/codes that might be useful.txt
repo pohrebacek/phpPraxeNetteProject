@@ -94,3 +94,5 @@
 			{control commentForm}
 		{/if}
 	{/snippet}
+
+    <a n:href="reply!, commentId => $comment->id" n:if="$user->isLoggedIn()" class="btn btn-primary">Odpovědět na komentář OLD</a>
