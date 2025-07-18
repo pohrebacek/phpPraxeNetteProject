@@ -56,7 +56,10 @@ final class CommentFacade
     public function filterCommentsData($data)
     {
         foreach($data as $index => $line){
-            $lineData = $line->toArray();
+            $lineData = $line;
+            if (!is_array($line)){
+                $lineData = $line->toArray();
+            }
             foreach($lineData as $column => $value) {
                 if ($column == "name") {
                     $lineData["Od uživatele: "] = ($this->usersRepository->getRowByUsername($value))->username;

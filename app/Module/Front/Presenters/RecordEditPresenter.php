@@ -115,7 +115,13 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
                 $comment = $this->commentFacade->getCommentDTO($recordId);
                 if (!$comment) {
                    $this->error('Comment not found');
-                }
+                } 
+                $this->template->replyToId = $comment->replyTo ?? null; //Pokud $comment->replyTo existuje, uloží ho. Pokud neexistuje (je null), uloží null
+                $this->template->replyToPreview = $comment->replyTo //Pokud $comment->replyTo není null, zavolá getReplyToPreview() a uloží výsledek. Pokud je null, uloží jen null.
+                    ? $this->commentFacade->getReplyToPreview($comment->replyTo)
+                    : null;
+                $this->template->isCommentReply = $comment->replyTo; 
+                bdump($comment->replyTo);  
                 $this->getComponent('commentForm')
                     ->setDefaults($comment);
                 break;
@@ -147,6 +153,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
                     ->setDefaults($user);
                 break;
           }
+
     }
 
 

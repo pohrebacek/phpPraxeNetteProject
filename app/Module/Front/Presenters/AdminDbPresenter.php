@@ -100,6 +100,7 @@ final class AdminDbPresenter extends BasePresenter {
     public function renderComments(): void
     {
         $data = [];
+        $updatedData = [];
         $q = $this->getParameter("q");
         if (isset($_GET["filter"])) {
             $filter = $_GET["filter"];
@@ -115,14 +116,18 @@ final class AdminDbPresenter extends BasePresenter {
         }
         bdump($data);
         foreach ($data as $comment) {   //i když to je arry tak se to nepřepíše plus v tom ted nemužeš přepisovat takže problém
-            bdump($comment["replyTo"]);
-            if ($comment["replyTo"]) {
-                bdump($this->commentFacade->getReplyToPreview($comment["replyTo"]));
-                $comment["replyTo"] = $this->commentFacade->getReplyToPreview($comment["replyTo"]);
+            $commentArray = $comment->toArray();
+            bdump($commentArray["replyTo"]);
+            if ($commentArray["replyTo"]) {
+                bdump($this->commentFacade->getReplyToPreview($commentArray["replyTo"]));
+                $commentArray["replyToComment"] = $this->commentFacade->getReplyToPreview($commentArray["replyTo"]);
+            } else {
+                unset($commentArray["replyTo"]);
             }
+            $updatedData[] = $commentArray; 
         }
         bdump($data);
-        $this->template->data = $this->commentFacade->filterCommentsData($data);
+        $this->template->data = $this->commentFacade->filterCommentsData($updatedData);
     }
 
     public function renderLikes(): void

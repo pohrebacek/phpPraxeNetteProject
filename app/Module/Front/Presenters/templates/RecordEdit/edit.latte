@@ -12,3 +12,6 @@
 <div class="edit">
     {control $dbNames[$dbName]}
 </div>
+{if $isCommentReply}
+    <div>Odpověď na: <a n:href="RecordEdit:edit recordId => $replyToId, dbName => 'comments'">{$replyToPreview}</a></div>
+{/if}

@@ -45,6 +45,10 @@
                 <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $postId, dbName => 'posts'">{$value}</a></div>
             {elseif $column == "Od uživatele: "}
                 <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $userId, dbName => 'users'">{$value}</a></div>            
+            {elseif $column == "replyTo"}
+                {var $commentId = $value}
+            {elseif $column == "replyToComment"}
+                <div class="record">{$column} = <a n:href="RecordEdit:edit recordId => $commentId, dbName => 'comments'">{$value}</a></div>
             {elseif $isVisible}
                 <div class="record">{$column} = {$value}</div>
             {/if}
