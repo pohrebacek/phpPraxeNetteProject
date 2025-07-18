@@ -84,3 +84,13 @@
 //šipečka back na previous url
     <a href="{$presenter->getSession()->getSection('navigation')->previousUrl}"></a>
 
+
+
+
+//Post:show
+	{snippet "commentFormSnippet-$comment->id"}
+		{if $showReplyCommentForm == "true" && $comment->id == $replyCommentId}
+			Odpovědět uživateli {$comment->name}:
+			{control commentForm}
+		{/if}
+	{/snippet}

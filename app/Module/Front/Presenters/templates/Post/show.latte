@@ -11,7 +11,12 @@
 		{/if}
 	
 		<div>{$comment->content}</div>
-		<a n:href="reply!, commentId => $comment->id" n:if="$user->isLoggedIn()" class="btn btn-primary">Odpovědět na komentář</a>
+		<a n:href="reply!, commentId => $comment->id" n:if="$user->isLoggedIn()" class="btn btn-primary">Odpovědět na komentář OLD</a>
+		<a href="#" 
+		   class="btn btn-primary show-reply-form" 
+		   data-comment-id="{$comment->id}">
+		   Odpovědět na komentář
+		</a>
 		<a n:href="Post:editComment $comment->id" n:if="$user->id == $comment->ownerUser_id || $user->roles[0] == 'admin'" class="btn btn-outline-primary">Upravit komentář</a>
 		<a n:href="Post:deleteComment $comment->id" n:if="$user->id == $comment->ownerUser_id || $user->roles[0] == 'admin'" class="btn btn-outline-danger">Smazat komentář</a>
 	</div>
@@ -28,11 +33,12 @@
 	</div>
 
 	{snippet "commentFormSnippet-$comment->id"}
-		{if $showReplyCommentForm == "true" && $comment->id == $replyCommentId}
-			Odpovědět uživateli {$comment->name}:
-			{control commentForm}
-		{/if}
+	    <div id="reply-form-{$comment->id}" style="display: none;">
+	        Odpovědět uživateli {$comment->name}:
+	        {control commentForm}
+	    </div>
 	{/snippet}
+
 
 	{if isset($replies[$comment->id])}
 		<div class="replies">
@@ -46,7 +52,7 @@
 
 {block content}
 
-<p><a n:href="Homepage:default">
+<p><a href="{$presenter->getSession()->getSection('navigation')->previousUrl}">
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4" width="30" height="30">
         <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd" />
     </svg>

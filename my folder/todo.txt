@@ -1,12 +1,12 @@
 https://rtsoftsro-my.sharepoint.com/:w:/g/personal/hora_rtsoft_cz/EZZqvnQ53kZEpLXyT6hhTFEBeH6eyKLRB9Axde1YUaYXIA?rtime=3q8ttaBV3Ug
 
 NOW
-- zobrazení reply form refreshne stránku - je to annoying
 - projet funkci GetLieksByFiter v likeCommentFacade (i pro ten post), co dělá a pozměnit pro comment
 - v admindDB přidat likes_comments
 - přejmenovat všude likes na likes_posts
 - kontrola jestli má vygenerovanej post image nefunguje
 - ve filtraci v admin db přidat možnost řadit podle data (všude podle přidání, u usera podle register nebo login)
+- šipečka back v post:show -> prostě když dam nějekaou akci jako reply tak to je taky v url takže se to pak vrací na akce
 
 
 
@@ -30,7 +30,6 @@ PO DOKONČENÍ
 - doplnit všude flashmessages
 - ten dlouhej switch a ty formy dej do vlastních souborů, uděleje každej template pro jednu db
 - zkus to rozbít a pak to oprav
-- když otevřeš post a pak jdeš zpět tak tě to dá na homepage a ne na danou stránku postů
 PŘED ODEVZDÁNIM PAVLOVI PŘIPRAVIT SPEŠL DB DUMP KDE BUDE VLASTNĚ VŠE ODE MĚ
 
 
@@ -66,3 +65,5 @@ DONE
 - v edit ercord pro post to ukazuje id místo jména
 - upravit v adminDb pro comment že to u replyTo ukazuje id commentu
 - pořešit aby generování postu u řešilo jako dát text do normálního textu a ne aby tam byly vidět ty tagy
+- když otevřeš post a pak jdeš zpět tak tě to dá na homepage a ne na danou stránku postů
+- zobrazení reply form refreshne stránku - je to annoying
