@@ -78,3 +78,9 @@
 
             
     }
+
+
+
+//šipečka back na previous url
+    <a href="{$presenter->getSession()->getSection('navigation')->previousUrl}"></a>
+
