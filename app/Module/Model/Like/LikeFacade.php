@@ -69,14 +69,14 @@ final class LikeFacade
 
         if ($column == "post_id" && $parameter)
         {
-            $posts = $this->database->table($this->postsRepository->getTable())->where("title LIKE ?", "%$parameter%")->fetchPairs("id", "title");
+            $posts = $this->database->table($this->postsRepository->getTable())->where("title LIKE ?", "%$parameter%")->fetchPairs("id", "title");  //najdu posty co jsou podobný $parameter, a dam je do pole ve tvaru id => title
             bdump($posts);
 
             if (!$posts) {
                 return [];
             } 
 
-            return $this->database->table($this->likesRepository->getTable())->where($column . " IN ?", array_keys($posts))->fetchAll();
+            return $this->database->table($this->likesRepository->getTable())->where($column . " IN ?", array_keys($posts))->fetchAll();    //vrátí post_likes, kterých post_id je v keys těch postů co sem našel podle title
         }
         return $this->database->table($this->likesRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
     }

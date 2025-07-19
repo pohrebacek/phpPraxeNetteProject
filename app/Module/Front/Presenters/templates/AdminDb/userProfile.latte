@@ -31,7 +31,7 @@
 <h2>Aktivita v průběhu času</h2>
 <form id="range-form" method="get">
   <label for="range-select">Rozsah dat:</label>
-  <select id="range-select" name="range" onchange="this.form.submit()">
+  <select id="range-select" name="range" onchange="this.form.submit()" class="form-select">
       <option value="6" n:attr="selected => isset($_GET['range']) && $_GET['range'] == '6'">Posledních 6 měsíců</option>
       <option value="12" n:attr="selected => isset($_GET['range']) && $_GET['range'] == '12'">Poslední rok</option>
       <option value="years" n:attr="selected => isset($_GET['range']) && $_GET['range'] == 'years'">Po rocích od roku registrace</option>

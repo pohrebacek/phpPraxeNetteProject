@@ -16,6 +16,7 @@ use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\Settings\SettingsFacade;
 use App\Module\Model\Like\LikeFacade;
+use App\Module\Model\LikeComment\LikeCommentFacade;
 
 final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou nadepsaná komentářem "POST/COMMENT... FORM"
 {
@@ -32,7 +33,8 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         private PostFacade $postFacade,
         private CommentFacade $commentFacade,
         private LikeFacade $likeFacade,
-        private SettingsFacade $settingsFacade
+        private SettingsFacade $settingsFacade,
+        private LikeCommentFacade $likeCommentFacade
     ) {}
 
     public function renderAdd($dbName): void
@@ -42,7 +44,8 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
             'comments' => "commentForm",
             'likes' => "likeForm",
             'users' => 'userForm',
-            'settings' => 'settingsForm'
+            'settings' => 'settingsForm',
+            'likes_comments' => 'likeCommentForm'
         ];
         $this->templateIsAdd = "true";
         $this->template->dbName = $dbName;
@@ -91,7 +94,6 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         $this->template->dbNames = [
             'posts' => "postForm",
             'comments' => "commentForm",
-            'likes' => "likeForm",
             'users' => 'userForm',
             'settings' => 'settingsForm'
         ];
@@ -125,15 +127,6 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
                 bdump($comment->replyTo);  
                 $this->getComponent('commentForm')
                     ->setDefaults($comment);
-                break;
-
-            case "likes":
-                $like = $this->likeFacade->getLikeDTO($recordId);
-                if (!$like) {
-                   $this->error('Like not found');
-                }
-                $this->getComponent('likeForm')
-                    ->setDefaults($like);
                 break;
 
             case "settings":
@@ -357,6 +350,20 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         
     	
 	}
+
+
+
+    //LIKE COMMENT FORM
+    protected function createComponentLikeCommentForm(): Form
+    {
+        $form = new Form;
+        $form->addHidden('templateIsAdd', $this->templateIsAdd);
+        $form->addText('comment_id', 'Id komentáře kterému like přidat')
+             ->setRequired("Toto pole je povinné")
+             ->setHtmlAttribute("type", "number")
+             ->setHtmlAttribute("class", "form-control");
+        return $form;
+    }
 
 
 

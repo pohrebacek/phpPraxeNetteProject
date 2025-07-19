@@ -4,8 +4,6 @@ NOW
 - projet funkci GetLieksByFiter v likeCommentFacade (i pro ten post), co dělá a pozměnit pro comment
 - v admindDB přidat likes_comments
 - přejmenovat všude likes na likes_posts
-- kontrola jestli má vygenerovanej post image nefunguje
-- ve filtraci v admin db přidat možnost řadit podle data (všude podle přidání, u usera podle register nebo login)
 - šipečka back v post:show -> prostě když dam nějekaou akci jako reply tak to je taky v url takže se to pak vrací na akce
 
 
@@ -67,3 +65,5 @@ DONE
 - pořešit aby generování postu u řešilo jako dát text do normálního textu a ne aby tam byly vidět ty tagy
 - když otevřeš post a pak jdeš zpět tak tě to dá na homepage a ne na danou stránku postů
 - zobrazení reply form refreshne stránku - je to annoying
+- kontrola jestli má vygenerovanej post image nefunguje
+- ve filtraci v admin db přidat možnost řadit podle data (všude podle přidání, u usera podle register)

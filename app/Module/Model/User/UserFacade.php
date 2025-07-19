@@ -125,7 +125,17 @@ final class UserFacade  //facade je komplexnější práci s nějakym repository
         return $userId == $post->user_id;
     }
 
-    
+    public function sortUsers(array $users, string $sort)
+    {
+        bdump($sort);
+        if ($sort == "DESC") {
+            usort($users, function($a, $b) {
+                return strtotime($b->registered_at) - strtotime($a->registered_at);
+            });
+        }
+
+        return $users;
+    }
 
 
 

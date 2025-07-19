@@ -4,6 +4,7 @@ namespace App\Module\Front\Presenters;
 use Nette;
 use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Like\LikeFacade;
+use App\Module\Model\LikeComment\LikeCommentFacade;
 use App\Module\Model\User\UserFacade;
 use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\User\UsersRepository;
@@ -18,7 +19,8 @@ final class AdminDbPresenter extends BasePresenter {
         private CommentFacade $commentFacade,
         private UsersRepository $usersRepository,
         private PostsRepository $postsRepository,
-        private UserFacade $userFacade
+        private UserFacade $userFacade,
+        private LikeCommentFacade $likeCommentFacade
     ) {
 
     }
@@ -66,6 +68,9 @@ final class AdminDbPresenter extends BasePresenter {
     public function renderPosts(): void 
     {
         $q = $this->getParameter("q");
+        $sort = $this->getHttpRequest()->getQuery('sort') ?? 'ASC';
+
+        bdump($sort);
         bdump($q);
         $data = [];
         if (isset($_GET["filter"])) {
@@ -75,11 +80,10 @@ final class AdminDbPresenter extends BasePresenter {
         } else {
             $data = $this->getAllByTableName("posts");
         }
+        
+        $data = $this->postFacade->sortPosts($data, $sort);
 
-        
-        
-        bdump($data);
-        //$this->template->data = $data;
+
 
         //DEBUG
         foreach($data as $line){
@@ -102,6 +106,8 @@ final class AdminDbPresenter extends BasePresenter {
         $data = [];
         $updatedData = [];
         $q = $this->getParameter("q");
+        $sort = $this->getHttpRequest()->getQuery('sort') ?? 'ASC';
+
         if (isset($_GET["filter"])) {
             $filter = $_GET["filter"];
             bdump($filter);
@@ -109,13 +115,15 @@ final class AdminDbPresenter extends BasePresenter {
         } else {
             $data = $this->getAllByTableName("comments");
         }
+
+        $data = $this->commentFacade->sortComments($data, $sort);
         
         if ($q) 
         {
             $this->template->filterInput = $q;
         }
         bdump($data);
-        foreach ($data as $comment) {   //i když to je arry tak se to nepřepíše plus v tom ted nemužeš přepisovat takže problém
+        foreach ($data as $comment) {   
             $commentArray = $comment->toArray();
             bdump($commentArray["replyTo"]);
             if ($commentArray["replyTo"]) {
@@ -150,10 +158,32 @@ final class AdminDbPresenter extends BasePresenter {
         $this->template->data = $this->likeFacade->filterLikesData($data);
     }
 
+    public function renderLikesComments(): void
+    {
+        $data = [];
+        $q = $this->getParameter("q");
+        if (isset($_GET["filter"]))
+        {
+            $filter = $_GET["filter"];
+            bdump($filter);
+            $data = $this->likeCommentFacade->getLikesByFilter($filter, $q);
+        } else {
+            $data = $this->getAllByTableName("likes_comments");
+        }
+
+        if ($q)
+        {
+            $this->template->filterInput = $q;
+        }
+        $this->template->data = $this->likeCommentFacade->filterLikesData($data);
+    }
+
     public function renderUsers(): void
     {
         $data = [];
         $q = $this->getParameter("q");
+        $sort = $this->getHttpRequest()->getQuery('sort') ?? 'ASC';
+
         if (isset($_GET["filter"]))
         {
             $filter = $_GET["filter"];
@@ -162,6 +192,8 @@ final class AdminDbPresenter extends BasePresenter {
         } else {
             $data = $this->getAllByTableName("users");
         }
+
+        $data = $this->userFacade->sortUsers($data, $sort);
 
         if ($q)
         {
@@ -258,4 +290,6 @@ final class AdminDbPresenter extends BasePresenter {
                 return $data;
         }
     }
+
+
 }

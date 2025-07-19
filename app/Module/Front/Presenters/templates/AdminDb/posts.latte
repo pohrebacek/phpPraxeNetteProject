@@ -32,7 +32,14 @@
         </div>
     </form>
 
-    <button class="btn btn-primary">pico1</button>
+    
+        <form id="range-form" method="get">
+          <select id="sort-select" name="sort" onchange="this.form.submit()" class="form-select">
+              <option value="ASC" n:attr="selected => isset($_GET['sort']) && $_GET['sort'] == 'ASC'">Od nejstaršího</option>
+              <option value="DESC" n:attr="selected => isset($_GET['sort']) && $_GET['sort'] == 'DESC'">Od nejnovějšího</option>
+          </select>
+        </form>
+    
 </div>
 
 

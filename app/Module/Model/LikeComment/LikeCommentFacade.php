@@ -27,19 +27,22 @@ final class LikeCommentFacade
     {
         foreach($data as $index => $line){
             $lineData = $line->toArray();
+            bdump($lineData);
             foreach($lineData as $column => $value) {
                 if ($column == "user_id") {
                     $lineData["Od uživatele: "] = ($this->usersRepository->getRowById($value))->username;
                 } elseif ($column == "comment_id") {
-                    $lineData["U komentáře: "] = ($this-> commentsRepository->getRowById($value))->title;
+                    $lineData["U komentáře: "] = ($this-> commentsRepository->getRowById($value))->content;
+                    bdump(($this-> commentsRepository->getRowById($value)));
                 }
             }
             $data[$index] = $lineData;
         }
+        bdump($data);
         return $data;
     }
 
-    public function getLikeDTO(int $id): LikeCommentDTO|null
+    public function getLikeCommentDTO(int $id): LikeCommentDTO|null
     {
         $likeRow = $this->likesCommentsRepository->getRowById($id);
         if ($likeRow){

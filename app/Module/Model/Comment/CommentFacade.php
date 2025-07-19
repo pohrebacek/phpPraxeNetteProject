@@ -137,4 +137,16 @@ final class CommentFacade
         return $replyToUser . ": " . Strings::truncate($replyToComment->content, 30);
         
     }
+
+    public function sortComments(array $comments, string $sort)
+    {
+        bdump($sort);
+        if ($sort == "DESC") {
+            usort($comments, function($a, $b) {
+                return strtotime($b->created_at) - strtotime($a->created_at);
+            });
+        }
+
+        return $comments;
+    }
 }

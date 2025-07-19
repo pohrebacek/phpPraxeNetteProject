@@ -97,6 +97,7 @@ final class AdminPresenter extends BasePresenter{
         foreach($items as $item) {
             if (!$this->externalPostsRepository->getExternalPostByGuid($item->guid)) {
                 $newPost = $item;
+                bdump($newPost);
                 break;
             }
         }

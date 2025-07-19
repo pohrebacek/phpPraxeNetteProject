@@ -55,7 +55,7 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         return $this->usersRepository->getUsernameById($post->user_id);
     }
 
-    public function getPostsByFilter(string $column, string $parameter)
+    public function getPostsByFilter(string $column, $parameter)
     {
         if ($column == "id" && $parameter) {
             return $this->database->table($this->postsRepository->getTable())->where($column, $parameter)->fetchAll();
@@ -122,6 +122,18 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
             ->where("user_id", $userId)
             ->order("created_at DESC")
             ->fetch();
+    }
+
+    public function sortPosts(array $posts, string $sort)
+    {
+        bdump($sort);
+        if ($sort == "DESC") {
+            usort($posts, function($a, $b) {
+                return strtotime($b->created_at) - strtotime($a->created_at);
+            });
+        }
+
+        return $posts;
     }
 
 
