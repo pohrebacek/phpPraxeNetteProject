@@ -36,7 +36,7 @@ final class HomepagePresenter extends BasePresenter
     public function renderDefault(): void
     {	
 		$numberOfPosts = $this->postsRepository->getNumberOfRows();	//získá počet všech záznamů z tabulku posts
-		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, 0);	//vezme z konce tabulky (jeden tedy od nejnovější po nejstarší) "howMany" postů a přeskočí "from" postů
+		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, 0);	//vezme z konce tabulky (jedem tedy od nejnovější po nejstarší) "howMany" postů a přeskočí "from" postů
 		$this->template->pages = $this->getNumberOfPages();
 
 		bdump($this->currentUser->hasPremiumAccess());
@@ -49,11 +49,11 @@ final class HomepagePresenter extends BasePresenter
 		bdump($this->restPage($numberOfPosts));
     }
 
-	public function renderPage(int $page)
+	public function renderPage(int $page)	//vezme číslo page, na kterou má skočit
 	{
-		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, ($page-1)*$this->postsPerPage);
+		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, ($page-1)*$this->postsPerPage);	//vezme "postsPerPage" postů od pozice page na kterou skočit -1 bcs se jede od 0
 		bdump($page);
-		$this->template->page =$page;
+		$this->template->page =$page;	//tempplatu se předá aktuální page na kterou se skáče
 		$numberOfPosts = $this->postsRepository->getNumberOfRows();
 		$this->template->pages = $this->getNumberOfPages();
 		bdump((int) $numberOfPosts/$this->postsPerPage + $this->restPage($numberOfPosts));
@@ -104,7 +104,7 @@ final class HomepagePresenter extends BasePresenter
 		
 	}
 
-	public function getNumberOfPages(){
+	public function getNumberOfPages(){	//spočítá počet stránek na základě počtu postů v db a počtu postů co se můžou zobrazit na jedné stránce 
 		return (int) ($this->postsRepository->getNumberOfRows()/$this->postsPerPage + $this->restPage($this->postsRepository->getNumberOfRows()));
 	}
 
