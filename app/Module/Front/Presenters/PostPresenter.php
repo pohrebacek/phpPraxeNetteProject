@@ -85,11 +85,7 @@ final class PostPresenter extends BasePresenter
 
 		$this->template->post = $postDTO;
 		$this->template->postAuthor = $this->postFacade->getOwnerUserName($postDTO);
-		if ($postDTO->image){
-			$this->template->imagePath = $postDTO->image;
-		} else {
-			$this->template->imagePath = null;
-		}
+		$this->template->imagePath = $this->postFacade->getImagePath($postDTO);
 
 
 		$this->template->comments = $post->related('comments')->where('replyTo IS NULL')->order('created_at');	//related prostě zjistí jaký záznamy z uvedený tabulky jsou vázaný na záznam co funcki volá 

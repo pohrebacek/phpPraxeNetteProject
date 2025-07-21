@@ -136,5 +136,13 @@ final class PostFacade  //facade je komplexnější práci s nějakym repository
         return $posts;
     }
 
+    public function getImagePath(PostDTO $post)
+    {
+        if ($post->image){
+			return $post->image;
+		}
+        return null;
+    }
+
 
 }
