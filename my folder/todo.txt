@@ -18,7 +18,6 @@ PO DOKONČENÍ
 - v nette nastavit práva pro zobrazování stránek (že se přes odkaz nedostanu kam nemam)
 - předělat vzhled addError na něco hezčího 
 - doplnit všude flashmessages
-- ten dlouhej switch a ty formy dej do vlastních souborů, uděleje každej template pro jednu db
 - zkus to rozbít a pak to oprav
 PŘED ODEVZDÁNIM PAVLOVI PŘIPRAVIT SPEŠL DB DUMP KDE BUDE VLASTNĚ VŠE ODE MĚ
 
@@ -67,3 +66,4 @@ DONE
 			$this->template->imagePath = null;
 		}
 ) asi
+- ten dlouhej switch a ty formy dej do vlastních souborů, uděleje každej template pro jednu db

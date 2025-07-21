@@ -70,11 +70,11 @@ class BaseRepository
     
     /**
      * Summary of saveRow
-     * @param array<string, mixed> $data
-     * @param mixed $id
+     * @param array<string, ?int> $data
+     * @param ?int $id
      * @return Nette\Database\Table\ActiveRow|null
      */
-    public function saveRow(array $data, mixed $id): ActiveRow|null
+    public function saveRow(array $data, ?int $id): ActiveRow|null
     {
         if (!$id || !$this->getRowById($id)){
             $row = $this->database->table($this->table)->insert($data);
