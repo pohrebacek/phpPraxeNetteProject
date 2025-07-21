@@ -1,0 +1,31 @@
+{if $currentPage > 1}
+    <a n:href="changePage! 1"><<</a>
+    <a n:href="changePage! page => (int)currentPage - 1"><</a>
+{/if}
+
+<a>{$currentPage}/{$totalPages}</a>
+
+{if $currentPage < $totalPages}
+    <a n:href="changePage! page => (int)currentPage+1">></a>
+    <a n:href="changePage! $totalPages">>></a>
+{/if}
+
+
+
+{*    <div class="pageSelector">
+        {if $page > 1}
+        <a n:href="Homepage:page page => 1" class="btn btn-outline-primary"><<</a>
+        <a n:href="Homepage:page page => $page-1" class="btn btn-outline-primary"><</a>
+        {/if}
+        <a>{$page}/{$pages}</a>
+        {if $page < $pages}
+        <a n:href="Homepage:page page => $page+1" class="btn btn-outline-primary">></a>
+        <a n:href="Homepage:page page => $pages" class="btn btn-outline-primary">>></a>
+        {/if}
+    </div>
+
+    <div class="pageSelector">
+        <a>1/{$pages}</a>
+        <a n:href="Homepage:page page => 2" class="btn btn-outline-primary">></a>
+        <a n:href="Homepage:page page => $pages" class="btn btn-outline-primary">>></a>
+    </div> *}

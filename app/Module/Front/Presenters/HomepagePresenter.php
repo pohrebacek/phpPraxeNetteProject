@@ -13,6 +13,7 @@ use Nette\Application\UI\Form;
 use App\Module\Model\Settings\SettingsRepository;
 use App\Module\Model\User\UserFacade;
 use App\Service\CurrentUserService;
+use App\Module\Components\Paginator\PaginatorComponent;
 
 
 final class HomepagePresenter extends BasePresenter
@@ -35,8 +36,8 @@ final class HomepagePresenter extends BasePresenter
 
     public function renderDefault(): void
     {	
-		$numberOfPosts = $this->postsRepository->getNumberOfRows();	//získá počet všech záznamů z tabulku posts
-		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, 0);	//vezme z konce tabulky (jedem tedy od nejnovější po nejstarší) "howMany" postů a přeskočí "from" postů
+		$numberOfPosts = $this->postsRepository->getNumberOfRows();	//získá počet všech záznamů z tabulky posts
+		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, 0);	//vezme z konce tabulky (jedem tedy od nejnovější po nejstarší) "howMany" postů a přeskočí "from" postů, vezme to tedy posty se co se dané stránce zobrazí
 		$this->template->pages = $this->getNumberOfPages();
 
 		bdump($this->currentUser->hasPremiumAccess());
@@ -102,6 +103,19 @@ final class HomepagePresenter extends BasePresenter
 			$this->redirect("Homepage:page", (int) $page);
 		}
 		
+	}
+
+	protected function createComponentPaginator(): PaginatorComponent
+	{
+    	$comp = new PaginatorComponent;
+    	$comp->setCurrentPage(intval($this->getParameter('page') ?? 1));
+	    $comp->setTotalPages($this->getNumberOfPages());
+
+	    $comp->onPageChange[] = function (int $page): void {	//do toho pole se přidá funkce na redirect
+	        $this->redirect('this', ['page' => $page]);
+	    };
+
+	    return $comp;
 	}
 
 	public function getNumberOfPages(){	//spočítá počet stránek na základě počtu postů v db a počtu postů co se můžou zobrazit na jedné stránce 
