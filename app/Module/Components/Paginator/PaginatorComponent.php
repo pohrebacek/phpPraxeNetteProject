@@ -13,6 +13,7 @@ class PaginatorComponent extends Control
 
     public function setCurrentPage(int $page): void
     {
+        bdump("setCurrentPage: " . $page);
         $this->currentPage = $page;
     }
 

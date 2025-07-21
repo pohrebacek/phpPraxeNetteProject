@@ -34,30 +34,13 @@ final class HomepagePresenter extends BasePresenter
 		bdump($this->postsPerPage);
 	}
 
-    public function renderDefault(): void
-    {	
-		$numberOfPosts = $this->postsRepository->getNumberOfRows();	//získá počet všech záznamů z tabulky posts
-		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, 0);	//vezme z konce tabulky (jedem tedy od nejnovější po nejstarší) "howMany" postů a přeskočí "from" postů, vezme to tedy posty se co se dané stránce zobrazí
-		$this->template->pages = $this->getNumberOfPages();
 
-		bdump($this->currentUser->hasPremiumAccess());
 
-		//DEBUG
-		bdump($numberOfPosts);
-		bdump((int) $numberOfPosts/$this->postsPerPage + $this->restPage($numberOfPosts));
-		bdump((int) $numberOfPosts/$this->postsPerPage);
-		bdump((int) $numberOfPosts%$this->postsPerPage);
-		bdump($this->restPage($numberOfPosts));
-    }
-
-	public function renderPage(int $page)	//vezme číslo page, na kterou má skočit
+	public function renderDefault()	//vezme číslo page, na kterou má skočit
 	{
-		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, ($page-1)*$this->postsPerPage);	//vezme "postsPerPage" postů od pozice page na kterou skočit -1 bcs se jede od 0
+		$page = intval($this->getParameter('page') ?? 1);
 		bdump($page);
-		$this->template->page =$page;	//tempplatu se předá aktuální page na kterou se skáče
-		$numberOfPosts = $this->postsRepository->getNumberOfRows();
-		$this->template->pages = $this->getNumberOfPages();
-		bdump((int) $numberOfPosts/$this->postsPerPage + $this->restPage($numberOfPosts));
+		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, ($page-1)*$this->postsPerPage);	//vezme "postsPerPage" postů od pozice page na kterou skočit -1 bcs se jede od 0
 	}
 
 	public function restPage($numberOfPosts)	//metoda co přidá stránku kde jsou posty co zbydou po dělení

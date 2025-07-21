@@ -11,7 +11,6 @@ NOW
 
 
 PO DOKONČENÍ
-- udělat paginaci celou jako komponentu
 - postpresenter 55 a 56 schovat do medot (
     	if ($postDTO->image){
 			$this->template->imagePath = $postDTO->image;
@@ -67,3 +66,4 @@ DONE
 - zobrazení reply form refreshne stránku - je to annoying
 - kontrola jestli má vygenerovanej post image nefunguje
 - ve filtraci v admin db přidat možnost řadit podle data (všude podle přidání, u usera podle register)
+- udělat paginaci celou jako komponentu
