@@ -1,11 +1,13 @@
 <?php
 namespace App\Module\Model\User;
+use Nette\Utils\DateTime;
+
 
 use Nette;
 
 readonly class UserDTO {
     function __construct(
-        public mixed $id, public mixed $username, public mixed $email, public mixed $password, public mixed $role, public mixed $lastLoggedIn, public mixed $registeredAt, public mixed $premiumUntil    //phpstan měl problém že constructor očekává např string a dostane mixed
+        public int $id, public string $username, public string $email, public string $password, public string $role, public DateTime $lastLoggedIn, public DateTime $registeredAt, public ?DateTime $premiumUntil    //phpstan měl problém že constructor očekává např string a dostane mixed
     ) {
         //tady to přiřazování bejt nemusí protože to php dělá za tebe
     }

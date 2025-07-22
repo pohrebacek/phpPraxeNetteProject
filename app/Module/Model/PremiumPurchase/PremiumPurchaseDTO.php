@@ -1,11 +1,12 @@
 <?php
 namespace App\Module\Model\PremiumPurchase;
 
+use DateTime;
 use Nette;
 
 readonly class PremiumPurchaseDTO {
     function __construct(
-        public mixed $id, public mixed $userId, public mixed $length, public mixed $price, public mixed $createdAt
+        public int $id, public int $userId, public string $length, public int $price, public DateTime $createdAt
     ) {
         
     }

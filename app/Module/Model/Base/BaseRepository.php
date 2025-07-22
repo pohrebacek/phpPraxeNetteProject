@@ -35,7 +35,7 @@ class BaseRepository
 
    
 
-    public function getRowById(mixed $id): ActiveRow|null
+    public function getRowById(int $id): ActiveRow|null
     {
         $row = $this->database->table($this->table)->get($id);
         if ($row instanceof ActiveRow)

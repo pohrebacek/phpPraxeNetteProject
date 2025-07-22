@@ -25,7 +25,7 @@ final class CommentsRepository extends BaseRepository
         return $this->database->table($this->table)->where('post_id', $id)->delete();
 	}
 
-	public function getRowByPostId(mixed $post_id): ActiveRow|null
+	public function getRowByPostId(int $post_id): ActiveRow|null
     {
         $row = $this->database->table($this->table)->where('post_id', $post_id)->fetch();
         if ($row instanceof ActiveRow)

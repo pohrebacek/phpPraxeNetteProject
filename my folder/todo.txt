@@ -12,7 +12,6 @@ NOW
 
 PO DOKONČENÍ
 - celkově v prezenteru mít jenom metody a ne nějakou větší logiku
-- předělat mixed na cokoliv jen ne mixed
 - postpresenter 80 - 85 schovat celý do like facade
 - phpstan
 - v nette nastavit práva pro zobrazování stránek (že se přes odkaz nedostanu kam nemam)
@@ -67,3 +66,4 @@ DONE
 		}
 ) asi
 - ten dlouhej switch a ty formy dej do vlastních souborů, uděleje každej template pro jednu db
+- předělat mixed na cokoliv jen ne mixed
