@@ -81,7 +81,7 @@ final class HomepagePresenter extends BasePresenter
 		$data = $form->getValues();
 		$page = $data->page;
 		if ($page < 1 || $page > $this->getNumberOfPages()) {
-			$form->addError("Zadejte platné číslo stránky");
+			$this->flashMessage("Zadejte platné číslo stránky", "danger");
 		} else {
 			$this->redirect("Homepage:page", (int) $page);
 		}

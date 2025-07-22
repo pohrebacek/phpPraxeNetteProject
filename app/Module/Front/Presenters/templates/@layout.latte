@@ -29,6 +29,7 @@
 		<a n:href="Sign:in" class="btn btn-primary">Přihlásit</a>
 	{/if}
     </div>
+
 	<div class=container>
 		<div n:foreach="$flashes as $flash" n:class="alert, 'alert-' . $flash->type">{$flash->message}</div>
 

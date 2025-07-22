@@ -49,11 +49,11 @@ final class SignPresenter extends Nette\Application\UI\Presenter
         bdump($data);
         $data->password = $this->passwords->hash($data->password);
         if ($this->usersRepository->getRowByUsername($data->username) || $this->usersRepository->getRowByEmail($data->email)){
-            $form->addError('Tento účet již existuje');
+            $this->flashMessage('Tento účet již existuje', "danger");
         }
         elseif (!$this->passwords->verify($data->passwordCheck, $data->password)) { //funkce verify zkontroluje hash a zadaný heslo, samotná funkce hash totiž udělá jinej hash i ze stejných slov
             bdump($data);
-            $form->addError('Vámi zadaná hesla musí být stejná');
+            $this->flashMessage('Vámi zadaná hesla musí být stejná', "danger");
         } else {
             $passwordCheck = $data->passwordCheck;
             unset($data->passwordCheck);
@@ -106,7 +106,7 @@ final class SignPresenter extends Nette\Application\UI\Presenter
             
     
         } catch (Nette\Security\AuthenticationException $e) {
-            $form->addError('Nesprávné přihlašovací jméno nebo heslo.');
+            $this->flashMessage('Nesprávné přihlašovací jméno nebo heslo.', "danger");
         }
     }
 

@@ -54,7 +54,7 @@ final class UserPresenter extends BasePresenter
         $data = $form->getValues();
         $data->password = $this->passwords->hash($data->password);
         if (!$this->passwords->verify($data->passwordCheck, $data->password)) {
-            $form->addError("Vámi zadaná hesla musí být stejná");
+            $this->flashMessage("Vámi zadaná hesla musí být stejná", "danger");
         } else {
             unset($data->passwordCheck);
             $this->usersRepository->saveRow((array) $data, $userId);
@@ -94,7 +94,7 @@ final class UserPresenter extends BasePresenter
 
         if (($foundUserByName && $foundUserByName->id != $userId) || ($foundUserByEmail && $foundUserByEmail->id != $userId))
         {
-            $form->addError("Účet s těmito údaji již existuje");
+            $this->flashMessages("Účet s těmito údaji již existuje", "danger");
         } else {
             $this->usersRepository->saveRow((array) $data, $userId);
             $this->flashMessage("Údaje byly úspěšně změněny");

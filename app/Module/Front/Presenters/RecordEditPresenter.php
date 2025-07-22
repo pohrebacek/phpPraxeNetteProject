@@ -81,11 +81,12 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         $data = $form->getValues();
         $data->password = $this->passwords->hash($data->password);
         if (!$this->passwords->verify($data->passwordCheck, $data->password)) {
-            $form->addError("Vámi zadaná hesla musí být stejná");
+            $this->flashMessage("Hesla nejsou stejná", "danger");
         } else {
+            $this->flashMessage("Hesla úspěšně změněna", "success");
             unset($data->passwordCheck);
             $this->usersRepository->saveRow((array) $data, $_GET["userId"]);
-            $this->redirect("Admin:database", $this->usersRepository->getTable());
+            $this->redirect("AdminDb:users");
         }
     }
 
@@ -250,7 +251,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
             $this->redirect("Admin:database", $this->postsRepository->getTable());
         } catch (Exception $e) {
             bdump($e);
-            $form->addError("Zadejte platné údaje");
+            $this->flashMessage("Zadejte platné údaje", "danger");
         }
 
         
@@ -344,7 +345,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
             $this->redirect("Admin:database", $this->commentsRepository->getTable());
         } catch (Exception $e) {
             bdump($e);
-            $form->addError("Zadejte platné údaje");
+            $this->flashMessage("Zadejte platné údaje", "danger");
         }
         
         
@@ -415,7 +416,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         } catch (AbortException $e) {   //bez tohohle to bralo exception i když vše bylo ok
             $this->redirect("Admin:database", $this->likeRepository->getTable());
         } catch (Exception $e) {
-            $form->addError("Zadejte platné údaje");
+            $this->flashMessage("Zadejte platné údaje", "danger");
         }
         
     }
@@ -483,7 +484,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
             if ($data->templateIsAdd == "false") {
                 $recordId = $_GET['recordId'];  //NIKDE JINDE NEPOUŽÍVAT TADY V TOM FORMU UŽ
                 if (($foundUserByName && $foundUserByName->id != $recordId) || ($foundUserByEmail && $foundUserByEmail->id != $recordId)) {
-                    $form->addError('Tento účet již existuje');
+                    $this->flashMessage('Tento účet již existuje', "danger");
                 } else {
                     unset($data->templateIsAdd);
                     $this->usersRepository->saveRow((array) $data, $recordId);
@@ -492,11 +493,11 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
             } else {
                 $data->password = $this->passwords->hash($data->password);
                 if ($foundUserByName || $foundUserByEmail) {
-                    $form->addError('Tento účet již existuje');
+                    $this->flashMessage('Tento účet již existuje', "danger");
                 }
                 elseif (!$this->passwords->verify($data->passwordCheck, $data->password)) { //funkce verify zkontroluje hash a zadaný heslo, samotná funkce hash totiž udělá jinej hash i ze stejných slov
                     bdump($data);
-                    $form->addError('Vámi zadaná hesla musí být stejná');
+                    $this->flashMessage('Vámi zadaná hesla musí být stejná', "danger");
                 } else {
                     unset($data->passwordCheck);
                     unset($data->templateIsAdd);
@@ -509,7 +510,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         } catch (AbortException $e) {   //bez tohohle to bralo exception i když vše bylo ok
             $this->redirect("Admin:database", $this->usersRepository->getTable());
         } catch (Exception $e) {
-            $form->addError("Zadejte platné údaje");
+            $this->flashMessage("Zadejte platné údaje", "danger");
         }
 
     }
@@ -564,7 +565,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
             ob_end_clean(); //vypne a vyprázdní buffer
             $this->redirect("Admin:database", $this->settingsRepository->getTable());
         } catch (Exception $e) {
-            $form->addError("Zadejte platné údaje");
+            $this->flashMessage("Zadejte platné údaje", "danger");
         }
         
     }
