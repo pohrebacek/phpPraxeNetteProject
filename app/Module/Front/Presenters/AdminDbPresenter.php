@@ -158,25 +158,7 @@ final class AdminDbPresenter extends BasePresenter {
         $this->template->data = $this->likeFacade->filterLikesData($data);
     }
 
-    public function renderLikesComments(): void
-    {
-        $data = [];
-        $q = $this->getParameter("q");
-        if (isset($_GET["filter"]))
-        {
-            $filter = $_GET["filter"];
-            bdump($filter);
-            $data = $this->likeCommentFacade->getLikesByFilter($filter, $q);
-        } else {
-            $data = $this->getAllByTableName("likes_comments");
-        }
 
-        if ($q)
-        {
-            $this->template->filterInput = $q;
-        }
-        $this->template->data = $this->likeCommentFacade->filterLikesData($data);
-    }
 
     public function renderUsers(): void
     {

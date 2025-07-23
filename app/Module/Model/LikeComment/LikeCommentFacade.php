@@ -51,35 +51,4 @@ final class LikeCommentFacade
         return null;
     }
 
-    public function getLikesByFilter(string $column, string $parameter)
-    {
-        if ($column == "user_id" && $parameter) //parameter je jméno a ne id, uživateli se totiž bude líp hledat podle jména a ne podle id
-        {
-            $user = $this->usersRepository->getRowByUsername($parameter); //takže podle jména najdu usera
-            if ($user) {
-                return $this->database->table($this->likesCommentsRepository->getTable())->where($column, $user->id)->fetchAll(); //a podle jeho id vyhledam record postu v db
-            }
-            return $this->database->table($this->likesCommentsRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
-        }
-
-        if ($column == "comment_id" && $parameter)
-        {
-            $comments = $this->database->table($this->commentsRepository->getTable())->where("title LIKE ?", "%$parameter%")->fetchAll();
-            bdump($comments);
-            if ($comments) {
-                $commentsToRender = [];
-                foreach ($comments as $post) {
-                    $foundCommentRecordsByPostId = $this->database->table($this->likesCommentsRepository->getTable())->where($column, $post->id)->fetchAll();
-                    if ($foundCommentRecordsByPostId) {
-                        $commentsToRender = $foundCommentRecordsByPostId;   //pokud v db table comments najdu comment co má post_id jako id jednoho z postů co jsem našel podle jména, tak ho vyrenderuju, jinak to znamená že ten post nemá commenty, takže ho nerederuju
-                    }
-                }
-                bdump($commentsToRender);
-                return $commentsToRender;
-            }
-            return $this->database->table($this->likesCommentsRepository->getTable())->where($column, "")->fetchAll();  //vyhodí 0 záznamů pokud v se db nic nenašlo podle parametru
-
-        }
-        return $this->database->table($this->likesCommentsRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
-    }
 }

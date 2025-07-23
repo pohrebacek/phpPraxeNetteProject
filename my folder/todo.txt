@@ -1,9 +1,6 @@
 https://rtsoftsro-my.sharepoint.com/:w:/g/personal/hora_rtsoft_cz/EZZqvnQ53kZEpLXyT6hhTFEBeH6eyKLRB9Axde1YUaYXIA?rtime=3q8ttaBV3Ug
 
 NOW
-- projet funkci GetLieksByFiter v likeCommentFacade (i pro ten post), co dělá a pozměnit pro comment
-- v admindDB přidat likes_comments
-- přejmenovat všude likes na likes_posts
 - šipečka back v post:show -> prostě když dam nějekaou akci jako reply tak to je taky v url takže se to pak vrací na akce
 
 
