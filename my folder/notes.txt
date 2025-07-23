@@ -68,3 +68,45 @@ CREATE TABLE external_posts (
 6.7.2025
 
 přidat do settings table "charsForNonPremium"
+
+
+
+23.7.2025
+ALTER TABLE comments
+DROP FOREIGN KEY comments_ibfk_1;
+
+ALTER TABLE comments
+ADD CONSTRAINT comments_ibfk_1 FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE;
+
+-- 1) Odstraň původní cizí klíč (název může být jiný, pokud jsi ho nepřejmenoval ručně)
+ALTER TABLE likes_comments
+DROP FOREIGN KEY likes_comments_ibfk_1;
+
+-- 2) Přidej nový se správným CASCADE chováním
+ALTER TABLE likes_comments
+ADD CONSTRAINT likes_comments_ibfk_1 
+FOREIGN KEY (comment_id) 
+REFERENCES comments(id) 
+ON DELETE CASCADE;
+
+-- 1) Odstranit starý FK
+ALTER TABLE likes
+DROP FOREIGN KEY likes_ibfk_1;
+
+-- 2) Přidat nový s CASCADE
+ALTER TABLE likes
+ADD CONSTRAINT likes_ibfk_1 
+FOREIGN KEY (post_id) 
+REFERENCES posts(id) 
+ON DELETE CASCADE;
+
+-- 1) Smazat původní cizí klíč
+ALTER TABLE external_posts
+DROP FOREIGN KEY external_posts_ibfk_1;
+
+-- 2) Přidat nový s ON DELETE CASCADE
+ALTER TABLE external_posts
+ADD CONSTRAINT external_posts_ibfk_1
+FOREIGN KEY (post_id)
+REFERENCES posts(id)
+ON DELETE CASCADE;

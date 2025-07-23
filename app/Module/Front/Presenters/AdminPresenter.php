@@ -213,7 +213,7 @@ final class AdminPresenter extends BasePresenter{
         bdump($recordId, $dbName);
         $this->database->table($dbName)->get($recordId)->delete();
         $this->flashMessage("Záznam byl smazán");
-        $this->redirect("Admin:database", $dbName);
+        $this->redirect("AdminDb:".$dbName);
     }
 
     public function getAllByTableName(string $tableName): array 
@@ -249,12 +249,13 @@ final class AdminPresenter extends BasePresenter{
         $data = $form->getValues();
         bdump($data);
         if ($data->postsPerPage < 1 || $data->postsPerPage > count($this->postsRepository->getAll())) {
-            $form->addError("Zadejte platný počet příspěvků");
+            $this->flashMessage("Zadejte platný počet příspěvků", "danger");
         } elseif ($data->charsForNonPremium < 1) {
-            $form->addError("Zadejte platný počet znaků");
+            $this->flashMessage("Zadejte platný počet znaků", "danger");
         }
         else {
             $this->settingsRepository->saveSettings($data);
+            $this->flashMessage("Nastavení bylo úspěšně uloženo", "success");
         }
     }
 }

@@ -233,6 +233,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         
             if ($data["templateIsAdd"] == "false") {    //záznam se mění
                 $recordId = $_GET['recordId'];
+                
                 unset($data["templateIsAdd"]);
                 $data["user_id"] = ($this->usersRepository->getRowByUsername($data["username"]))->id;
                 unset($data["username"]);
@@ -240,15 +241,16 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         
             } else {
                 $data["user_id"] = ($this->usersRepository->getRowByUsername($data["username"]))->id;
+                
                 unset($data["username"]);
                 unset($data["templateIsAdd"]);
                 $post = $this->postsRepository
                     ->saveRow($data, null);
             }
               
-            $this->redirect("Admin:database", $this->postsRepository->getTable());
+            $this->redirect("AdminDb:posts");
         } catch (AbortException $e) {   //bez tohohle to bralo exception i když vše bylo ok
-            $this->redirect("Admin:database", $this->postsRepository->getTable());
+            $this->redirect("AdminDb:posts");
         } catch (Exception $e) {
             bdump($e);
             $this->flashMessage("Zadejte platné údaje", "danger");
@@ -318,6 +320,7 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
 		
 		    if($data->templateIsAdd == "false") {
                 $recordId = $_GET['recordId'];
+                
 		    	unset($data->templateIsAdd);	//tady se smaže to hidden vlastnost aby později nedělala bordel
 		    	$data->ownerUser_id = $user->id;
                 $data->email = $user->email;
@@ -335,14 +338,15 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
 		    		    "ownerUser_id" => $data->ownerUser_id
 		    	    ], null);
 		        bdump($comment);
+
+                
             }
 
 		    if ($comment){
-		    	$this->flashMessage("Děkuji za komentář", "success");
-            	$this->redirect("Admin:database", $this->commentsRepository->getTable());
+            	$this->redirect("AdminDb:comments");
 		    }
         } catch (AbortException $e) {   //bez tohohle to bralo exception i když vše bylo ok
-            $this->redirect("Admin:database", $this->commentsRepository->getTable());
+            $this->redirect("AdminDb:comments");
         } catch (Exception $e) {
             bdump($e);
             $this->flashMessage("Zadejte platné údaje", "danger");
@@ -403,18 +407,20 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         try {
             $data = $form->getValues();
             if ($data->templateIsAdd == "false") {
+                
                 $recordId = $_GET['recordId'];
                 unset($data->templateIsAdd);
                 $this->likeRepository->saveRow((array) $data, $recordId);
             } else {
+                
                 unset($data->templateIsAdd);
                 bdump($data);
                 $data->user_id = ($this->usersRepository->getRowByUsername($data->user_id))->id;
                 $this->likeRepository->saveRow((array) $data, null);
             }
-            $this->redirect("Admin:database", $this->likeRepository->getTable());
+            $this->redirect("AdminDb:likes");
         } catch (AbortException $e) {   //bez tohohle to bralo exception i když vše bylo ok
-            $this->redirect("Admin:database", $this->likeRepository->getTable());
+            $this->redirect("AdminDb:likes");
         } catch (Exception $e) {
             $this->flashMessage("Zadejte platné údaje", "danger");
         }
@@ -486,9 +492,10 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
                 if (($foundUserByName && $foundUserByName->id != $recordId) || ($foundUserByEmail && $foundUserByEmail->id != $recordId)) {
                     $this->flashMessage('Tento účet již existuje', "danger");
                 } else {
+                    
                     unset($data->templateIsAdd);
                     $this->usersRepository->saveRow((array) $data, $recordId);
-                    $this->redirect("Admin:database", $this->usersRepository->getTable());
+                    $this->redirect("AdminDb:users");
                 }
             } else {
                 $data->password = $this->passwords->hash($data->password);
@@ -499,16 +506,17 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
                     bdump($data);
                     $this->flashMessage('Vámi zadaná hesla musí být stejná', "danger");
                 } else {
+                    
                     unset($data->passwordCheck);
                     unset($data->templateIsAdd);
                     bdump($data);
                     $this->usersRepository->saveRow((array) $data, null);
-                    $this->redirect("Admin:database", $this->usersRepository->getTable());        
+                    $this->redirect("AdminDb:users");        
                 }
             }
 
         } catch (AbortException $e) {   //bez tohohle to bralo exception i když vše bylo ok
-            $this->redirect("Admin:database", $this->usersRepository->getTable());
+            $this->redirect("AdminDb:users");
         } catch (Exception $e) {
             $this->flashMessage("Zadejte platné údaje", "danger");
         }

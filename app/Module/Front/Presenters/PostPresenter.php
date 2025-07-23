@@ -110,6 +110,7 @@ final class PostPresenter extends BasePresenter
             $this->error('Comment not found');
         }
         $this->commentFacade->deleteComment($id);
+		$this->flashMessage("Komentář byl úspěšně smazán", "success");
         $this->redirect('Post:show', $comment->post_id);
     }
 
@@ -209,11 +210,14 @@ final class PostPresenter extends BasePresenter
 
 		$user = $this->getUser();
 		$user = $this->userFacade->getUserDTO($user->id);
+		$templateIsShow = $data->templateIsShow;
 		
 
 		
 		if ($id) {
 			if($data->templateIsShow == "false") {
+				$data->replyTo = $data->replyCommentId;
+				unset($data->replyCommentId);
 				unset($data->templateIsShow);	//tady se smaže to hidden vlastnost aby později nedělala bordel
 				$this->commentsRepository->saveRow((array)$data, $id);
 				$edit = true;
@@ -233,7 +237,11 @@ final class PostPresenter extends BasePresenter
         	}
 
 			if ($comment){
-				$this->flashMessage("Děkuji za komentář", "success");
+				if ($templateIsShow == "false") {
+					$this->flashMessage("Komentář byl úspěšně upraven", "success");
+				} else {
+					$this->flashMessage("Komentář byl úspěšně přidán", "success");
+				}
 				if ($edit){
 					$this->redirect("Post:show", $comment->post_id);
 				}

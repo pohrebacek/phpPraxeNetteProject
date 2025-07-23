@@ -14,6 +14,7 @@ use App\Service\CurrentUserService;
  */
 final class EditPresenter extends BasePresenter
 {
+    private string $templateIsCreate = "true";
 	public function __construct(
 		private PostsRepository $postsRepository,
         private PostFacade $postFacade,
@@ -41,6 +42,7 @@ final class EditPresenter extends BasePresenter
 
     public function renderEdit(int $id): void   //stránka na upravení postu, id převezme ze šablony
     {
+        $this->templateIsCreate = "false";
         $post = $this->postFacade->getPostDTO($id);
     
         if (!$post) {
@@ -61,6 +63,7 @@ final class EditPresenter extends BasePresenter
             $this->error('Post not found');
         }
         $this->postFacade->deletePost($id);
+        $this->flashMessage("Příspěvek byl úspěšně smazán", "success");
         $this->redirect('Homepage:');
     }
 
@@ -68,6 +71,7 @@ final class EditPresenter extends BasePresenter
     protected function createComponentPostForm(): Form
     {
         $form = new Form;
+        $form->addHidden('templateIsCreate', $this->templateIsCreate);
         $form->addText('title', 'Titulek:')
             ->setRequired()
             ->setHtmlAttribute("class", "form-control");
@@ -132,6 +136,8 @@ final class EditPresenter extends BasePresenter
     {
         $id = $this->getParameter('id');
         $data = (array) $form->getValues();
+        $templateIsCreate = $data["templateIsCreate"];
+        unset($data["templateIsCreate"]);
         $data["image"] = $this->getImageFromForm();
         $user = $this->getUser();
         $user = $this->userFacade->getUserDTO($user->id);
@@ -147,7 +153,12 @@ final class EditPresenter extends BasePresenter
                 ->saveRow($data, $id);
         }
     
-        $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
+        if ($templateIsCreate == "false") {
+            $this->flashMessage("Příspěvek byl úspěšně upraven", "success");
+        } else {
+            $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
+        }
+        
         if ($post){
             $this->redirect('Post:show', $post->id);
         }
