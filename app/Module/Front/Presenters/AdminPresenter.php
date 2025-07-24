@@ -54,6 +54,10 @@ final class AdminPresenter extends BasePresenter{
 
     public function renderShow(): void
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
 
     }
 
