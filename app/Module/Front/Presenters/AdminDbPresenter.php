@@ -104,7 +104,6 @@ final class AdminDbPresenter extends BasePresenter {
     public function renderComments(): void
     {
         $data = [];
-        $updatedData = [];
         $q = $this->getParameter("q");
         $sort = $this->getHttpRequest()->getQuery('sort') ?? 'ASC';
 
@@ -123,19 +122,12 @@ final class AdminDbPresenter extends BasePresenter {
             $this->template->filterInput = $q;
         }
         bdump($data);
-        foreach ($data as $comment) {   
-            $commentArray = $comment->toArray();
-            bdump($commentArray["replyTo"]);
-            if ($commentArray["replyTo"]) {
-                bdump($this->commentFacade->getReplyToPreview($commentArray["replyTo"]));
-                $commentArray["replyToComment"] = $this->commentFacade->getReplyToPreview($commentArray["replyTo"]);
-            } else {
-                unset($commentArray["replyTo"]);
-            }
-            $updatedData[] = $commentArray; 
-        }
+
+
+        $data = $this->commentFacade->updateReplyToCommentData($data);
+
         bdump($data);
-        $this->template->data = $this->commentFacade->filterCommentsData($updatedData);
+        $this->template->data = $this->commentFacade->filterCommentsData($data);
     }
 
     public function renderLikes(): void
@@ -190,88 +182,9 @@ final class AdminDbPresenter extends BasePresenter {
         return $this->database->table($tableName)->fetchAll();
     }
 
-    public function getRecordsByFilter(string $tableName, $column, $parameter) {    //rozdělit funkci do facades, tahle funkce nebude ale každá facade bude mít svoji verzi táhle fce
-        bdump($tableName);
-        bdump($column);
-        bdump($parameter);
-        if ($column == "id" && $parameter) {
-            return $this->database->table($tableName)->where($column, $parameter)->fetchAll();
-        }
-
-        if ($column == "user_id" && $parameter)
-        {
-            $user = $this->usersRepository->getRowByUsername($parameter);
-            if ($user) {
-                return $this->database->table("posts")->where($column, $user->id)->fetchAll();
-            }
-            return $this->database->table("posts")->where($column, "")->fetchAll();
-        }
-
-        if($column == "post_id" && $parameter)
-        {
-            $user = $this->usersRepository->getRowByUsername($parameter);
-            if ($user) {
-                return $this->database->table("posts")->where($column, $user->id)->fetchAll();
-            }
-            return $this->database->table("posts")->where($column, "")->fetchAll();
-        }
-        return $this->database->table($tableName)->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
-    }
 
 
 
-    public function filterColumns($data, $dbName)   //postupně přepisuju do fasád, pak smažu, už se nepoužívá
-    {
-        //funcke co podle jména db vyřadí nepotřebné parametry aby to vše bylo uživatelsky přívětivé
-        switch($dbName){
-            case "posts":
-                foreach($data as $index => $line){
-                    $lineData = $line->toArray();
-                    foreach($lineData as $column => $value) {
-                        if ($column == "user_id") {
-                            //$data[$column] = "Napsáno uživatelem: ";
-                            //$data[$value] = ($this->usersRepository->getRowById($value))->username;
-                            $lineData["Od uživatele: "] = ($this->usersRepository->getRowById($value))->username;
-                        }
-                        //bdump("$column, $value");
-                    }
-                    $data[$index] = $lineData;
-                }         
-                //bdump($data);
-                return $data;
-
-            case "comments":
-                foreach($data as $index => $line){
-                    $lineData = $line->toArray();
-                    foreach($lineData as $column => $value) {
-                        if ($column == "name") {
-                            $lineData["Od uživatele: "] = ($this->usersRepository->getRowByUsername($value))->username;
-                        } elseif ($column == "post_id") {
-                            $lineData["U postu: "] = ($this->postsRepository->getRowById($value))->title;
-                        }
-                    }
-                    $data[$index] = $lineData;
-                }
-                return $data;
-            case "likes":
-                foreach($data as $index => $line){
-                    $lineData = $line->toArray();
-                    foreach($lineData as $column => $value) {
-                        if ($column == "user_id") {
-                            $lineData["Od uživatele: "] = ($this->usersRepository->getRowById($value))->username;
-                        } elseif ($column == "post_id") {
-                            $lineData["U postu: "] = ($this->postsRepository->getRowById($value))->title;
-                        }
-                    }
-                    $data[$index] = $lineData;
-                }
-                return $data;
-            case "users":
-                return $data;
-            case "settings":
-                return $data;
-        }
-    }
 
 
 }

@@ -202,8 +202,6 @@ final class AdminPresenter extends BasePresenter{
                 return $data;
             case "users":
                 return $data;
-            case "settings":
-                return $data;
         }
     }
 

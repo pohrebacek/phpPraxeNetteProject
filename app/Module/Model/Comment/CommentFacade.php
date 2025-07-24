@@ -149,4 +149,21 @@ final class CommentFacade
 
         return $comments;
     }
+
+    public function updateReplyToCommentData(array $data)
+    {
+        $updatedData = [];
+        foreach ($data as $comment) {   
+            $commentArray = $comment->toArray();    // převede to na array pro lepší práci
+            bdump($commentArray["replyTo"]);
+            if ($commentArray["replyTo"]) { //pokud replyTo neni null neboli pokud je comment odpovědí na jiný comment
+                bdump($this->getReplyToPreview($commentArray["replyTo"]));
+                $commentArray["replyToComment"] = $this->getReplyToPreview($commentArray["replyTo"]);    //přidá do arry preview commentu na kterej ten comment odpovídá
+            } else {
+                unset($commentArray["replyTo"]);
+            }
+            $updatedData[] = $commentArray; 
+        }
+        return $updatedData;
+    }
 }

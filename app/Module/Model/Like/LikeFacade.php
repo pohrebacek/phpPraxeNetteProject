@@ -80,4 +80,14 @@ final class LikeFacade
         }
         return $this->database->table($this->likesRepository->getTable())->where("{$column} LIKE ?", "%$parameter%")->fetchAll();
     }
+
+    public function toggleLike(array $data) 
+    {
+        if (!$this->likesRepository->getRowByPostIdAndUserId($data["post_id"], $data["user_id"]))
+		{
+			$this->likesRepository->saveRow($data, null);
+		} else {
+			$this->likesRepository->deleteLikeByPostIdAndUserId($data["post_id"], $data["user_id"]);
+		}
+    }
 }

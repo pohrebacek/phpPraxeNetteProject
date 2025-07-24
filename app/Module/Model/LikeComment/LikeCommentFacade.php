@@ -51,4 +51,14 @@ final class LikeCommentFacade
         return null;
     }
 
+    public function toggleLikeComment(array $data): void
+    {
+        if (!$this->likesCommentsRepository->getRowByCommentIdAndUserId($data["comment_id"], $data["user_id"]))
+		{
+			$this->likesCommentsRepository->saveRow($data, null);
+		} else {
+			$this->likesCommentsRepository->deleteLikeByCommentIdAndUserId($data["comment_id"], $data["user_id"]);
+		}
+    }
+
 }

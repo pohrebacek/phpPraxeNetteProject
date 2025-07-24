@@ -12,9 +12,11 @@ use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\Security\MyAuthorizator;
 use App\Module\Model\User\UserFacade;
 use App\Module\Model\Like\LikesRepository;
+use App\Module\Model\Like\LikeFacade;
 use App\Module\Model\Settings\SettingsRepository;
 use App\Service\CurrentUserService;
 use App\Module\Model\LikeComment\LikesCommentsRepository;
+use App\Module\Model\LikeComment\LikeCommentFacade;
 
 /**
  * @method void commentFormSucceeded(\stdClass $data)
@@ -38,6 +40,8 @@ final class PostPresenter extends BasePresenter
 		private LikesCommentsRepository $likesCommentsRepository,
 		private SettingsRepository $settingsRepository,
 		private UsersRepository $usersRepository,
+		private LikeFacade $likeFacade,
+		private LikeCommentFacade $likeCommentFacade,
         private int $charsForNonPremium = 300
 	) {
 	}
@@ -116,36 +120,24 @@ final class PostPresenter extends BasePresenter
 
 	public function handleLike(): void
 	{
-		//tohle předej do like facade
 		$data = [];
 		$data["post_id"] = is_numeric($this->getParameter("id")) ? intval($this->getParameter("id")) : 0;
 		$data["user_id"] = is_numeric(($this->getUser())->id) ? intval(($this->getUser())->id) : 0;
-		//zbytek je ok
+		
+		$this->likeFacade->toggleLike($data);
 
-		if (!$this->likesRepository->getRowByPostIdAndUserId($data["post_id"], $data["user_id"]))
-		{
-			$this->likesRepository->saveRow($data, null);
-		} else {
-			$this->likesRepository->deleteLikeByPostIdAndUserId($data["post_id"], $data["user_id"]);
-		}
 		$this->redirect("Post:show", $data["post_id"]);
 		
 	}
 
 	public function handleLikeComment(int $commentId): void
 	{
-		//tohle předej do like facade
 		$data = [];
 		$data["comment_id"] = $commentId;
 		$data["user_id"] = is_numeric(($this->getUser())->id) ? intval(($this->getUser())->id) : 0;
-		//zybtek je ok
 
-		if (!$this->likesCommentsRepository->getRowByCommentIdAndUserId($data["comment_id"], $data["user_id"]))
-		{
-			$this->likesCommentsRepository->saveRow($data, null);
-		} else {
-			$this->likesCommentsRepository->deleteLikeByCommentIdAndUserId($data["comment_id"], $data["user_id"]);
-		}
+		$this->likeCommentFacade->toggleLikeComment($data);
+
 		$this->redirect("Post:show", $this->getParameter("id"));
 
 

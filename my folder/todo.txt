@@ -8,9 +8,6 @@ NOW
 
 
 PO DOKONČENÍ
-- celkově v prezenteru mít jenom metody a ne nějakou větší logiku
-- postpresenter 80 - 85 schovat celý do like facade
-- phpstan
 - v nette nastavit práva pro zobrazování stránek (že se přes odkaz nedostanu kam nemam)
 - zkus to rozbít a pak to oprav
 PŘED ODEVZDÁNIM PAVLOVI PŘIPRAVIT SPEŠL DB DUMP KDE BUDE VLASTNĚ VŠE ODE MĚ
@@ -64,3 +61,4 @@ DONE
 - předělat mixed na cokoliv jen ne mixed
 - předělat vzhled addError na něco hezčího 
 - doplnit všude flashmessages
+- postpresenter 80 - 85 schovat celý do like facade
