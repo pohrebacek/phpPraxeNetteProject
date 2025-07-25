@@ -17,6 +17,15 @@ final class ShopPresenter extends BasePresenter {
     ) {
 
     }
+
+    public function startup(): void
+    {
+        parent::startup();
+    
+        if (!$this->currentUser->isLoggedIn()) {
+            $this->redirect('Sign:in');
+        }
+    }
     public function renderCart(): void {
         $session = $this->getSession("cart");
         $this->template->duration = $session->duration;

@@ -8,6 +8,7 @@ use App\Module\Model\LikeComment\LikeCommentFacade;
 use App\Module\Model\User\UserFacade;
 use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\User\UsersRepository;
+use App\Service\CurrentUserService;
 use App\Module\Model\Post\PostsRepository;
 
 final class AdminDbPresenter extends BasePresenter {
@@ -20,7 +21,8 @@ final class AdminDbPresenter extends BasePresenter {
         private UsersRepository $usersRepository,
         private PostsRepository $postsRepository,
         private UserFacade $userFacade,
-        private LikeCommentFacade $likeCommentFacade
+        private LikeCommentFacade $likeCommentFacade,
+        private CurrentUserService $currentUser
     ) {
 
     }
@@ -43,6 +45,11 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderUserProfile(): void
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
+
         $recordId = $this->getParameter("recordId");
         $range = $this->getHttpRequest()->getQuery('range') ?? '6'; //pokud to vrátí null tak to přiřadí 6
 
@@ -67,6 +74,11 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderPosts(): void 
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
+
         $q = $this->getParameter("q");
         $sort = $this->getHttpRequest()->getQuery('sort') ?? 'ASC';
 
@@ -103,6 +115,11 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderComments(): void
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
+
         $data = [];
         $q = $this->getParameter("q");
         $sort = $this->getHttpRequest()->getQuery('sort') ?? 'ASC';
@@ -132,6 +149,11 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderLikes(): void
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
+
         $data = [];
         $q = $this->getParameter("q");
         if (isset($_GET["filter"]))
@@ -154,6 +176,11 @@ final class AdminDbPresenter extends BasePresenter {
 
     public function renderUsers(): void
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
+
         $data = [];
         $q = $this->getParameter("q");
         $sort = $this->getHttpRequest()->getQuery('sort') ?? 'ASC';

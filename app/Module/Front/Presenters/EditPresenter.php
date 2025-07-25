@@ -28,13 +28,14 @@ final class EditPresenter extends BasePresenter
     {
         parent::startup();
     
-        if (!$this->getUser()->isLoggedIn()) {
+        if (!$this->currentUser->isLoggedIn()) {
             $this->redirect('Sign:in');
         }
     }
 
     public function renderCreate()
     {
+
         
     }
 

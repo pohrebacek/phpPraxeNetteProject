@@ -16,6 +16,7 @@ use App\Module\Model\Post\PostFacade;
 use App\Module\Model\Comment\CommentFacade;
 use App\Module\Model\Settings\SettingsFacade;
 use App\Module\Model\Like\LikeFacade;
+use App\Service\CurrentUserService;
 use App\Module\Model\LikeComment\LikeCommentFacade;
 
 final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou nadepsaná komentářem "POST/COMMENT... FORM"
@@ -34,11 +35,17 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
         private CommentFacade $commentFacade,
         private LikeFacade $likeFacade,
         private SettingsFacade $settingsFacade,
-        private LikeCommentFacade $likeCommentFacade
+        private LikeCommentFacade $likeCommentFacade,
+        private CurrentUserService $currentUser
     ) {}
 
     public function renderAdd($dbName): void
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
+
         $this->template->dbNames = [
             'posts' => "postForm",
             'comments' => "commentForm",
@@ -51,6 +58,10 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
     }
 
     public function renderChangePassword($userId, $dbName){
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
         $this->template->userId = $userId;
         $this->template->dbName = $dbName;
 
@@ -90,6 +101,11 @@ final class RecordEditPresenter extends BasePresenter   //jednotlivé formy jsou
 
     public function renderEdit($recordId, $dbName): void
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
+
         $this->template->dbNames = [
             'posts' => "postForm",
             'comments' => "commentForm",

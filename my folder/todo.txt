@@ -2,13 +2,12 @@ https://rtsoftsro-my.sharepoint.com/:w:/g/personal/hora_rtsoft_cz/EZZqvnQ53kZEpL
 
 NOW
 - šipečka back v post:show -> prostě když dam nějekaou akci jako reply tak to je taky v url takže se to pak vrací na akce
-
+- postylovat comments (rozlišit basic a reply)
 
 
 
 
 PO DOKONČENÍ
-- v nette nastavit práva pro zobrazování stránek (že se přes odkaz nedostanu kam nemam)
 - zkus to rozbít a pak to oprav
 PŘED ODEVZDÁNIM PAVLOVI PŘIPRAVIT SPEŠL DB DUMP KDE BUDE VLASTNĚ VŠE ODE MĚ
 
@@ -62,3 +61,4 @@ DONE
 - předělat vzhled addError na něco hezčího 
 - doplnit všude flashmessages
 - postpresenter 80 - 85 schovat celý do like facade
+- v nette nastavit práva pro zobrazování stránek (že se přes odkaz nedostanu kam nemam)

@@ -75,6 +75,10 @@ final class AdminPresenter extends BasePresenter{
 
     public function handleGeneratePost(): void
     {
+        if (!$this->currentUser->isAdmin()) {
+            $this->flashMessage("Na tuto adresu nemáte přístup!", "danger");
+            $this->redirect("Homepage:");
+        }
         $url = "https://ancient-literature.com/category/blog/feed/";
 
         $xml = $this->blogFeedCache->load($url, function() use ($url){    //koukne jestli v cache je něco se zadanym klíčem, jestli ne, pustí se funkce co vrácenou hodnotu dop cahce uloží
@@ -129,86 +133,6 @@ final class AdminPresenter extends BasePresenter{
         $this->flashMessage("Příspěvek byl úspěšně vygenerován", "success");
 
     }
-
-    public function renderDatabase($dbName): void
-    {
-        $this->template->dbName = $dbName;
-        $q = $this->getParameter("q");
-        bdump($q);
-        bdump($dbName);
-        $data = [];
-        $data = $this->getAllByTableName($dbName);
-        bdump($data);
-        //$this->template->data = $data;
-
-        //DEBUG
-        foreach($data as $line){
-            $lineData = $line->toArray();
-            //bdump($lineData);
-            foreach ($lineData as $column => $value) {
-                bdump ("Column: $column, Value: $value");
-            }
-        }
-        $this->template->data = $this->filterColumns($data, $dbName); 
-
-
-
-            
-    }
-
-
-
-    public function filterColumns($data, $dbName)
-    {
-        //funcke co podle jména db vyřadí nepotřebné parametry aby to vše bylo uživatelsky přívětivé
-        switch($dbName){
-            case "posts":
-                foreach($data as $index => $line){
-                    $lineData = $line->toArray();
-                    foreach($lineData as $column => $value) {
-                        if ($column == "user_id") {
-                            //$data[$column] = "Napsáno uživatelem: ";
-                            //$data[$value] = ($this->usersRepository->getRowById($value))->username;
-                            $lineData["Od uživatele: "] = ($this->usersRepository->getRowById($value))->username;
-                        }
-                        //bdump("$column, $value");
-                    }
-                    $data[$index] = $lineData;
-                }         
-                //bdump($data);
-                return $data;
-
-            case "comments":
-                foreach($data as $index => $line){
-                    $lineData = $line->toArray();
-                    foreach($lineData as $column => $value) {
-                        if ($column == "name") {
-                            $lineData["Od uživatele: "] = ($this->usersRepository->getRowByUsername($value))->username;
-                        } elseif ($column == "post_id") {
-                            $lineData["U postu: "] = ($this->postsRepository->getRowById($value))->title;
-                        }
-                    }
-                    $data[$index] = $lineData;
-                }
-                return $data;
-            case "likes":
-                foreach($data as $index => $line){
-                    $lineData = $line->toArray();
-                    foreach($lineData as $column => $value) {
-                        if ($column == "user_id") {
-                            $lineData["Od uživatele: "] = ($this->usersRepository->getRowById($value))->username;
-                        } elseif ($column == "post_id") {
-                            $lineData["U postu: "] = ($this->postsRepository->getRowById($value))->title;
-                        }
-                    }
-                    $data[$index] = $lineData;
-                }
-                return $data;
-            case "users":
-                return $data;
-        }
-    }
-
 
     public function actionDelete($recordId, $dbName): void
     {
