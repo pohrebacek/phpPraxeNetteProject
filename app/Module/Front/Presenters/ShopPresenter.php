@@ -86,7 +86,7 @@ final class ShopPresenter extends BasePresenter {
         ];
 
         if (!isset($premiumMap[$duration])) {
-            $this->flashMessage('Neplatná délka předplatného.', 'error');
+            $this->flashMessage('Neplatná délka předplatného.', 'danger');
             $this->redirect('this');
         }
 

@@ -5,6 +5,7 @@ use App\Module\Model\User\UsersRepository;
 use Nette;
 use Nette\Application\UI\Form;
 use App\Module\Model\Security\MyAuthenticator;
+use PDOException;
 
 final class SignPresenter extends Nette\Application\UI\Presenter
 {
@@ -44,6 +45,7 @@ final class SignPresenter extends Nette\Application\UI\Presenter
 
     public function signUpFormSucceeded(Form $form): void
     {
+        try {
         $data = $form->getValues();
         $data["role"] = "user";
         bdump($data);
@@ -64,6 +66,11 @@ final class SignPresenter extends Nette\Application\UI\Presenter
             bdump($this->getUser());
             bdump($this->getUser()->getIdentity());
             $this->redirect('Homepage:');
+        }
+        }
+
+        catch (PDOException $e) {
+            $this->flashMessage("Použijte normánlí znaky", "danger");
         }
         
     }
@@ -105,7 +112,10 @@ final class SignPresenter extends Nette\Application\UI\Presenter
             $this->redirect('Homepage:');
             
     
-        } catch (Nette\Security\AuthenticationException $e) {
+        } catch (PDOException $e) {
+            $this->flashMessage("Použijte normánlí znaky", "danger");
+        }
+         catch (Nette\Security\AuthenticationException $e) {
             $this->flashMessage('Nesprávné přihlašovací jméno nebo heslo.', "danger");
         }
     }
