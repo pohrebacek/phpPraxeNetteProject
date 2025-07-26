@@ -56,6 +56,10 @@ final class PostPresenter extends BasePresenter
 
 	public function renderShow(int $id): void
 	{
+        $session = $this->getSession()->getSection('navigation');
+		$this->template->homepageUrl = $session->homepageUrl ?? "Homepage:";
+
+		bdump($this->getSession()->getSection('navigation')->previousUrl);
 		bdump($this->currentUser->hasPremiumAccess());
 		bdump($this->replyCommentId);
 		//NA DEBUG
@@ -145,14 +149,16 @@ final class PostPresenter extends BasePresenter
 
 	public function handleReply(int $commentId): void
 	{
-		bdump($commentId);
-		$this->showReplyCommentForm = "true";
-		$this->replyCommentId = $commentId;
+    	bdump("Zavoláno s komentářem ID: $commentId");
 
-		if ($this->isAjax()) {
-			$this->redrawControl("commentFormSnippet-$commentId");
-		}
+    	$this->showReplyCommentForm = "true";
+    	$this->replyCommentId = $commentId;
+
+    	if ($this->isAjax()) {
+    	    $this->redrawControl("commentFormSnippet-$commentId");
+    	}
 	}
+
 
 	
 	public function renderEditComment(int $id): void
@@ -196,6 +202,7 @@ final class PostPresenter extends BasePresenter
         $edit = false;
 		bdump($data->templateIsShow);
 		bdump($data);
+		bdump($data->replyCommentId);
 		if ($data->replyCommentId == '') {
 			$data->replyCommentId = null;
 		}

@@ -38,8 +38,10 @@ final class HomepagePresenter extends BasePresenter
 
 	public function renderDefault()	//vezme číslo page, na kterou má skočit
 	{
+        $session = $this->getSession()->getSection('navigation');
 		$page = intval($this->getParameter('page') ?? 1);
 		bdump($page);
+		$session->homepageUrl = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
 		$this->template->postsArray = $this->postsRepository->getSomePostsFromEnd($this->postsPerPage, ($page-1)*$this->postsPerPage);	//vezme "postsPerPage" postů od pozice page na kterou skočit -1 bcs se jede od 0
 	}
 
