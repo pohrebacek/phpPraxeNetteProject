@@ -154,10 +154,19 @@ final class PostPresenter extends BasePresenter
     	$this->showReplyCommentForm = "true";
     	$this->replyCommentId = $commentId;
 
-    	if ($this->isAjax()) {
-    	    $this->redrawControl("commentFormSnippet-$commentId");
-    	}
+    	$this->redrawControl("commentFormSnippet-$commentId");
+		
 	}
+
+//	public function handleReply(int $commentId): void
+//{
+//    bdump("handleReply triggered with ID $commentId");
+//
+//    // Zobrazit formulář, př.:
+//    $this->template->replyToCommentId = $commentId;
+//    $this->redrawControl('replyForm');
+//}
+
 
 
 	

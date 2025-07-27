@@ -43,7 +43,13 @@
    			Odpovědět na komentář
 		</a>
 
-		<a n:href="reply! 33" data-comment-id="33" class="btn btn-primary">Test Reply</a>
+		<a n:href="reply! $comment->id" data-comment-id="{$comment->id}" class="btn btn-primary">Test Reply</a>
+
+		<a n:href="reply! $comment->id"
+		   class="btn btn-primary ajax"
+		   data-comment-id="{$comment->id}">
+		   Odpovědět
+		</a>
 
 
 
@@ -64,6 +70,17 @@
 	        Odpovědět uživateli {$comment->name}:
 	        {control commentForm}
 	    </div>
+	{/snippet}
+
+		{*}	{if $showReplyCommentForm == "true" && $comment->id == $replyCommentId}
+			Odpovědět uživateli {$comment->name}:
+			{control commentForm}
+		{/if}*}
+
+	{snippet replyForm}
+	    {ifset $replyToCommentId}
+	        <div>Formulář pro komentář č. {$replyToCommentId}</div>
+	    {/ifset}
 	{/snippet}
 
 
@@ -89,6 +106,8 @@
 
 
 <div class="postShow">
+
+
 
 	<div class="postAuthor"> Autor: {$postAuthor}</div>
 	
