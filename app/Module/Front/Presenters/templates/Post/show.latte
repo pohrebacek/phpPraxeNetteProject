@@ -15,7 +15,7 @@
 		{/if}
 	
 		<div>{$comment->content}</div>
-		{*<a href="#" 	{* n:href refreshuje stránku, plus potřebujeme pro script třídu show-reply-form a atribut data-comment-id 
+		{*<a href="#" 	 n:href refreshuje stránku, plus potřebujeme pro script třídu show-reply-form a atribut data-comment-id 
 		   class="btn btn-primary show-reply-form" 
 		   data-comment-id="{$comment->id}">
 		   Odpovědět na komentář
@@ -42,6 +42,10 @@
    			data-ajax="true">
    			Odpovědět na komentář
 		</a>
+
+		<a n:href="reply! 33" data-comment-id="33" class="btn btn-primary">Test Reply</a>
+
+
 
 
 
