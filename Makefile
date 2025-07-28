@@ -1,4 +1,4 @@
-CONTAINER_NAME=test-project2
+CONTAINER_NAME=test-project
 DIR_DOCKER=docker
 
 # spustí docker kontejner na popředí, pro ukončení je nutné dát CTRL+C (spustí se i po zadání `make` bez parametru)
