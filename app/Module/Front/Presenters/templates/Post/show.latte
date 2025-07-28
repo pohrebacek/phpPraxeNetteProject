@@ -36,20 +36,13 @@
 		
 		
 		
-		<a n:href="reply! $comment->id"
-   			n:class="'btn btn-primary show-reply-form ajax'"
+		<a n:class="'btn btn-primary show-reply-form ajax'"
    			data-comment-id="{$comment->id}"
    			data-ajax="true">
    			Odpovědět na komentář
 		</a>
 
-		<a n:href="reply! $comment->id" data-comment-id="{$comment->id}" class="btn btn-primary">Test Reply</a>
 
-		<a n:href="reply! $comment->id"
-		   class="btn btn-primary ajax"
-		   data-comment-id="{$comment->id}">
-		   Odpovědět
-		</a>
 
 
 
@@ -68,6 +61,7 @@
 	{snippet "commentFormSnippet-$comment->id"}
 	    <div id="reply-form-{$comment->id}" style="display: none;">	{* místo podmínky zde je div, co se zobrazí po vyhodnocení js scriptem *}
 	        Odpovědět uživateli {$comment->name}:
+			{*{$presenter->setReplyId($comment->id)}*}
 	        {control commentForm}
 	    </div>
 	{/snippet}

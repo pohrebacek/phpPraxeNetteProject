@@ -159,7 +159,33 @@
     <a href="{$presenter->getSession()->getSection('navigation')->previousUrl}"></a>
 
 
+//PostPresenter.php
+	//public function handleReply(int $commentId): void
+	//{
+    //	bdump("Zavoláno s komentářem ID: $commentId");
+//
+    //	$this->showReplyCommentForm = "true";
+    //	$this->replyCommentId = $commentId;
+//
+    //	$this->redrawControl("commentFormSnippet-$commentId");
+	//	
+	//}
+//
+	//public function setReplyId(int $commentId): void
+	//{
+	//	bdump("set reply comment id: ".$commentId);
+	//	$this->replyCommentId = $commentId;
+	//	bdump("hehe: ".$this->replyCommentId);
+	//}
 
+//	public function handleReply(int $commentId): void
+//{
+//    bdump("handleReply triggered with ID $commentId");
+//
+//    // Zobrazit formulář, př.:
+//    $this->template->replyToCommentId = $commentId;
+//    $this->redrawControl('replyForm');
+//}
 
 //HomepagePresenter.php
     public function renderOlddefault(): void
@@ -191,7 +217,14 @@
 
 
 
+//Post:show.latte
+		<a n:href="reply! $comment->id" data-comment-id="{$comment->id}" class="btn btn-primary">Test Reply</a>
 
+		<a n:href="reply! $comment->id"
+		   class="btn btn-primary ajax"
+		   data-comment-id="{$comment->id}">
+		   Odpovědět
+		</a>
 
 
 /page.latte

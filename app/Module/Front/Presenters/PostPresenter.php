@@ -147,29 +147,7 @@ final class PostPresenter extends BasePresenter
 
 	}
 
-	public function handleReply(int $commentId): void
-	{
-    	bdump("Zavoláno s komentářem ID: $commentId");
 
-    	$this->showReplyCommentForm = "true";
-    	$this->replyCommentId = $commentId;
-
-    	$this->redrawControl("commentFormSnippet-$commentId");
-		
-	}
-
-//	public function handleReply(int $commentId): void
-//{
-//    bdump("handleReply triggered with ID $commentId");
-//
-//    // Zobrazit formulář, př.:
-//    $this->template->replyToCommentId = $commentId;
-//    $this->redrawControl('replyForm');
-//}
-
-
-
-	
 	public function renderEditComment(int $id): void
     {
 		bdump($this->templateIsShow);
@@ -185,7 +163,7 @@ final class PostPresenter extends BasePresenter
 		$form = new Form;
 
 		$form->addHidden('templateIsShow', $this->templateIsShow);	//přidá do formu skrytou vlastnost, to protože to jinak nešlo předat to info
-		$form->addHidden("replyCommentId", $this->replyCommentId);
+		$form->addHidden("replyCommentId", null);
 		
 		$form->addTextArea('content')
 			->setRequired()

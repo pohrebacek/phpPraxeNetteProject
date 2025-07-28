@@ -67,6 +67,11 @@
 		            if (form) {
 		                form.style.display = 'block';
 		            }
+					// Nastav reply ID do hidden inputu
+           			const hiddenInput = form.querySelector('input[name="replyCommentId"]');
+           			if (hiddenInput) {
+           			    hiddenInput.value = commentId;
+           			}
 		        });
 		    });
 		});
