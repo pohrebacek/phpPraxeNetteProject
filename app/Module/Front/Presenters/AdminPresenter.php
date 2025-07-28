@@ -137,6 +137,10 @@ final class AdminPresenter extends BasePresenter{
     public function actionDelete($recordId, $dbName): void
     {
         bdump($recordId, $dbName);
+        if ($dbName == "users" && $this->currentUser->getId() == $recordId) {
+            $this->flashMessage("Nemůžete smazat svůj účet!", "danger");
+            $this->redirect("AdminDb:".$dbName);
+        }
         $this->database->table($dbName)->get($recordId)->delete();
         $this->flashMessage("Záznam byl smazán");
         $this->redirect("AdminDb:".$dbName);
