@@ -9,9 +9,9 @@
 			{$comment->name}
 			</a></b> napsal:</p>
 		{else}
-			<p><b><a href="mailto:{$reply->email}" n:tag-if="$reply->email">
-			{$reply->name}
-			</a></b> odpověděl uživateli <b><a href="mailto:{$reply->email}" n:tag-if="$reply->email">{$comment->name}</a></b>:</p>
+			<p><b><a href="mailto:{$comment->email}" n:tag-if="$comment->email">
+			{$comment->name}
+			</a></b> odpověděl uživateli <b><a href="mailto:{$replied->email}" n:tag-if="$replied->email">{$replied->name}</a></b>:</p>
 		{/if}
 	
 		<div>{$comment->content}</div>
@@ -82,7 +82,7 @@
 	{if isset($replies[$comment->id])}
 		<div class="replies">
 			{foreach $replies[$comment->id] as $reply}
-				{include commentTree comment => $reply, replies => $replies, isReply => "true"}
+				{include commentTree comment => $reply, replies => $replies, isReply => "true", replied => $comment}
 			{/foreach}
 		</div>
 	{/if}

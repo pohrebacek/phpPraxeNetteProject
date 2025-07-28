@@ -102,6 +102,7 @@ final class PostPresenter extends BasePresenter
 		foreach ($post->related('comments')->where('replyTo IS NOT NULL')->order('created_at') as $reply) {	//projde odpovědi a do pole přiřadí každýmu id komentu co má odpověď tu danou odpověď
 			$repliesGrouped[$reply->replyTo][] = $reply;	//přidej na pozici "id komentu" jeho odpověď, ta druhá [] říká "přidej to na konec pole"
 		}
+		bdump($repliesGrouped);
 		$this->template->replies = $repliesGrouped;
 		$this->template->likesCount = $post->related('likes')->count();
 		
