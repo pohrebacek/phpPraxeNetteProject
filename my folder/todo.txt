@@ -1,13 +1,6 @@
 https://rtsoftsro-my.sharepoint.com/:w:/g/personal/hora_rtsoft_cz/EZZqvnQ53kZEpLXyT6hhTFEBeH6eyKLRB9Axde1YUaYXIA?rtime=3q8ttaBV3Ug
 
-NOW
-- postylovat comments (rozlišit basic a reply)
 
-
-
-
-PO DOKONČENÍ
-- zkus to rozbít a pak to oprav
 PŘED ODEVZDÁNIM PAVLOVI PŘIPRAVIT SPEŠL DB DUMP KDE BUDE VLASTNĚ VŠE ODE MĚ
 
 
@@ -62,3 +55,4 @@ DONE
 - postpresenter 80 - 85 schovat celý do like facade
 - v nette nastavit práva pro zobrazování stránek (že se přes odkaz nedostanu kam nemam)
 - šipečka back v post:show -> prostě když dam nějekaou akci jako reply tak to je taky v url takže se to pak vrací na akce
+- postylovat comments (rozlišit basic a reply)
